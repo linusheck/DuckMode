@@ -59,9 +59,9 @@ public class PlayerListener implements Listener {
             StaticMethods.prepareInventory(d);
             StaticMethods.disableJumping(e.getPlayer());
             DuckReflectionMethods.title(e.getPlayer(), ChatColor.RED + Messages.getString("big_screen_title"), 5, 30, 5); //$NON-NLS-1$
-            DuckReflectionMethods.subtitle(e.getPlayer(), Messages.getString("version") + DuckMain.getPlugin().getDescription().getVersion(), 5, 30, 5); //$NON-NLS-1$
+            DuckReflectionMethods.subtitle(e.getPlayer(), Messages.getString("version") + " " + DuckMain.getPlugin().getDescription().getVersion(), 5, 30, 5); //$NON-NLS-1$
 
-            e.setJoinMessage("DUCK MODE ->" + ChatColor.YELLOW + Messages.getString("duck") + e.getPlayer().getName() + Messages.getString("join_message")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            e.setJoinMessage("DUCK MODE ->" + ChatColor.YELLOW + Messages.getString("duck") + " " + e.getPlayer().getName() + " " + Messages.getString("join_message")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
         }
 

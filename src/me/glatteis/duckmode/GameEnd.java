@@ -66,7 +66,7 @@ public class GameEnd {
             commands.add(s.next());
         }
         for (String thisCommand : commands) {
-            Bukkit.dispatchCommand(null, thisCommand);
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), thisCommand);
         }
     }
 
