@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="EclipseModuleManager">
+    <libelement value="jar://F:/Server1.8/plugins/worldedit-bukkit-6.0 (1).jar!/" />
+    <libelement value="jar://F:/Server1.8/spigot-18.jar!/" />
+    <src_description expected_position="0">
+      <src_folder value="file://$MODULE_DIR$/src" expected_position="0" />
+    </src_description>
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/bin" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+    </content>
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="jdk" jdkName="1.7 (1)" jdkType="JavaSDK" />
+    <orderEntry type="module-library">
+      <library name="worldedit-bukkit-6.0 (1).jar">
+        <CLASSES>
+          <root url="jar://F:/Server1.8/plugins/worldedit-bukkit-6.0 (1).jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="spigot-18.jar">
+        <CLASSES>
+          <root url="jar://F:/Server1.8/spigot-18.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+  </component>
+</module>

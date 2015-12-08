@@ -1,0 +1,14 @@
+name: DuckMode
+depends: [WorldEdit]
+author: glatteis
+authors: [IronMansVater]
+main: me.glatteis.duckmode.DuckMain
+version: 0.4.6 beta
+
+commands:
+    test:
+       description: Test Command
+       usage: /test
+    addsecrethats:
+       description: Very Secret Command! Unlocks no hats!
+       usage: /secret
