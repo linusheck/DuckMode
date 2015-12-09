@@ -28,8 +28,7 @@ public class DuckReflection {
             Object nmsPlayer = getHandle.invoke(p);
             Field field;
             field = nmsPlayer.getClass().getField("playerConnection"); //$NON-NLS-1$
-            Object connection = field.get(nmsPlayer);
-            return connection;
+            return field.get(nmsPlayer);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

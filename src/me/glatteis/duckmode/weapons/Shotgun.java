@@ -64,7 +64,7 @@ public class Shotgun extends DuckWeapon implements Listener {
                 }
             }
 
-
+            if (hitBlock == null) return;
             if (hitBlock.getType().equals(Material.GLASS) || hitBlock.getType().equals(Material.STAINED_GLASS)) {
                 hitBlock.setType(Material.AIR);
                 for (Duck d : DuckMain.ducks) {

@@ -59,6 +59,7 @@ public class Pistol extends DuckWeapon implements Listener {
                     break;
                 }
             }
+            if (hitBlock == null) return;
             if (hitBlock.getType().equals(Material.GLASS) || hitBlock.getType().equals(Material.STAINED_GLASS)) {
                 hitBlock.setType(Material.AIR);
                 for (Duck d : DuckMain.ducks) {

@@ -67,7 +67,7 @@ public class LevelGenerator {
                         } else if (random < 0.35) {
                             type = "weapon"; //$NON-NLS-1$
                         }
-                        if (height + 5 > maxHeight && providedSpawns > 0 && type != "spawn") { //$NON-NLS-1$
+                        if (height + 5 > maxHeight && providedSpawns > 0 && (!type.equals("spawn"))) { //$NON-NLS-1$
                             Bukkit.getLogger().info("Spawn escape code triggered."); //$NON-NLS-1$
                             type = "spawn"; //$NON-NLS-1$
                             providedSpawns--;

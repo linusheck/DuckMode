@@ -15,11 +15,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class PlayerGameListener implements Listener {
 
-    List<Material> meleeWeapons = Arrays.asList(Material.IRON_SWORD);
+    List<Material> meleeWeapons = Collections.singletonList(Material.IRON_SWORD);
 
     @EventHandler
     public void onPlayerHurt(EntityDamageEvent e) {
@@ -39,7 +40,7 @@ public class PlayerGameListener implements Listener {
                     if (!meleeWeapons.contains(((Player) damager).getItemInHand().getType())) {
                         return;
                     }
-                    killCause = Messages.getString("you_were_slain_by") + ((Player) damager).getName() + "."; //$NON-NLS-1$ //$NON-NLS-2$
+                    killCause = Messages.getString("you_were_slain_by") + damager.getName() + "."; //$NON-NLS-1$ //$NON-NLS-2$
                 } else if (damager instanceof Arrow) {
                     Arrow a = (Arrow) damager;
                     if (a.getShooter() != null && a.getShooter() instanceof Player) {
@@ -75,9 +76,7 @@ public class PlayerGameListener implements Listener {
     }
 
     public static void die(Duck d, String cause) {
-        if (DuckArmor.willDie(d) == false) {
-            return;
-        }
+        if (!DuckArmor.willDie(d)) return;
         d.setDead(true);
         d.getPlayer().setGameMode(GameMode.SPECTATOR);
         d.getPlayer().getInventory().clear();

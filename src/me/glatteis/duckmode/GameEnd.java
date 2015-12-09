@@ -22,7 +22,7 @@ public class GameEnd {
             }
             Duck thisDuck = null;
             for (Duck d : WinTracker.wins.keySet()) {
-                if (WinTracker.wins.get(d) == maxValue && !ducks.contains(d)) {
+                if (WinTracker.wins.get(d) .equals(maxValue) && !ducks.contains(d)) {
                     thisDuck = d;
                     break;
                 }

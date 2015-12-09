@@ -5,12 +5,11 @@ import java.util.ResourceBundle;
 
 public class Messages {
     private static final String BUNDLE_NAME = "me.glatteis.duckmode.messages" + DuckMain.getPlugin().getConfig().getString("message-language");
-    ; //$NON-NLS-1$
+    //$NON-NLS-1$
 
     private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
 
-    private Messages() {
-    }
+    private Messages() {}
 
     public static String getString(String key) {
         try {

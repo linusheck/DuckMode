@@ -121,7 +121,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerDrop(PlayerDropItemEvent e) {
-        if (e.getItemDrop().getType().equals(Material.STAINED_GLASS_PANE) || e.getItemDrop().equals(Material.SKULL)) {
+        if (e.getItemDrop().getItemStack().getType().equals(Material.STAINED_GLASS_PANE) || e.getItemDrop().getItemStack().getType().equals(Material.SKULL)) {
             e.setCancelled(true);
         } else {
             if (e.getItemDrop().getItemStack().getItemMeta().getLore() != null &&

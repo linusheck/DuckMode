@@ -121,7 +121,6 @@ public class ContinueGame {
                     }
                     spawnPoints.clear();
                     this.cancel();
-                    return;
                 }
 
             }

@@ -10,7 +10,7 @@ public enum SettingTypes {
 
     String s;
 
-    private SettingTypes(String s) {
+    SettingTypes(String s) {
         this.s = s;
     }
 
