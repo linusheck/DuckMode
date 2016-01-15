@@ -1,6 +1,6 @@
-package me.glatteis.duckmode.weapons;
+package me.glatteis.duckmode;
 
-import me.glatteis.duckmode.*;
+import me.glatteis.duckmode.weapons.*;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
@@ -14,13 +14,16 @@ public class ListenerActivator {
     public static Object[] weapons = {new IronSword(), new RocketLauncher(), new DuckArmor(), new OneShotPistol(), new Pistol(), new Shotgun(), new TNTBarrel(), new Grenade()};
 
     public static void activateListeners() {
-
         for (Listener l : listeners) {
             Bukkit.getPluginManager().registerEvents(l, DuckMain.getPlugin());
         }
         for (Object o : weapons) {
             Bukkit.getPluginManager().registerEvents((Listener) o, DuckMain.getPlugin());
         }
+    }
+
+    public static void lobbyCountdown() {
+        ((DuckLobby) listeners.get(0)).countdown();
     }
 
 }

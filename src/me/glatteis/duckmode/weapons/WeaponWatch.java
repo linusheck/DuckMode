@@ -1,5 +1,6 @@
 package me.glatteis.duckmode.weapons;
 
+import me.glatteis.duckmode.ListenerActivator;
 import org.bukkit.Location;
 
 import java.util.ArrayList;

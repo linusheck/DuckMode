@@ -3,7 +3,6 @@ package me.glatteis.duckmode;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
 import me.glatteis.duckmode.hats.Hats;
-import me.glatteis.duckmode.weapons.ListenerActivator;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.*;
 import org.bukkit.command.Command;
@@ -29,6 +28,7 @@ public class DuckMain extends JavaPlugin {
     public static Plugin plugin;
     public static HashMap<Integer, Duck> duckCount = new HashMap<Integer, Duck>();
     public static Location spawnLocation;
+    public static int autoStart;
 
 
     public static Plugin getPlugin() {
@@ -127,7 +127,6 @@ public class DuckMain extends JavaPlugin {
 
         Bukkit.getLogger().info("*****************************************"); //$NON-NLS-1$
         Bukkit.getLogger().info("Hey! This is a beta version of Duck Mode."); //$NON-NLS-1$
-        Bukkit.getLogger().info("This plugin still spams the console!"); //$NON-NLS-1$
         Bukkit.getLogger().info("You will have to update JAR file and resources by yourself.."); //$NON-NLS-1$
         Bukkit.getLogger().info("Stop by to the spigot page to see if a new update has been released."); //$NON-NLS-1$
         Bukkit.getLogger().info("Please report all bugs to the spigot page!"); //$NON-NLS-1$
@@ -136,10 +135,12 @@ public class DuckMain extends JavaPlugin {
         getConfig().addDefault("max-player-count", 4); //$NON-NLS-1$
         getConfig().addDefault("indev-resource-pack", false); //$NON-NLS-1$
         getConfig().addDefault("message-language", "EN");
+        getConfig().addDefault("auto-start-player-count", 0);
         getConfig().options().copyDefaults(true);
         saveConfig();
         indevResourcePack = getConfig().getBoolean("indev-resource-pack"); //$NON-NLS-1$
         maxPlayerCount = getConfig().getInt("max-player-count"); //$NON-NLS-1$
+        autoStart = getConfig().getInt("auto-start-player-count");
 
         setPlugin(this);
         try {
@@ -193,15 +194,17 @@ public class DuckMain extends JavaPlugin {
     @Override
     public void onDisable() {
         getServer().unloadWorld("DuckMode", false); //$NON-NLS-1$
+        plugin = null; //Have you ever thought about the fact that this line is basically the instance commiting suicide?
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("test")) { //$NON-NLS-1$
             StaticMethods.checkForWin();
-
         } else if (cmd.getName().equalsIgnoreCase("addsecrethats")) { //$NON-NLS-1$
             Hats.addSecretHats();
+        } else if (cmd.getName().equalsIgnoreCase("start")) {
+            ListenerActivator.lobbyCountdown();
         }
         return true;
     }

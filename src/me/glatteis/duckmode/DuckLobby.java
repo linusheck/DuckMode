@@ -88,25 +88,29 @@ public class DuckLobby implements Listener {
                     e.getClickedBlock().getRelative(BlockFace.WEST).getType().equals(Material.WOOL) &&
                     ((Wool) e.getClickedBlock().getRelative(BlockFace.WEST).getState().getData()).getColor().equals(DyeColor.LIME)) {
                 //Someone pressed the start button
-                activated = true;
-                new BukkitRunnable() {
-                    int countdown = 3;
-
-                    public void run() {
-                        for (Duck d : DuckMain.ducks) {
-                            DuckReflectionMethods.title(d.getPlayer(), ChatColor.RED.toString() + countdown, 0, 20, 5);
-                        }
-                        countdown--;
-                        if (countdown == 0) {
-                            Intermission.create();
-                            ContinueGame.startRound();
-                            this.cancel();
-                        }
-
-                    }
-                }.runTaskTimer(DuckMain.getPlugin(), 20L, 20L);
+                countdown();
             }
         }
+    }
+
+    public void countdown() {
+        activated = true;
+        new BukkitRunnable() {
+            int countdown = 3;
+
+            public void run() {
+                for (Duck d : DuckMain.ducks) {
+                    DuckReflectionMethods.title(d.getPlayer(), ChatColor.RED.toString() + countdown, 0, 20, 5);
+                }
+                countdown--;
+                if (countdown == 0) {
+                    Intermission.create();
+                    ContinueGame.startRound();
+                    this.cancel();
+                }
+
+            }
+        }.runTaskTimer(DuckMain.getPlugin(), 20L, 20L);
     }
 
 

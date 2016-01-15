@@ -63,6 +63,9 @@ public class PlayerListener implements Listener {
 
             e.setJoinMessage("DUCK MODE ->" + ChatColor.YELLOW + Messages.getString("duck") + " " + e.getPlayer().getName() + " " + Messages.getString("join_message")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
+            if (DuckMain.autoStart > 0 && Bukkit.getOnlinePlayers().size() >= DuckMain.autoStart) {
+                ListenerActivator.lobbyCountdown();
+            }
         }
 
         e.getPlayer().setResourcePack(DuckMain.indevResourcePack ? "https://www.dropbox.com/s/baxsqe7310dwyze/rp_dev.zip?dl=1" : "https://www.dropbox.com/s/z9wbr65n6csvzsq/rp.zip?dl=1"); //$NON-NLS-1$ //$NON-NLS-2$
