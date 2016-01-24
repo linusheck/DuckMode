@@ -139,36 +139,17 @@ public class StaticMethods {
         p.getInventory().setLeggings(null);
         p.getInventory().setBoots(null);
         p.getInventory().clear();
-        ItemStack s = new ItemStack(Material.SKULL_ITEM);
-        ItemMeta m = s.getItemMeta();
-        m.setDisplayName(Messages.getString("QUACK")); //$NON-NLS-1$
-        s.setItemMeta(m);
-        p.getInventory().setItem(0, s);
-        p.getInventory().setHelmet(s);
         Hat h = d.getHat();
         if (h instanceof EntityHat) {
             EntityHat eH = (EntityHat) h;
             Entity previousEntity = d.getPlayer();
             for (Entity e : eH.getEntities()) {
-                Bukkit.getLogger().info("Entity: " + e.getType() + ", PreviousEntity: " + previousEntity.getType());
                 previousEntity.setPassenger(e);
                 previousEntity = e;
             }
         }
         p.getInventory().setHelmet(d.getHat().getStack());
 
-//		Skull s = (Skull)  p.getInventory().getItem(0);
-//		s.setSkullType(SkullType.CREEPER);
-        for (int i = 1; i < 9; i++) {
-            if (i == 4)
-                continue;
-            ItemStack pane = new ItemStack(Material.STAINED_GLASS_PANE);
-            ItemMeta paneMeta = pane.getItemMeta();
-            paneMeta.setDisplayName(""); //$NON-NLS-1$
-            pane.setItemMeta(paneMeta);
-            p.getInventory().setItem(i, pane);
-            p.getInventory().getItem(i).setDurability((short) 15);
-        }
         //19, 25
         ItemStack tag = new ItemStack(Material.NAME_TAG);
         ItemStack tag2 = tag.clone();

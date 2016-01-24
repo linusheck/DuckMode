@@ -4,11 +4,10 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.util.BlockIterator;
 
-public class TNTBarrel extends DuckWeapon implements Listener {
+public class TNTBarrel extends DuckWeapon {
 
     public TNTBarrel() {
         super(null);

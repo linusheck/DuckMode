@@ -100,9 +100,12 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerPickupItem(PlayerPickupItemEvent e) {
-        if (e.getPlayer().getInventory().getItem(4) != null) {
-            e.setCancelled(true);
-        }
+        e.setCancelled(true);
+        if (e.getPlayer().getInventory().getItem(4) != null) return;
+        e.getPlayer().getInventory().setItem(4, e.getItem().getItemStack());
+        e.getItem().remove();
+        e.getPlayer().getWorld().playSound(e.getPlayer().getLocation(), Sound.ITEM_PICKUP, 1,
+                (float) Math.random() - 0.5f);
     }
 
     @EventHandler

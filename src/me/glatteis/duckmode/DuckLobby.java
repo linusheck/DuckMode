@@ -18,10 +18,9 @@ public class DuckLobby implements Listener {
 
 
     boolean activated = false;
-
+    
     public static void configureLobby() {
         Location sourceLocation = new Location(DuckMain.getWorld(), 1, 23, 5);
-
         for (int i = 3; i < 8; i++) {
             sourceLocation.setZ(i);
             sourceLocation.getBlock().setType(Material.WALL_SIGN);

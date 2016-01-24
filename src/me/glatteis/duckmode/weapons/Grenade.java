@@ -6,7 +6,6 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -18,7 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class Grenade extends DuckWeapon implements Listener {
+public class Grenade extends DuckWeapon {
 
     HashMap<List<String>, Item> thrownGrenades = new HashMap<List<String>, Item>();
     List<List<String>> fusedGrenades = new ArrayList<List<String>>();

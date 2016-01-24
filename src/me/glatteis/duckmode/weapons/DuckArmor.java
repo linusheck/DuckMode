@@ -6,7 +6,6 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -15,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class DuckArmor extends DuckWeapon implements Listener {
+public class DuckArmor extends DuckWeapon {
 
     List<Material> helmets = Arrays.asList();
     List<Material> chestplates = Arrays.asList(Material.IRON_CHESTPLATE);

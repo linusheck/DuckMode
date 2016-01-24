@@ -6,15 +6,16 @@ import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.UUID;
 
 
-public class DuckWeapon {
+public abstract class DuckWeapon implements Listener {
 
     private Material weaponMaterial;
 
@@ -44,7 +45,7 @@ public class DuckWeapon {
 
     protected ItemStack initializeItemStack(ItemStack i) {
         ItemMeta meta = i.getItemMeta();
-        meta.setLore(Arrays.asList(UUID.randomUUID().toString()));
+        meta.setLore(Collections.singletonList(UUID.randomUUID().toString()));
         meta.setDisplayName(" "); //$NON-NLS-1$
         i.setItemMeta(meta);
         return i;

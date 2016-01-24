@@ -30,6 +30,7 @@ public class Hats {
         for (Hat h : sampleHats) {
             if (ChatColor.stripColor(h.getName())
                     .equals(ChatColor.stripColor(i.getItemMeta().getDisplayName()))) {
+                Bukkit.getLogger().info(h.getName() + " added");
                 try {
                     d.setHat(h.getClass().newInstance());
                     StaticMethods.prepareInventory(d);
