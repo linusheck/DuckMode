@@ -10,9 +10,9 @@ public class NotchHead extends Hat {
     private static ItemStack notch = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
 
     public NotchHead() {
-        super(notch, Messages.getString("NotchHead.head"), Messages.getString("NotchHead.description")); //$NON-NLS-1$ //$NON-NLS-2$
+        super(notch, Messages.getString("NotchHead.head"), Messages.getString("NotchHead.description"));
         SkullMeta meta = (SkullMeta) notch.getItemMeta();
-        meta.setOwner("Notch"); //$NON-NLS-1$
+        meta.setOwner("Notch");
         notch.setItemMeta(meta);
     }
 

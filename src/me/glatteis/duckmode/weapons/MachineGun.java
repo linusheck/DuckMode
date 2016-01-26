@@ -4,7 +4,6 @@ import me.glatteis.duckmode.DuckMain;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -22,19 +21,16 @@ public class MachineGun extends DuckWeapon {
         super(Material.WHEAT);
     }
 
-    @EventHandler
-    public void onShoot(PlayerInteractEvent event) {
+    @Override
+    public void shoot(PlayerInteractEvent event) {
         if (event.getMaterial() == null) return;
-
-        final List<String> itemLore;
-
-        if (!(event.getMaterial().equals(Material.WHEAT)) ||
-                WeaponWatch.cooldown.contains(itemLore = event.getItem().getItemMeta().getLore()) ||
-                (WeaponWatch.durability.get(itemLore) != null && WeaponWatch.durability.get(itemLore) == 0)) return;
+        final List<String> itemLore = event.getItem().getItemMeta().getLore();
 
         if (WeaponWatch.durability.get(itemLore) == null) WeaponWatch.durability.put(itemLore, 4);
+        if (WeaponWatch.durability.get(itemLore) == 0) return;
+        if (WeaponWatch.cooldown.contains(itemLore)) return;
 
-        if (shotsLeft.get(itemLore) == 0) {
+        if (shotsLeft.get(itemLore) != null && shotsLeft.get(itemLore) == 0) {
             WeaponWatch.cooldown.add(itemLore);
             shotsLeft.remove(itemLore);
             new BukkitRunnable() {

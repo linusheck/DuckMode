@@ -48,7 +48,7 @@ public class ContinueGame {
                     SpawnWeapons.locations.clear();
                     SchematicLoad.clear();
                     roundHasEnded = false;
-                    if (roundCounter == SettingDatabase.settingSwitches.get(SettingTypes.ROUNDS.toString()).get(SettingDatabase.intSetting.get(SettingTypes.ROUNDS.toString()))) { //$NON-NLS-1$ //$NON-NLS-2$
+                    if (roundCounter == SettingDatabase.settingSwitches.get(SettingTypes.ROUNDS.toString()).get(SettingDatabase.intSetting.get(SettingTypes.ROUNDS.toString()))) {
                         DuckMain.state = GameState.INTERMISSION;
                         roundCounter = 0;
                         Intermission.intermission();
@@ -58,18 +58,14 @@ public class ContinueGame {
                     roundCounter++;
                     where = !where;
 
-                    new BukkitRunnable() {
-                        public void run() {
-                            LevelGenerator.buildPlace(where);
-                            final List<Location> spawnPoints = PlayerSpawnPoints.spawnPoints;
-                            new BukkitRunnable() {
-                                public void run() {
-                                    SchematicLoad.loadAllSchematics();
-                                    countdownToRound(spawnPoints);
-                                }
-                            }.runTask(DuckMain.getPlugin());
+                    LevelGenerator.buildPlace(where);
+                    final List<Location> spawnPoints = PlayerSpawnPoints.spawnPoints;
+                    SchematicLoad.loadAllSchematics(new SchematicLoad.ThenTask() {
+                        @Override
+                        public void finished() {
+                            countdownToRound(spawnPoints);
                         }
-                    }.runTaskAsynchronously(DuckMain.getPlugin());
+                    });
                 }
             }
         }.runTaskTimer(DuckMain.getPlugin(), 20L, 20L);

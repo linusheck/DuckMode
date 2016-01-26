@@ -34,16 +34,19 @@ public class SchematicLoad {
     }
 
     public static void loadAllSchematics() {
+        loadAllSchematics(null);
+    }
 
+    public static void loadAllSchematics(final ThenTask finished) {
         new BukkitRunnable() {
             int position = -1;
-
             public void run() {
                 for (int i = 0; i < 4; i++) {
                     position++;
                     if (position >= schematicsToLoad.size()) {
                         schematicsToLoad.clear();
                         this.cancel();
+                        if (finished != null) finished.finished();
                         return;
                     }
                     SchematicToLoad s = schematicsToLoad.get(position);
@@ -65,10 +68,10 @@ public class SchematicLoad {
 
     private static void buildingGeneration(SchematicToLoad s, Vector v) {
         Location there = new Location(DuckMain.getWorld(), v.getX(), v.getY(), v.getZ());
-        String story = "air"; //$NON-NLS-1$
+        String story = "air";
         if (!there.clone().subtract(0, 1, 0).getBlock().getType().equals(Material.AIR)) {
-            story = "building"; //$NON-NLS-1$
-        } else if (!s.getType().equals("spawn")) { //$NON-NLS-1$
+            story = "building";
+        } else if (!s.getType().equals("spawn")) {
             double generate = Math.random();
             if (generate < 0.9) {
                 return;
@@ -92,11 +95,11 @@ public class SchematicLoad {
     }
 
     private static void specialStuff(SchematicToLoad s, Location there) {
-        if (s.getType().equals("spawn")) { //$NON-NLS-1$
+        if (s.getType().equals("spawn")) {
             Location l = findBlock(Material.GOLD_BLOCK, there);
             if (l == null) l = there.clone().add(2, 2, 2);
             PlayerSpawnPoints.spawnPoints.add(l);
-        } else if (s.getType().equals("weapon")) { //$NON-NLS-1$
+        } else if (s.getType().equals("weapon")) {
             Location spawn = findBlock(Material.IRON_BLOCK, there);
             if (spawn == null) return;
             WeaponWatch.spawnRandomWeapon(spawn);
@@ -107,10 +110,10 @@ public class SchematicLoad {
     @SuppressWarnings("deprecation")
     private static boolean loadSchematic(World w, Vector v, String dimension, String story, String type) {
         if (e == null) {
-            e = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit"); //$NON-NLS-1$
+            e = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
         }
-        String path = new File(System.getProperty("java.class.path")).getAbsoluteFile().getParentFile().toString() +  //$NON-NLS-1$
-                "/plugins/DuckMode/Generation/" + dimension + "/" + story + "/" + type + "/"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        String path = new File(System.getProperty("java.class.path")).getAbsoluteFile().getParentFile().toString() +
+                "/plugins/DuckMode/Generation/" + dimension + "/" + story + "/" + type + "/";
         File typeFile = new File(path);
         if (!typeFile.exists()) {
             return false;
@@ -121,7 +124,7 @@ public class SchematicLoad {
             return false;
         }
 
-        String schematicPath = path + String.valueOf(new Random().nextInt(amount) + 1) + ".schematic"; //$NON-NLS-1$
+        String schematicPath = path + String.valueOf(new Random().nextInt(amount) + 1) + ".schematic";
         File f = new File(schematicPath);
 
         if (!f.exists()) {
@@ -136,25 +139,27 @@ public class SchematicLoad {
             e2.printStackTrace();
         }
         return false;
-
     }
 
     public static void clearArea(final Vector v1, final Vector v2) {
         new BukkitRunnable() {
             public void run() {
                 if (e == null) {
-                    e = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit"); //$NON-NLS-1$
+                    e = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
                 }
                 @SuppressWarnings("deprecation")
                 EditSession session = e.getWorldEdit().getEditSessionFactory().getEditSession(new BukkitWorld(DuckMain.getWorld()), 346585452);
                 try {
                     session.setBlocks(new CuboidRegion(v1, v2), new BaseBlock(0));
                 } catch (MaxChangedBlocksException e1) {
-                    Bukkit.getLogger().info("Something really bad happened: WordEdit MaxChangedBlocksException"); //$NON-NLS-1$
+                    Bukkit.getLogger().info("Something really bad happened: WordEdit MaxChangedBlocksException");
                 }
             }
         }.runTask(DuckMain.getPlugin());
+    }
 
+    public abstract static class ThenTask {
+        public abstract void finished();
     }
 
 }

@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 public class StrangeCake extends Hat {
 
     public StrangeCake() {
-        super(new ItemStack(Material.LAPIS_BLOCK), Messages.getString("StrangeCake.head"), Messages.getString("StrangeCake.description")); //$NON-NLS-1$ //$NON-NLS-2$
+        super(new ItemStack(Material.LAPIS_BLOCK), Messages.getString("StrangeCake.head"), Messages.getString("StrangeCake.description"));
     }
 
 }

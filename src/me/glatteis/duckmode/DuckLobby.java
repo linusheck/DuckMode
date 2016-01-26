@@ -18,7 +18,7 @@ public class DuckLobby implements Listener {
 
 
     boolean activated = false;
-    
+
     public static void configureLobby() {
         Location sourceLocation = new Location(DuckMain.getWorld(), 1, 23, 5);
         for (int i = 3; i < 8; i++) {
@@ -32,15 +32,15 @@ public class DuckLobby implements Listener {
             s.setData(matSign);
             String thisSetting = SettingDatabase.settings.get(i - 3);
             SettingDatabase.settingsSigns.put(s, thisSetting);
-            if (thisSetting.equals(SettingTypes.POINTS_TO_WIN.toString()) || thisSetting.equals(SettingTypes.ROUNDS.toString())) { //$NON-NLS-1$ //$NON-NLS-2$
+            if (thisSetting.equals(SettingTypes.POINTS_TO_WIN.toString()) || thisSetting.equals(SettingTypes.ROUNDS.toString())) {
                 s.setLine(0, ChatColor.GREEN + thisSetting);
                 SettingDatabase.intSetting.put(thisSetting, 0);
-                s.setLine(1, ChatColor.GRAY + "=========="); //$NON-NLS-1$
+                s.setLine(1, ChatColor.GRAY + "==========");
                 s.setLine(2, ChatColor.GOLD + String.valueOf(SettingDatabase.switchSettingsFor(thisSetting)));
-                s.setLine(3, ChatColor.GRAY + "=========="); //$NON-NLS-1$
-            } else if (thisSetting.equals(SettingTypes.HATS.toString())) { //$NON-NLS-1$
+                s.setLine(3, ChatColor.GRAY + "==========");
+            } else if (thisSetting.equals(SettingTypes.HATS.toString())) {
                 s.setLine(0, ChatColor.GREEN + thisSetting);
-                s.setLine(2, ChatColor.LIGHT_PURPLE + Messages.getString("hats_description")); //$NON-NLS-1$
+                s.setLine(2, ChatColor.LIGHT_PURPLE + Messages.getString("hats_description"));
             }
             s.update();
         }
@@ -52,14 +52,14 @@ public class DuckLobby implements Listener {
             Sign s = (Sign) e.getClickedBlock().getState();
             String setting = SettingDatabase.settingsSigns.get(s);
             if (setting == null) return;
-            Bukkit.getLogger().info("Setting:" + setting); //$NON-NLS-1$
+            Bukkit.getLogger().info("Setting:" + setting);
             //Because this is Java 1.6, I can't make a setting switch. D:
-            if (setting.equals(SettingTypes.POINTS_TO_WIN.toString()) || setting.equals(SettingTypes.ROUNDS.toString())) { //$NON-NLS-1$ //$NON-NLS-2$
+            if (setting.equals(SettingTypes.POINTS_TO_WIN.toString()) || setting.equals(SettingTypes.ROUNDS.toString())) {
                 String switchSetting = String.valueOf(SettingDatabase.switchSettingsFor(setting));
                 s.setLine(2, ChatColor.GOLD + switchSetting);
                 s.update();
             }
-            if (setting.equals(SettingTypes.HATS.toString())) { //$NON-NLS-1$
+            if (setting.equals(SettingTypes.HATS.toString())) {
                 Hats.openHatInventory(e.getPlayer());
             }
         }
@@ -68,7 +68,7 @@ public class DuckLobby implements Listener {
     @EventHandler
     public void hatChoice(InventoryClickEvent e) {
         if (e.getCurrentItem() == null) return;
-        if (ChatColor.stripColor(e.getInventory().getTitle()).equals(SettingTypes.HATS.toString())) { //$NON-NLS-1$
+        if (ChatColor.stripColor(e.getInventory().getTitle()).equals(SettingTypes.HATS.toString())) {
             for (Duck d : DuckMain.ducks) {
                 if (d.getPlayer().equals(e.getWhoClicked())) {
                     Hats.setHat(d, e.getCurrentItem());

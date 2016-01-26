@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 public class Bill extends Hat {
 
     public Bill() {
-        super(new ItemStack(Material.DIAMOND_ORE), Messages.getString("Bill.head"), Messages.getString("Bill.description")); //$NON-NLS-1$ //$NON-NLS-2$
+        super(new ItemStack(Material.DIAMOND_ORE), Messages.getString("Bill.head"), Messages.getString("Bill.description"));
     }
 
 }

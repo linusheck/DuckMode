@@ -29,6 +29,29 @@ public class DuckArmor extends DuckWeapon {
         everything.addAll(leggings);
     }
 
+    public static boolean willDie(Duck d) {
+        Player p = d.getPlayer();
+        if (p.getInventory().getChestplate() != null) {
+            double chestRandom = Math.random();
+            if (chestRandom < 0.7) {
+                p.getInventory().setChestplate(null);
+                p.getWorld().playSound(p.getLocation(), Sound.ANVIL_LAND, 10, 1);
+                return false;
+            }
+
+        }
+        if (p.getInventory().getLeggings() != null) {
+            double legRandom = Math.random();
+            if (legRandom < 0.7) {
+                p.getInventory().setLeggings(null);
+                p.getWorld().playSound(p.getLocation(), Sound.ANVIL_LAND, 10, 1);
+                return false;
+            }
+
+        }
+        return true;
+    }
+
     @Override
     public void spawnWeapon(Location l) {
         Random r = new Random();
@@ -72,29 +95,6 @@ public class DuckArmor extends DuckWeapon {
             return;
         }
         e.setCancelled(false);
-    }
-
-    public static boolean willDie(Duck d) {
-        Player p = d.getPlayer();
-        if (p.getInventory().getChestplate() != null) {
-            double chestRandom = Math.random();
-            if (chestRandom < 0.7) {
-                p.getInventory().setChestplate(null);
-                p.getWorld().playSound(p.getLocation(), Sound.ANVIL_LAND, 10, 1);
-                return false;
-            }
-
-        }
-        if (p.getInventory().getLeggings() != null) {
-            double legRandom = Math.random();
-            if (legRandom < 0.7) {
-                p.getInventory().setLeggings(null);
-                p.getWorld().playSound(p.getLocation(), Sound.ANVIL_LAND, 10, 1);
-                return false;
-            }
-
-        }
-        return true;
     }
 
 }

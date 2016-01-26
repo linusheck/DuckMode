@@ -11,6 +11,14 @@ public class SchematicToLoad {
     private String story;
     private String type;
 
+    public SchematicToLoad(BukkitWorld world, Vector vector, String dimension, String story, String type) {
+        this.world = world;
+        this.vector = vector;
+        this.dimension = dimension;
+        this.story = story;
+        this.type = type;
+    }
+
     public BukkitWorld getWorld() {
         return world;
     }
@@ -48,14 +56,6 @@ public class SchematicToLoad {
     }
 
     public void setType(String type) {
-        this.type = type;
-    }
-
-    public SchematicToLoad(BukkitWorld world, Vector vector, String dimension, String story, String type) {
-        this.world = world;
-        this.vector = vector;
-        this.dimension = dimension;
-        this.story = story;
         this.type = type;
     }
 

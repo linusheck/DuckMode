@@ -10,9 +10,9 @@ public class LUKFUHead extends Hat {
     private static ItemStack lukfu = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
 
     public LUKFUHead() {
-        super(lukfu, Messages.getString("LUKFUHead.head"), Messages.getString("LUKFUHead.description")); //$NON-NLS-1$ //$NON-NLS-2$
+        super(lukfu, Messages.getString("LUKFUHead.head"), Messages.getString("LUKFUHead.description"));
         SkullMeta meta = (SkullMeta) lukfu.getItemMeta();
-        meta.setOwner("Lukfu"); //$NON-NLS-1$
+        meta.setOwner("Lukfu");
         lukfu.setItemMeta(meta);
     }
 

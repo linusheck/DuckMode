@@ -11,7 +11,7 @@ import java.util.List;
 
 public class SpawnWeapons {
 
-    public static List<Location> locations = new ArrayList<Location>();
+    public static final List<Location> locations = new ArrayList<Location>();
 
     public static void enable() {
         new BukkitRunnable() {

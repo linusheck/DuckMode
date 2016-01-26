@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 public class Burger extends Hat {
 
     public Burger() {
-        super(new ItemStack(Material.IRON_ORE), Messages.getString("Burger.head"), Messages.getString("Burger.description")); //$NON-NLS-1$ //$NON-NLS-2$
+        super(new ItemStack(Material.IRON_ORE), Messages.getString("Burger.head"), Messages.getString("Burger.description"));
     }
 
 }

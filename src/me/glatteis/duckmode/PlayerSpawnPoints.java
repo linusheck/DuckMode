@@ -3,9 +3,8 @@ package me.glatteis.duckmode;
 import org.bukkit.Location;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PlayerSpawnPoints {
-
-    public static ArrayList<Location> spawnPoints = new ArrayList<Location>();
-
+    public static List<Location> spawnPoints = new ArrayList<Location>();
 }

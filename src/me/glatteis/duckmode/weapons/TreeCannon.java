@@ -21,10 +21,8 @@ public class TreeCannon extends DuckWeapon {
         super(Material.SAPLING);
     }
 
-    @EventHandler
+    @Override
     public void shoot(final PlayerInteractEvent event) {
-        if (event.getMaterial() == null) return;
-        if (!event.getMaterial().equals(Material.SAPLING)) return;
         if (WeaponWatch.cooldown.contains(event.getItem().getItemMeta().getLore())) return;
 
         WeaponWatch.cooldown.add(event.getItem().getItemMeta().getLore());
@@ -46,9 +44,16 @@ public class TreeCannon extends DuckWeapon {
     public void onArrowImpact(ProjectileHitEvent e) {
         if (e.getEntity().getCustomName() == null) return;
         if (e.getEntity().getCustomName().equals("TreeCannon")) {
-            Block b = e.getEntity().getLocation().getBlock();
-            b.getRelative(BlockFace.DOWN).setType(Material.DIRT);
-            DuckMain.getWorld().generateTree(b.getLocation(), TreeType.TREE);
+            Block b = e.getEntity().getLocation().getBlock().getRelative(BlockFace.DOWN);
+            boolean treeGrown = false;
+            int i = 0;
+            while (!treeGrown && i < 5) {
+                b.getRelative(BlockFace.DOWN).setType(Material.AIR);
+                b.setType(Material.DIRT);
+                b = b.getRelative(BlockFace.UP);
+                treeGrown = DuckMain.getWorld().generateTree(b.getLocation(), TreeType.TREE);
+                i++;
+            }
         }
     }
 

@@ -9,7 +9,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.*;
 import java.net.URL;
@@ -19,17 +18,27 @@ import java.util.List;
 
 public class DuckMain extends JavaPlugin {
 
+
     public static int maxPlayerCount = 4;
     public static boolean indevResourcePack = false;
-    private static String resourcesVersion = "RESOURCES - 0.4.5"; //$NON-NLS-1$
     public static List<Duck> ducks = new ArrayList<Duck>();
     public static GameState state;
-    private static World duckWorld;
     public static Plugin plugin;
     public static HashMap<Integer, Duck> duckCount = new HashMap<Integer, Duck>();
     public static Location spawnLocation;
     public static int autoStart;
-
+    private static String resourcesVersion = "RESOURCES - 0.4.5";
+    private static World duckWorld;
+    private String duckModeConsoleWelcome = "\n\n" +
+            "######                       #     #                      \n" +
+            "#     # #    #  ####  #    # ##   ##  ####  #####  ###### \n" +
+            "#     # #    # #    # #   #  # # # # #    # #    # #      \n" +
+            "#     # #    # #      ####   #  #  # #    # #    # #####  \n" +
+            "#     # #    # #      #  #   #     # #    # #    # #      \n" +
+            "#     # #    # #    # #   #  #     # #    # #    # #      \n" +
+            "######   ####   ####  #    # #     #  ####  #####  ###### \n\n" +
+            "Version " + this.getDescription().getVersion() + "\n\n" +
+            "Look out for updates: www.spigotmc.org/resources/9108/\n\n";
 
     public static Plugin getPlugin() {
         return plugin;
@@ -62,7 +71,7 @@ public class DuckMain extends JavaPlugin {
     }
 
     private void writeVersion(String versionFile) throws FileNotFoundException, UnsupportedEncodingException {
-        PrintWriter writer = new PrintWriter(versionFile, "UTF-8"); //$NON-NLS-1$
+        PrintWriter writer = new PrintWriter(versionFile, "UTF-8");
         writer.print(resourcesVersion);
         writer.flush();
         writer.close();
@@ -71,9 +80,9 @@ public class DuckMain extends JavaPlugin {
     @Override
     public void onLoad() {
         try {
-            String duckModeFolder = new File(System.getProperty("java.class.path")).getAbsoluteFile().getParentFile().toString() +  //$NON-NLS-1$
-                    "/plugins/DuckMode"; //$NON-NLS-1$
-            File versionFile = new File(duckModeFolder + "/version.txt"); //$NON-NLS-1$
+            String duckModeFolder = new File(System.getProperty("java.class.path")).getAbsoluteFile().getParentFile().toString() +
+                    "/plugins/DuckMode";
+            File versionFile = new File(duckModeFolder + "/version.txt");
             if (new File(duckModeFolder).exists()) {
                 if (!versionFile.exists()) {
                     writeVersion(versionFile.toString());
@@ -87,36 +96,18 @@ public class DuckMain extends JavaPlugin {
                 }
 
             }
-            String duckModeFile = new File(System.getProperty("java.class.path")).getAbsoluteFile().getParentFile().toString() +  //$NON-NLS-1$
-                    "/plugins/DuckMode.zip"; //$NON-NLS-1$
-            getLogger().info("Copying DuckMode folder..."); //$NON-NLS-1$
-//		if (versionFile.exists()) {
-//			Bukkit.getLogger().info("Checking for resources update...");
-//			URL versionURL = new URL("https://drive.google.com/uc?export=download&id=0B3GfPwC2qZsfX1JOWFg5Rk5GZ1U");
-//			BufferedReader versionIn = new BufferedReader(new InputStreamReader(versionURL.openStream()));
-//			String versionOnline = versionIn.readLine();
-//			String versionOffline = Files.readAllLines(versionFile.toPath(), Charset.defaultCharset()).get(0);
-//			
-//			Bukkit.getLogger().info("Online version of resources is " + versionOnline);
-//			Bukkit.getLogger().info("Local version is " + versionOffline);
-//			
-//			if ((versionOnline).equals(versionOffline)) {
-//				return;
-//				}
-//			}
-//			Bukkit.getLogger().info("Downloading resources for DuckMode!");
-//			URL url = new URL("https://drive.google.com/uc?export=download&id=0B3GfPwC2qZsfR0FZQ1BOM1I4eTQ");
-//			File path = new File(new File(System.getProperty("java.class.path")).getAbsoluteFile().getParentFile().toString() + 
-//					"/plugins/DuckMode.zip");
-//			FileUtils.copyURLToFile(url, path);
-            URL resourceURL = getClass().getResource("/resources/DuckMode.zip"); //$NON-NLS-1$
+            String duckModeFile = new File(System.getProperty("java.class.path")).getAbsoluteFile().getParentFile().toString() +
+                    "/plugins/DuckMode.zip";
+            getLogger().info("Copying DuckMode folder...");
+
+            URL resourceURL = getClass().getResource("/resources/DuckMode.zip");
             File dest = new File(duckModeFile);
             FileUtils.copyURLToFile(resourceURL, dest);
-            String folder = new File(System.getProperty("java.class.path")).getAbsoluteFile().getParentFile().toString() +  //$NON-NLS-1$
-                    "/plugins/"; //$NON-NLS-1$
+            String folder = new File(System.getProperty("java.class.path")).getAbsoluteFile().getParentFile().toString() +
+                    "/plugins/";
             StaticMethods.unZipIt(duckModeFile, folder);
             writeVersion(versionFile.toString());
-            getLogger().info("Success!"); //$NON-NLS-1$
+            getLogger().info("Success!");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -124,84 +115,71 @@ public class DuckMain extends JavaPlugin {
 
     @Override
     public void onEnable() {
-
-        Bukkit.getLogger().info("*****************************************"); //$NON-NLS-1$
-        Bukkit.getLogger().info("Hey! This is a beta version of Duck Mode."); //$NON-NLS-1$
-        Bukkit.getLogger().info("You will have to update JAR file and resources by yourself.."); //$NON-NLS-1$
-        Bukkit.getLogger().info("Stop by to the spigot page to see if a new update has been released."); //$NON-NLS-1$
-        Bukkit.getLogger().info("Please report all bugs to the spigot page!"); //$NON-NLS-1$
-        Bukkit.getLogger().info("*****************************************"); //$NON-NLS-1$
-
-        getConfig().addDefault("max-player-count", 4); //$NON-NLS-1$
-        getConfig().addDefault("indev-resource-pack", false); //$NON-NLS-1$
-        getConfig().addDefault("message-language", "EN");
-        getConfig().addDefault("auto-start-player-count", 0);
-        getConfig().options().copyDefaults(true);
-        saveConfig();
-        indevResourcePack = getConfig().getBoolean("indev-resource-pack"); //$NON-NLS-1$
-        maxPlayerCount = getConfig().getInt("max-player-count"); //$NON-NLS-1$
-        autoStart = getConfig().getInt("auto-start-player-count");
+        getLogger().info("Setting up DuckMode...");
 
         setPlugin(this);
+        configSetup();
+
+        getLogger().info("Getting world folder...");
+
+        File f = new File(new File(System.getProperty("java.class.path")).getAbsoluteFile().getParentFile().toString() +
+                "/DuckMode/");
         try {
-            File f = getServer().getWorld("DuckMode").getWorldFolder(); //$NON-NLS-1$
-            try {
-                if (f.exists()) {
-                    FileUtils.deleteDirectory(f);
-                }
-            } catch (IOException e) {
-                getLogger().info("Could not delete DuckMode World."); //$NON-NLS-1$
+            if (f.exists()) {
+                FileUtils.deleteDirectory(f);
             }
-        } catch (NullPointerException e) {
+        } catch (IOException e) {
+            getLogger().info("Could not delete DuckMode World.");
         }
-        WorldCreator c = new WorldCreator("DuckMode"); //$NON-NLS-1$
+
+        getLogger().info("Creating world...");
+
+        WorldCreator c = new WorldCreator("DuckMode");
         c.generateStructures(false);
         c.type(WorldType.FLAT);
-        c.generatorSettings("3;air"); //$NON-NLS-1$
+        c.generatorSettings("3;air");
         World w = getServer().createWorld(c);
         setWorld(w);
         w.setDifficulty(Difficulty.PEACEFUL);
         w.setAutoSave(false);
-        w.setGameRuleValue("doDaylightCycle", "false"); //$NON-NLS-1$ //$NON-NLS-2$
+        w.setGameRuleValue("doDaylightCycle", "false");
         getServer().setSpawnRadius(0);
-        SchematicLoad.addSchematic(new SchematicToLoad(new BukkitWorld(duckWorld), new Vector(0, 20, 0), "Static", "lobby", "lobby")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        SchematicLoad.loadAllSchematics();
-        state = GameState.LOBBY;
-        ListenerActivator.activateListeners();
-        new BukkitRunnable() { //This is in a delayed task because lobby might not be loaded yet
+
+        getLogger().info("Generating lobby...");
+
+        SchematicLoad.addSchematic(new SchematicToLoad(new BukkitWorld(duckWorld), new Vector(0, 20, 0), "Static", "lobby", "lobby"));
+        SchematicLoad.loadAllSchematics(new SchematicLoad.ThenTask() {
             @Override
-            public void run() {
+            public void finished() {
                 DuckLobby.configureLobby();
             }
+        });
 
-        }.runTaskLater(DuckMain.getPlugin(), 4L);
+        getLogger().info("Activating listeners...");
+
+        state = GameState.LOBBY;
+        ListenerActivator.activateListeners();
 
         spawnLocation = new Location(duckWorld, 4, 21, 5);
-        if (Bukkit.getPluginManager().getPlugin("WorldEdit") == null) { //$NON-NLS-1$
-            getLogger().info("Hey! Install WorldEdit!"); //$NON-NLS-1$
+        if (Bukkit.getPluginManager().getPlugin("WorldEdit") == null) {
+            getLogger().info("Hey! Install WorldEdit!");
             getServer().shutdown();
         }
 
-//		File source = new File(path + "/plugins/DuckMode/Resources/");
-//		File goal = getWorld().getWorldFolder();
-//		try {
-//		    FileUtils.copyDirectory(source, goal);
-        //		} catch (IOException e) {
-//		    e.printStackTrace();
-//		}
+        Bukkit.getLogger().info(duckModeConsoleWelcome);
     }
 
     @Override
     public void onDisable() {
-        getServer().unloadWorld("DuckMode", false); //$NON-NLS-1$
+        getServer().unloadWorld("DuckMode", false);
         plugin = null; //Have you ever thought about the fact that this line is basically the instance commiting suicide?
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("test")) { //$NON-NLS-1$
+        if (cmd.getName().equalsIgnoreCase("test")) {
             StaticMethods.checkForWin();
-        } else if (cmd.getName().equalsIgnoreCase("addsecrethats")) { //$NON-NLS-1$
+        } else if (cmd.getName().equalsIgnoreCase("addsecrethats")) {
             Hats.addSecretHats();
         } else if (cmd.getName().equalsIgnoreCase("start")) {
             ListenerActivator.lobbyCountdown();
@@ -209,5 +187,15 @@ public class DuckMain extends JavaPlugin {
         return true;
     }
 
-
+    private void configSetup() {
+        getConfig().addDefault("max-player-count", 4);
+        getConfig().addDefault("indev-resource-pack", false);
+        getConfig().addDefault("message-language", "EN");
+        getConfig().addDefault("auto-start-player-count", 0);
+        getConfig().options().copyDefaults(true);
+        saveConfig();
+        indevResourcePack = getConfig().getBoolean("indev-resource-pack");
+        maxPlayerCount = getConfig().getInt("max-player-count");
+        autoStart = getConfig().getInt("auto-start-player-count");
+    }
 }

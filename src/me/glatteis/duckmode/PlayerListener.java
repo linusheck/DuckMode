@@ -24,9 +24,9 @@ public class PlayerListener implements Listener {
     public void onPing(ServerListPingEvent e) {
         ChatColor stateColor = (DuckMain.state.equals(GameState.LOBBY) ? ChatColor.GREEN : ChatColor.RED);
         ChatColor fullColor = (DuckMain.ducks.size() < DuckMain.maxPlayerCount ? ChatColor.GREEN : ChatColor.RED);
-        String pingString = ChatColor.YELLOW + "\\" + ChatColor.UNDERLINE + Messages.getString("duck_mode") + ChatColor.RESET + ChatColor.YELLOW + //$NON-NLS-1$ //$NON-NLS-2$
-                "/ " + fullColor + Bukkit.getServer().getOnlinePlayers().size() + Messages.getString("players_online") + ChatColor.RESET + " || " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                stateColor + ChatColor.BOLD + DuckMain.state + "\n" + ChatColor.GRAY + Messages.getString("motd_description"); //$NON-NLS-1$ //$NON-NLS-2$
+        String pingString = ChatColor.YELLOW + "\\" + ChatColor.UNDERLINE + Messages.getString("duck_mode") + ChatColor.RESET + ChatColor.YELLOW +
+                "/ " + fullColor + Bukkit.getServer().getOnlinePlayers().size() + Messages.getString("players_online") + ChatColor.RESET + " || " +
+                stateColor + ChatColor.BOLD + DuckMain.state + "\n" + ChatColor.GRAY + Messages.getString("motd_description");
         e.setMaxPlayers(DuckMain.maxPlayerCount);
         e.setMotd(pingString);
     }
@@ -34,8 +34,11 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e) {
         if (ContinueGame.canNotMove) {
-            if (e.getFrom().getBlockX() != e.getTo().getBlockX() || (e.getFrom().getBlockZ() != e.getTo().getBlockZ()))
-                e.setCancelled(true);
+            if (e.getFrom().distance(e.getTo()) < 0.1) return;
+            if (e.getFrom().getY() > e.getTo().getY())
+                e.getPlayer().teleport(new Location(e.getFrom().getWorld(), e.getFrom().getX(),
+                        e.getTo().getY(), e.getFrom().getZ()));
+            else e.setCancelled(true);
         }
     }
 
@@ -43,7 +46,7 @@ public class PlayerListener implements Listener {
     public void onPlayerLogin(AsyncPlayerPreLoginEvent e) {
         if (!DuckMain.state.equals(GameState.LOBBY) || (Bukkit.getServer().getOnlinePlayers().size() > 3)) {
             e.setLoginResult(org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result.KICK_FULL);
-            e.setKickMessage(ChatColor.RED + Messages.getString("game_started_or_full")); //$NON-NLS-1$
+            e.setKickMessage(ChatColor.RED + Messages.getString("game_started_or_full"));
         }
     }
 
@@ -58,17 +61,17 @@ public class PlayerListener implements Listener {
             e.getPlayer().teleport(loc);
             StaticMethods.prepareInventory(d);
             StaticMethods.disableJumping(e.getPlayer());
-            DuckReflectionMethods.title(e.getPlayer(), ChatColor.RED + Messages.getString("big_screen_title"), 5, 30, 5); //$NON-NLS-1$
-            DuckReflectionMethods.subtitle(e.getPlayer(), Messages.getString("version") + " " + DuckMain.getPlugin().getDescription().getVersion(), 5, 30, 5); //$NON-NLS-1$
+            DuckReflectionMethods.title(e.getPlayer(), ChatColor.RED + Messages.getString("big_screen_title"), 5, 30, 5);
+            DuckReflectionMethods.subtitle(e.getPlayer(), Messages.getString("version") + " " + DuckMain.getPlugin().getDescription().getVersion(), 5, 30, 5);
 
-            e.setJoinMessage("DUCK MODE ->" + ChatColor.YELLOW + Messages.getString("duck") + " " + e.getPlayer().getName() + " " + Messages.getString("join_message")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            e.setJoinMessage("DUCK MODE ->" + ChatColor.YELLOW + Messages.getString("duck") + " " + e.getPlayer().getName() + " " + Messages.getString("join_message"));
 
             if (DuckMain.autoStart > 0 && Bukkit.getOnlinePlayers().size() >= DuckMain.autoStart) {
                 ListenerActivator.lobbyCountdown();
             }
         }
 
-        e.getPlayer().setResourcePack(DuckMain.indevResourcePack ? "https://www.dropbox.com/s/baxsqe7310dwyze/rp_dev.zip?dl=1" : "https://www.dropbox.com/s/z9wbr65n6csvzsq/rp.zip?dl=1"); //$NON-NLS-1$ //$NON-NLS-2$
+        e.getPlayer().setResourcePack(DuckMain.indevResourcePack ? "https://www.dropbox.com/s/baxsqe7310dwyze/rp_dev.zip?dl=1" : "https://www.dropbox.com/s/z9wbr65n6csvzsq/rp.zip?dl=1");
     }
 
     @EventHandler
@@ -84,7 +87,7 @@ public class PlayerListener implements Listener {
                     }
                 }
                 DuckMain.ducks.remove(d);
-                e.setQuitMessage("DUCK MODE -> " + ChatColor.YELLOW + Messages.getString("duck_2") + d.getPlayer().getName() + Messages.getString("leave_message")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                e.setQuitMessage("DUCK MODE -> " + ChatColor.YELLOW + Messages.getString("duck") + " " + d.getPlayer().getName() + " " + Messages.getString("leave_message"));
                 if (DuckMain.ducks.size() == 0 && DuckMain.state != GameState.LOBBY) {
                     Bukkit.shutdown();
                 }

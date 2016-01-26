@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 public class Crocodile extends Hat {
 
     public Crocodile() {
-        super(new ItemStack(Material.LAPIS_ORE), Messages.getString("Crocodile.head"), Messages.getString("Crocodile.description")); //$NON-NLS-1$ //$NON-NLS-2$
+        super(new ItemStack(Material.LAPIS_ORE), Messages.getString("Crocodile.head"), Messages.getString("Crocodile.description"));
     }
 
 }

@@ -13,13 +13,13 @@ public class DuckReflectionMethods {
             //Reflection formatting:
 
             //Needed Classes
-            Class<?> iChatBaseComponentClass = DuckReflection.getNMSClass("IChatBaseComponent"); //$NON-NLS-1$
-            Class<?> packetPlayOutChat = DuckReflection.getNMSClass("PacketPlayOutChat"); //$NON-NLS-1$
-            Class<?> chatSerializer = DuckReflection.getNMSClass("IChatBaseComponent$ChatSerializer"); //$NON-NLS-1$
+            Class<?> iChatBaseComponentClass = DuckReflection.getNMSClass("IChatBaseComponent");
+            Class<?> packetPlayOutChat = DuckReflection.getNMSClass("PacketPlayOutChat");
+            Class<?> chatSerializer = DuckReflection.getNMSClass("IChatBaseComponent$ChatSerializer");
 
             //Get Packet
-            Method a = chatSerializer.getDeclaredMethod("a", String.class); //$NON-NLS-1$
-            Object iChatBaseComponent = iChatBaseComponentClass.cast(a.invoke(chatSerializer, "{\"text\": \"" + label + "\"}")); //$NON-NLS-1$ //$NON-NLS-2$
+            Method a = chatSerializer.getDeclaredMethod("a", String.class);
+            Object iChatBaseComponent = iChatBaseComponentClass.cast(a.invoke(chatSerializer, "{\"text\": \"" + label + "\"}"));
             Constructor<?> packetPlayOutChatConstructor = packetPlayOutChat.getConstructor(iChatBaseComponentClass, byte.class);
             Object bar = packetPlayOutChatConstructor.newInstance(iChatBaseComponent, (byte) 2);
 
@@ -35,13 +35,13 @@ public class DuckReflectionMethods {
     public static void title(Player p, String label, int in, int stay, int out) {
 
         try {
-            Class<?> iChatBaseComponent = DuckReflection.getNMSClass("IChatBaseComponent"); //$NON-NLS-1$
-            Class<?> packetPlayOutTitle = DuckReflection.getNMSClass("PacketPlayOutTitle"); //$NON-NLS-1$
-            Class<?> enumTitleAction = DuckReflection.getNMSClass("PacketPlayOutTitle$EnumTitleAction"); //$NON-NLS-1$
-            Class<?> chatSerializer = DuckReflection.getNMSClass("IChatBaseComponent$ChatSerializer"); //$NON-NLS-1$
+            Class<?> iChatBaseComponent = DuckReflection.getNMSClass("IChatBaseComponent");
+            Class<?> packetPlayOutTitle = DuckReflection.getNMSClass("PacketPlayOutTitle");
+            Class<?> enumTitleAction = DuckReflection.getNMSClass("PacketPlayOutTitle$EnumTitleAction");
+            Class<?> chatSerializer = DuckReflection.getNMSClass("IChatBaseComponent$ChatSerializer");
 
-            Method m1 = chatSerializer.getMethod("a", String.class); //$NON-NLS-1$
-            Object baseComponent = m1.invoke(null, "{\"text\": \"" + label + "\"}"); //$NON-NLS-1$ //$NON-NLS-2$
+            Method m1 = chatSerializer.getMethod("a", String.class);
+            Object baseComponent = m1.invoke(null, "{\"text\": \"" + label + "\"}");
 
             Constructor<?> c1 = packetPlayOutTitle.getConstructor(enumTitleAction, iChatBaseComponent);
             Object title = c1.newInstance(enumTitleAction.getEnumConstants()[0], baseComponent);
@@ -67,13 +67,13 @@ public class DuckReflectionMethods {
 
     public static void subtitle(Player p, String label, int in, int stay, int out) {
         try {
-            Class<?> iChatBaseComponent = DuckReflection.getNMSClass("IChatBaseComponent"); //$NON-NLS-1$
-            Class<?> packetPlayOutTitle = DuckReflection.getNMSClass("PacketPlayOutTitle"); //$NON-NLS-1$
-            Class<?> enumTitleAction = DuckReflection.getNMSClass("PacketPlayOutTitle$EnumTitleAction"); //$NON-NLS-1$
-            Class<?> chatSerializer = DuckReflection.getNMSClass("IChatBaseComponent$ChatSerializer"); //$NON-NLS-1$
+            Class<?> iChatBaseComponent = DuckReflection.getNMSClass("IChatBaseComponent");
+            Class<?> packetPlayOutTitle = DuckReflection.getNMSClass("PacketPlayOutTitle");
+            Class<?> enumTitleAction = DuckReflection.getNMSClass("PacketPlayOutTitle$EnumTitleAction");
+            Class<?> chatSerializer = DuckReflection.getNMSClass("IChatBaseComponent$ChatSerializer");
 
-            Method m1 = chatSerializer.getMethod("a", String.class); //$NON-NLS-1$
-            Object baseComponent = m1.invoke(null, "{\"text\": \"" + label + "\"}"); //$NON-NLS-1$ //$NON-NLS-2$
+            Method m1 = chatSerializer.getMethod("a", String.class);
+            Object baseComponent = m1.invoke(null, "{\"text\": \"" + label + "\"}");
 
             Constructor<?> c1 = packetPlayOutTitle.getConstructor(enumTitleAction, iChatBaseComponent);
             Object title = c1.newInstance(enumTitleAction.getEnumConstants()[1], baseComponent);

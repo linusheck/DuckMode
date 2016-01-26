@@ -16,7 +16,7 @@ public class WeaponWatch {
     public static void spawnRandomWeapon(Location l) {
         Random r = new Random();
         int n = r.nextInt(ListenerActivator.weapons.length);
-        ((DuckWeapon) ListenerActivator.weapons[n]).spawnWeapon(l);
+        ListenerActivator.weapons[n].spawnWeapon(l);
     }
 
 }

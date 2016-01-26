@@ -13,8 +13,9 @@ public class Duck {
     private Player p;
     private boolean dead = false;
 
-    public void setDead(boolean is) {
-        dead = is;
+    public Duck(Player player, Location l) {
+        this.p = player;
+        this.spawnLocation = l;
     }
 
     public Hat getHat() {
@@ -29,17 +30,16 @@ public class Duck {
         return dead;
     }
 
+    public void setDead(boolean is) {
+        dead = is;
+    }
+
     public Location getSpawnLocation() {
         return spawnLocation;
     }
 
     public Player getPlayer() {
         return p;
-    }
-
-    public Duck(Player player, Location l) {
-        this.p = player;
-        this.spawnLocation = l;
     }
 
 }

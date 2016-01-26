@@ -6,7 +6,10 @@ import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -19,12 +22,12 @@ public abstract class DuckWeapon implements Listener {
 
     private Material weaponMaterial;
 
-    public Material getWeaponMaterial() {
-        return weaponMaterial;
-    }
-
     protected DuckWeapon(Material weaponMaterial) {
         this.weaponMaterial = weaponMaterial;
+    }
+
+    public Material getWeaponMaterial() {
+        return weaponMaterial;
     }
 
     public void spawnWeapon(Location l) {
@@ -46,9 +49,20 @@ public abstract class DuckWeapon implements Listener {
     protected ItemStack initializeItemStack(ItemStack i) {
         ItemMeta meta = i.getItemMeta();
         meta.setLore(Collections.singletonList(UUID.randomUUID().toString()));
-        meta.setDisplayName(" "); //$NON-NLS-1$
+        meta.setDisplayName(" ");
         i.setItemMeta(meta);
         return i;
+    }
+
+    @EventHandler
+    public void shootEvent(PlayerInteractEvent event) {
+        if (event.getMaterial() != null && event.getMaterial().equals(weaponMaterial) && (event.getAction().equals(Action.RIGHT_CLICK_AIR) ||
+                event.getAction().equals(Action.RIGHT_CLICK_BLOCK))) {
+            shoot(event);
+        }
+    }
+
+    public void shoot(PlayerInteractEvent event) {
     }
 
 }

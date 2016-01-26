@@ -17,11 +17,11 @@ public class RandomSkin extends Hat {
     List<String> words = new ArrayList<String>();
 
     public RandomSkin() {
-        super(new ItemStack(Material.SKULL_ITEM, 1, (byte) 3), Messages.getString("RandomSkin.head"), Messages.getString("RandomSkin.description")); //$NON-NLS-1$ //$NON-NLS-2$
-        URL url = getClass().getResource("/resources/englishwords.txt"); //$NON-NLS-1$
+        super(new ItemStack(Material.SKULL_ITEM, 1, (byte) 3), Messages.getString("RandomSkin.head"), Messages.getString("RandomSkin.description"));
+        URL url = getClass().getResource("/resources/englishwords.txt");
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
-            String line = "eis"; //$NON-NLS-1$
+            String line = "eis";
             do {
                 if (line.length() < 17 && line.length() > 2) {
                     words.add(line);

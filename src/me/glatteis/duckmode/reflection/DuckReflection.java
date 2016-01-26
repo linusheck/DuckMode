@@ -12,8 +12,8 @@ public class DuckReflection {
 
     public static Class<?> getNMSClass(String className) {
         String packageName = Bukkit.getServer().getClass().getPackage().getName();
-        String version = packageName.split("\\.")[3]; //$NON-NLS-1$
-        String path = "net.minecraft.server." + version + "." + className; //$NON-NLS-1$ //$NON-NLS-2$
+        String version = packageName.split("\\.")[3];
+        String path = "net.minecraft.server." + version + "." + className;
         try {
             return Class.forName(path);
         } catch (ClassNotFoundException e) {
@@ -24,10 +24,10 @@ public class DuckReflection {
 
     public static Object getConnection(Player p) {
         try {
-            Method getHandle = p.getClass().getMethod("getHandle"); //$NON-NLS-1$
+            Method getHandle = p.getClass().getMethod("getHandle");
             Object nmsPlayer = getHandle.invoke(p);
             Field field;
-            field = nmsPlayer.getClass().getField("playerConnection"); //$NON-NLS-1$
+            field = nmsPlayer.getClass().getField("playerConnection");
             return field.get(nmsPlayer);
         } catch (Exception e) {
             e.printStackTrace();
@@ -36,7 +36,7 @@ public class DuckReflection {
     }
 
     public static void sendPacket(Object connection, Object packet) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        Method sendPacket = connection.getClass().getMethod("sendPacket", getNMSClass("Packet")); //$NON-NLS-1$ //$NON-NLS-2$
+        Method sendPacket = connection.getClass().getMethod("sendPacket", getNMSClass("Packet"));
         sendPacket.invoke(connection, packet);
     }
 

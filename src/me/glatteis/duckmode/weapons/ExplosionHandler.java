@@ -1,6 +1,8 @@
 package me.glatteis.duckmode.weapons;
 
 import me.glatteis.duckmode.DuckMain;
+import me.glatteis.duckmode.PlayerGameListener;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -25,7 +27,8 @@ public class ExplosionHandler implements Listener {
 
     @SuppressWarnings("deprecation")
     @EventHandler
-    public void saveExplosions(BlockExplodeEvent e) {
+    public void saveExplosions(final BlockExplodeEvent e) {
+
         final ArrayList<BlockState> explodedBlocks = new ArrayList<BlockState>();
         for (Block b : e.blockList()) {
             explodedBlocks.add(b.getState());
@@ -48,13 +51,15 @@ public class ExplosionHandler implements Listener {
                         }
                     }
                 }
+                PlayerGameListener.explosion(e.getBlock().getLocation(), e.blockList());
             }
         }.runTaskLater(DuckMain.getPlugin(), 6L);
     }
 
     @SuppressWarnings("deprecation")
     @EventHandler
-    public void saveExplosions(EntityExplodeEvent e) {
+    public void saveExplosions(final EntityExplodeEvent e) {
+        Bukkit.getLogger().info("SaveExplosions called. Entity");
         final ArrayList<BlockState> explodedBlocks = new ArrayList<BlockState>();
         for (Block b : e.blockList()) {
             explodedBlocks.add(b.getState());
@@ -77,6 +82,7 @@ public class ExplosionHandler implements Listener {
                         }
                     }
                 }
+                PlayerGameListener.explosion(e.getEntity().getLocation(), e.blockList());
             }
         }.runTaskLater(DuckMain.getPlugin(), 6L);
     }

@@ -36,10 +36,9 @@ public class Hats {
                     StaticMethods.prepareInventory(d);
                 } catch (InstantiationException e) {
                     d.getPlayer().sendMessage(Messages.getString("Hats.error_notice"));
-                } //$NON-NLS-1$
-                catch (IllegalAccessException e) {
+                } catch (IllegalAccessException e) {
                     d.getPlayer().sendMessage(Messages.getString("Hats.error_notice"));
-                } //$NON-NLS-1$
+                }
             }
         }
     }
@@ -61,17 +60,16 @@ public class Hats {
                     StaticMethods.prepareInventory(d);
                 } catch (InstantiationException e) {
                     d.getPlayer().sendMessage(Messages.getString("Hats.error_notice"));
-                } //$NON-NLS-1$
-                catch (IllegalAccessException e) {
+                } catch (IllegalAccessException e) {
                     d.getPlayer().sendMessage(Messages.getString("Hats.error_notice"));
-                } //$NON-NLS-1$
+                }
             }
         }
     }
 
 
     public static void openHatInventory(Player p) {
-        Inventory hatInv = Bukkit.getServer().createInventory(null, sampleHats.length + (9 - sampleHats.length % 9), ChatColor.BLUE + Messages.getString("Hats.hats_inventory_title")); //$NON-NLS-1$
+        Inventory hatInv = Bukkit.getServer().createInventory(null, sampleHats.length + (9 - sampleHats.length % 9), ChatColor.BLUE + Messages.getString("Hats.hats_inventory_title"));
         for (Hat h : sampleHats) {
             ItemStack i = h instanceof EntityHat ? new ItemStack(((EntityHat) h).getShowItemStack()) : new ItemStack(h.getStack());
             ItemMeta m = i.getItemMeta();

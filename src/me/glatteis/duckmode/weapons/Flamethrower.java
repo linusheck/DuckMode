@@ -6,7 +6,6 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Fireball;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -22,14 +21,12 @@ public class Flamethrower extends DuckWeapon {
         super(Material.BOOK);
     }
 
-    @EventHandler
-    public void onShoot(final PlayerInteractEvent event) {
-        if (event.getMaterial() == null) return;
-        if (!(event.getMaterial().equals(Material.BOOK))) return;
+    @Override
+    public void shoot(final PlayerInteractEvent event) {
+        List<String> itemLore = event.getItem().getItemMeta().getLore();
 
-        List<String> itemLore;
-        if (WeaponWatch.cooldown.contains(itemLore = event.getItem().getItemMeta().getLore()) ||
-                WeaponWatch.durability.get(itemLore) == 0) return;
+        if (WeaponWatch.durability.get(itemLore) != null && WeaponWatch.durability.get(itemLore) == 0) return;
+        if (WeaponWatch.cooldown.contains(itemLore)) return;
 
         if (WeaponWatch.durability.get(itemLore) == null) WeaponWatch.durability.put(itemLore, 6);
         else WeaponWatch.durability.put(itemLore, WeaponWatch.durability.get(itemLore) - 1);
@@ -54,7 +51,8 @@ public class Flamethrower extends DuckWeapon {
             b.getRelative(BlockFace.UP).setType(Material.FIRE);
         }
 
-        Fireball b = event.getPlayer().getWorld().spawn(event.getPlayer().getLocation(), Fireball.class);
+        Fireball b = event.getPlayer().getWorld().spawn(location.toLocation(DuckMain.getWorld(),
+                event.getPlayer().getLocation().getYaw(), event.getPlayer().getLocation().getPitch()), Fireball.class);
         b.setVelocity(event.getPlayer().getLocation().getDirection().multiply(4));
         b.setShooter(event.getPlayer());
 

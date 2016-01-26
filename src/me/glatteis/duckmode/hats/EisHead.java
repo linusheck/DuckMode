@@ -10,9 +10,9 @@ public class EisHead extends Hat {
     private static ItemStack eis = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
 
     public EisHead() {
-        super(eis, Messages.getString("EisHead.head"), Messages.getString("EisHead.description")); //$NON-NLS-1$ //$NON-NLS-2$
+        super(eis, Messages.getString("EisHead.head"), Messages.getString("EisHead.description"));
         SkullMeta meta = (SkullMeta) eis.getItemMeta();
-        meta.setOwner("eis"); //$NON-NLS-1$
+        meta.setOwner("eis");
         eis.setItemMeta(meta);
     }
 

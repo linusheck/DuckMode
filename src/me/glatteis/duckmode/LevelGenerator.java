@@ -10,9 +10,11 @@ import java.util.Random;
 
 public class LevelGenerator {
 
+    private static File path = new File(new File(System.getProperty("java.class.path")).getAbsoluteFile().getParentFile().toString() + "/plugins/DuckMode/Generation/");
+
     public static void buildPlace(final boolean where) {
         Location startLocation;
-        int providedSpawns = DuckMain.ducks.size(); //There MUST be at least as many spawn points as ducks!
+        int providedSpawns = DuckMain.ducks.size();
         if (where) {
             startLocation = new Location(DuckMain.getWorld(), 1000, 20, 0);
             SchematicLoad.clearArea(new Vector(1000, 20, 0), new Vector(1100, 70, 100));
@@ -21,13 +23,12 @@ public class LevelGenerator {
             SchematicLoad.clearArea(new Vector(-1000, 20, 0), new Vector(-900, 70, 100));
         }
 
-        String path = new File(System.getProperty("java.class.path")).getAbsoluteFile().getParentFile().toString() + "/plugins/DuckMode/Generation/"; //$NON-NLS-1$ //$NON-NLS-2$
-        int amount = new File(path).list().length;
+        int amount = path.list().length;
         String dimension = String.valueOf(new Random().nextInt(amount - 1) + 1);
 
-        int maxHeight = ((int) (Math.random() * 6)) * 5 + 11;
-        int maxX = ((int) (Math.random() * 8)) * 5 + 11;
-        int maxZ = ((int) (Math.random() * 8)) * 5 + 11;
+        int maxHeight = ((int) (Math.random() * 8)) * 5 + 11;
+        int maxX = ((int) (Math.random() * 6)) * 5 + 11;
+        int maxZ = ((int) (Math.random() * 6)) * 5 + 11;
 
         for (int height = 0; height < maxHeight; height = height + 5) {
             for (int x = 0; x < maxX; x = x + 5) {
@@ -42,35 +43,32 @@ public class LevelGenerator {
                         String type;
                         if (random < 0.1 && providedSpawns != 0) {
                             providedSpawns--;
-                            type = "spawn"; //$NON-NLS-1$
+                            type = "spawn";
                         } else if (random < 0.2) {
-                            type = "weapon"; //$NON-NLS-1$
+                            type = "weapon";
                         } else {
-                            type = "land"; //$NON-NLS-1$
+                            type = "land";
                         }
-
-                        SchematicLoad.addSchematic(new SchematicToLoad(new BukkitWorld(there.getWorld()), new Vector(there.getX(), there.getY(), there.getZ()),
-                                dimension, "ground", type)); //$NON-NLS-1$
+                        SchematicLoad.addSchematic(new SchematicToLoad(new BukkitWorld(there.getWorld()),
+                                new Vector(there.getX(), there.getY(), there.getZ()), dimension, "ground", type));
                     } else {
-                        if (height + 5 > maxHeight && providedSpawns != 0) {
-                            SchematicLoad.addSchematic(new SchematicToLoad(new BukkitWorld(there.getWorld()), new Vector(there.getX(), there.getY(), there.getZ()), dimension, "air", "spawn")); //$NON-NLS-1$ //$NON-NLS-2$
+                        if (height + 6 == maxHeight && providedSpawns > 0) {
+                            SchematicLoad.addSchematic(new SchematicToLoad(new BukkitWorld(there.getWorld()),
+                                    new Vector(there.getX(), there.getY(), there.getZ()), dimension, null, "spawn"));
+                            providedSpawns--;
                             continue;
                         }
+                        Bukkit.getLogger().info("Height: " + height + " Provided Spawns: " + providedSpawns);
                         double random = Math.random();
-                        String type = "land"; //$NON-NLS-1$
+                        String type = "land";
                         if (random < 0.1 && providedSpawns > 0) {
                             providedSpawns--;
-                            type = "spawn"; //$NON-NLS-1$
+                            type = "spawn";
                         } else if (random < 0.35) {
-                            type = "weapon"; //$NON-NLS-1$
+                            type = "weapon";
                         }
-                        if (height + 5 > maxHeight && providedSpawns > 0 && (!type.equals("spawn"))) { //$NON-NLS-1$
-                            Bukkit.getLogger().info("Spawn escape code triggered."); //$NON-NLS-1$
-                            type = "spawn"; //$NON-NLS-1$
-                            providedSpawns--;
-                        }
-                        SchematicLoad.addSchematic(new SchematicToLoad(new BukkitWorld(there.getWorld()), new Vector(there.getX(), there.getY(), there.getZ()),
-                                dimension, null, type));
+                        SchematicLoad.addSchematic(new SchematicToLoad(new BukkitWorld(there.getWorld()),
+                                new Vector(there.getX(), there.getY(), there.getZ()), dimension, null, type));
                     }
                 }
             }
