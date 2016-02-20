@@ -1,4 +1,6 @@
-package me.glatteis.duckmode;
+package me.glatteis.duckmode.game;
+
+import me.glatteis.duckmode.Duck;
 
 import java.util.HashMap;
 

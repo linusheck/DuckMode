@@ -1,7 +1,11 @@
-package me.glatteis.duckmode;
+package me.glatteis.duckmode.game;
 
+import me.glatteis.duckmode.*;
 import me.glatteis.duckmode.hats.Hats;
+import me.glatteis.duckmode.messages.Messages;
 import me.glatteis.duckmode.reflection.DuckReflectionMethods;
+import me.glatteis.duckmode.setting.SettingDatabase;
+import me.glatteis.duckmode.setting.SettingTypes;
 import org.bukkit.*;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -104,7 +108,7 @@ public class DuckLobby implements Listener {
                 countdown--;
                 if (countdown == 0) {
                     Intermission.create();
-                    ContinueGame.startRound();
+                    DuckMain.continueGame.startRound();
                     this.cancel();
                 }
 

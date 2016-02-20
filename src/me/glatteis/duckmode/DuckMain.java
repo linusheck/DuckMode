@@ -2,7 +2,15 @@ package me.glatteis.duckmode;
 
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
+import me.glatteis.duckmode.game.ContinueGame;
+import me.glatteis.duckmode.game.DuckLobby;
+import me.glatteis.duckmode.game.GameState;
+import me.glatteis.duckmode.generation.SchematicLoad;
+import me.glatteis.duckmode.generation.SchematicToLoad;
+import me.glatteis.duckmode.generation.config.Dimension;
+import me.glatteis.duckmode.generation.config.DimensionContainer;
 import me.glatteis.duckmode.hats.Hats;
+import me.glatteis.duckmode.listener.ListenerActivator;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.*;
 import org.bukkit.command.Command;
@@ -18,8 +26,10 @@ import java.util.List;
 
 public class DuckMain extends JavaPlugin {
 
+    //All this static usage is from old code. Maybe I will change it into instances, but I don't think I will.
 
     public static int maxPlayerCount = 4;
+    public static final Dimension STATIC_DIMENSION = new Dimension("Static");
     public static boolean indevResourcePack = false;
     public static List<Duck> ducks = new ArrayList<Duck>();
     public static GameState state;
@@ -27,7 +37,8 @@ public class DuckMain extends JavaPlugin {
     public static HashMap<Integer, Duck> duckCount = new HashMap<Integer, Duck>();
     public static Location spawnLocation;
     public static int autoStart;
-    private static String resourcesVersion = "RESOURCES - 0.4.5";
+    public static final ContinueGame continueGame = new ContinueGame();
+    private static String resourcesVersion = "RESOURCES - test2";
     private static World duckWorld;
     private String duckModeConsoleWelcome = "\n\n" +
             "######                       #     #                      \n" +
@@ -147,7 +158,7 @@ public class DuckMain extends JavaPlugin {
 
         getLogger().info("Generating lobby...");
 
-        SchematicLoad.addSchematic(new SchematicToLoad(new BukkitWorld(duckWorld), new Vector(0, 20, 0), "Static", "lobby", "lobby"));
+        SchematicLoad.addSchematic(new SchematicToLoad(new BukkitWorld(duckWorld), new Vector(0, 20, 0), new DimensionContainer("lobby/lobby"), STATIC_DIMENSION, 0, 0));
         SchematicLoad.loadAllSchematics(new SchematicLoad.ThenTask() {
             @Override
             public void finished() {
@@ -172,14 +183,12 @@ public class DuckMain extends JavaPlugin {
     @Override
     public void onDisable() {
         getServer().unloadWorld("DuckMode", false);
-        plugin = null; //Have you ever thought about the fact that this line is basically the instance commiting suicide?
+        plugin = null;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("test")) {
-            StaticMethods.checkForWin();
-        } else if (cmd.getName().equalsIgnoreCase("addsecrethats")) {
+        if (cmd.getName().equalsIgnoreCase("addsecrethats")) {
             Hats.addSecretHats();
         } else if (cmd.getName().equalsIgnoreCase("start")) {
             ListenerActivator.lobbyCountdown();

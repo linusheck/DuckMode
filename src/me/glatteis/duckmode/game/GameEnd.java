@@ -1,5 +1,8 @@
-package me.glatteis.duckmode;
+package me.glatteis.duckmode.game;
 
+import me.glatteis.duckmode.Duck;
+import me.glatteis.duckmode.DuckMain;
+import me.glatteis.duckmode.messages.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -47,7 +50,8 @@ public class GameEnd {
         Bukkit.broadcastMessage(Messages.getString("server_restarts"));
         try {
             runCommands(winnerDucks.get(0), winnerDucks.get(1), winnerDucks.get(2));
-        } catch (IOException e) {
+        } catch (Exception e) {
+            //
         }
         new BukkitRunnable() {
             public void run() {
@@ -70,9 +74,9 @@ public class GameEnd {
         for (String thisCommand : commands) {
             if (thisCommand.contains("@second") && second == null || thisCommand.contains("@third") && third == null)
                 continue;
-            thisCommand.replaceAll("@winner", winner.getPlayer().getName());
-            thisCommand.replaceAll("@second", second != null ? second.getPlayer().getName() : "");
-            thisCommand.replaceAll("@third", third != null ? third.getPlayer().getName() : "");
+            thisCommand = thisCommand.replaceAll("@winner", winner.getPlayer().getName())
+                    .replaceAll("@second", second != null ? second.getPlayer().getName() : "")
+                    .replaceAll("@third", third != null ? third.getPlayer().getName() : "");
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), thisCommand);
         }
     }

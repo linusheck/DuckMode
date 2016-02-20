@@ -1,5 +1,15 @@
-package me.glatteis.duckmode;
+package me.glatteis.duckmode.game;
 
+import me.glatteis.duckmode.Duck;
+import me.glatteis.duckmode.DuckMain;
+import me.glatteis.duckmode.StaticMethods;
+import me.glatteis.duckmode.generation.LevelGenerator;
+import me.glatteis.duckmode.generation.SchematicLoad;
+import me.glatteis.duckmode.generation.SpawnWeapons;
+import me.glatteis.duckmode.messages.Messages;
+import me.glatteis.duckmode.reflection.DuckReflectionMethods;
+import me.glatteis.duckmode.setting.SettingDatabase;
+import me.glatteis.duckmode.setting.SettingTypes;
 import me.glatteis.duckmode.weapons.WeaponWatch;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -12,19 +22,20 @@ import java.util.List;
 
 public class ContinueGame {
 
-    public static int roundCounter = 0;
-    public static boolean canNotMove = false;
-    private static boolean roundHasEnded = true;
+    public int roundCounter = 0;
+    public boolean canNotMove = false;
+    private boolean roundHasEnded = true;
+    private final String[] sentences = {Messages.getString("ready"), Messages.getString("set"), Messages.getString("go")};
 
-    public static boolean hasRoundEnded() {
+    public boolean hasRoundEnded() {
         return roundHasEnded;
     }
 
-    public static void setRoundHasEnded(boolean has) {
+    public void setRoundHasEnded(boolean has) {
         roundHasEnded = has;
     }
 
-    public static void startRound() {
+    public void startRound() {
         DuckMain.state = GameState.INGAME;
         SpawnWeapons.enable();
         for (int i = 0; i < DuckMain.ducks.size(); i++) {
@@ -32,13 +43,10 @@ public class ContinueGame {
             DuckMain.ducks.get(i).getPlayer().playSound(DuckMain.ducks.get(i).getPlayer().getLocation(), Sound.CHICKEN_EGG_POP, 10, 1);
         }
         new BukkitRunnable() {
-
             boolean where = true;
-
             @Override
             public void run() {
                 if (roundHasEnded) {
-
                     for (org.bukkit.entity.Entity e : DuckMain.getWorld().getEntities()) {
                         if (e instanceof Item || e instanceof ArmorStand) {
                             e.remove();
@@ -71,7 +79,7 @@ public class ContinueGame {
         }.runTaskTimer(DuckMain.getPlugin(), 20L, 20L);
     }
 
-    public static void countdownToRound(final List<Location> spawnPoints) {
+    public void countdownToRound(final List<Location> spawnPoints) {
         new BukkitRunnable() {
             int counter = 0;
 
@@ -86,12 +94,16 @@ public class ContinueGame {
                 } else if (counter < 3) {
                     for (Duck d : DuckMain.ducks) {
                         d.getPlayer().playSound(d.getPlayer().getLocation(), Sound.PISTON_EXTEND, 10, 1);
+                        DuckReflectionMethods.title(d.getPlayer(), " ", 0, 10, 0);
+                        DuckReflectionMethods.subtitle(d.getPlayer(), sentences[counter - 1], 0, 10, 0);
                     }
                 } else if (counter == 3) {
                     for (Duck d : DuckMain.ducks) {
                         d.setDead(false);
                         d.getPlayer().playSound(d.getPlayer().getLocation(), Sound.PISTON_RETRACT, 10, 1);
                         StaticMethods.enableJumping(d.getPlayer());
+                        DuckReflectionMethods.title(d.getPlayer(), " ", 0, 10, 0);
+                        DuckReflectionMethods.subtitle(d.getPlayer(), sentences[counter - 1], 0, 10, 0);
                     }
                     DuckMain.state = GameState.INGAME;
                     canNotMove = false;
@@ -100,28 +112,17 @@ public class ContinueGame {
                 }
                 counter++;
             }
-        }.runTaskTimer(DuckMain.getPlugin(), 50L, 10L);
+        }.runTaskTimer(DuckMain.getPlugin(), 50L, 6L);
     }
 
-    public static void round(final List<Location> spawnPoints) {
-        new BukkitRunnable() {
-
-            @Override
-            public void run() {
-                if (!(spawnPoints.size() < DuckMain.ducks.size())) { //Wait for generation to finish
-                    for (int i = 0; i < DuckMain.ducks.size(); i++) {
-                        StaticMethods.prepareInventory(DuckMain.ducks.get(i));
-                        DuckMain.ducks.get(i).getPlayer().updateInventory();
-                        DuckMain.ducks.get(i).getPlayer().teleport(spawnPoints.get(i).clone().add(0, 0.5, 0));
-                        DuckMain.ducks.get(i).getPlayer().setGameMode(GameMode.ADVENTURE);
-                    }
-                    spawnPoints.clear();
-                    this.cancel();
-                }
-
-            }
-        }.runTaskTimer(DuckMain.getPlugin(), 0L, 10L);
-
+    public void round(final List<Location> spawnPoints) {
+        for (int i = 0; i < DuckMain.ducks.size(); i++) {
+            DuckMain.ducks.get(i).prepareInventory();
+            DuckMain.ducks.get(i).getPlayer().updateInventory();
+            DuckMain.ducks.get(i).getPlayer().teleport(spawnPoints.get(i).clone().add(0, 0.5, 0));
+            DuckMain.ducks.get(i).getPlayer().setGameMode(GameMode.ADVENTURE);
+        }
+        spawnPoints.clear();
     }
 
 

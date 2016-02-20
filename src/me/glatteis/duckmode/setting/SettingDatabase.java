@@ -1,4 +1,4 @@
-package me.glatteis.duckmode;
+package me.glatteis.duckmode.setting;
 
 import org.bukkit.ChatColor;
 import org.bukkit.block.Sign;

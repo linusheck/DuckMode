@@ -1,8 +1,7 @@
 package me.glatteis.duckmode.hats;
 
 import me.glatteis.duckmode.Duck;
-import me.glatteis.duckmode.Messages;
-import me.glatteis.duckmode.StaticMethods;
+import me.glatteis.duckmode.messages.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
@@ -33,7 +32,7 @@ public class Hats {
                 Bukkit.getLogger().info(h.getName() + " added");
                 try {
                     d.setHat(h.getClass().newInstance());
-                    StaticMethods.prepareInventory(d);
+                    d.prepareInventory();
                 } catch (InstantiationException e) {
                     d.getPlayer().sendMessage(Messages.getString("Hats.error_notice"));
                 } catch (IllegalAccessException e) {
@@ -57,7 +56,7 @@ public class Hats {
                     .equals(ChatColor.stripColor(i))) {
                 try {
                     d.setHat(h.getClass().newInstance());
-                    StaticMethods.prepareInventory(d);
+                    d.prepareInventory();
                 } catch (InstantiationException e) {
                     d.getPlayer().sendMessage(Messages.getString("Hats.error_notice"));
                 } catch (IllegalAccessException e) {

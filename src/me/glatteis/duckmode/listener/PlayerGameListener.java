@@ -1,8 +1,12 @@
-package me.glatteis.duckmode;
+package me.glatteis.duckmode.listener;
 
-import me.glatteis.duckmode.reflection.DuckReflectionMethods;
-import me.glatteis.duckmode.weapons.DuckArmor;
-import org.bukkit.*;
+import me.glatteis.duckmode.Duck;
+import me.glatteis.duckmode.DuckMain;
+import me.glatteis.duckmode.game.GameState;
+import me.glatteis.duckmode.messages.Messages;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
@@ -12,7 +16,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Collections;
@@ -22,22 +25,7 @@ public class PlayerGameListener implements Listener {
 
     List<Material> meleeWeapons = Collections.singletonList(Material.IRON_SWORD);
 
-    public static void die(Duck d, String cause) {
-        if (!DuckArmor.willDie(d)) return;
-        d.setDead(true);
-        d.getPlayer().setGameMode(GameMode.SPECTATOR);
-        d.getPlayer().getInventory().clear();
-        d.getPlayer().getInventory().setArmorContents(new ItemStack[4]);
-        d.getPlayer().teleport(new Location(DuckMain.getWorld(), d.getPlayer().getLocation().getX(), 25., d.getPlayer().getLocation().getZ()));
-        d.getPlayer().updateInventory();
-        for (Duck d2 : DuckMain.ducks) {
-            d2.getPlayer().playSound(d.getPlayer().getLocation(), Sound.ANVIL_LAND, 10, 1);
-        }
-        DuckReflectionMethods.title(d.getPlayer(), ChatColor.MAGIC.toString(), 0, 10, 5);
-        DuckReflectionMethods.subtitle(d.getPlayer(), ChatColor.RED + Messages.getString("you_are_dead"), 0, 10, 5);
-        DuckReflectionMethods.actionbar(d.getPlayer(), cause);
-        StaticMethods.checkForWin();
-    }
+
 
     public static void explosion(Location location, List<Block> blockList) {
         double radius = 0;
@@ -49,7 +37,7 @@ public class PlayerGameListener implements Listener {
         }
         for (Duck duck : DuckMain.ducks) {
             if (duck.getPlayer().getLocation().distance(location) < radius) {
-                die(duck, Messages.getString("you_blew_up"));
+                duck.die(Messages.getString("you_blew_up"));
             }
         }
     }
@@ -97,7 +85,7 @@ public class PlayerGameListener implements Listener {
                         new BukkitRunnable() {
                             public void run() {
                                 if (d.getPlayer().getFireTicks() > 0)
-                                    die(d, Messages.getString("you_became_christmas_duck"));
+                                    d.die(Messages.getString("you_became_christmas_duck"));
                             }
                         }.runTaskLater(DuckMain.getPlugin(), 100L);
                         return;
@@ -106,7 +94,7 @@ public class PlayerGameListener implements Listener {
             }
             for (Duck d : DuckMain.ducks) {
                 if (d.getPlayer().equals(e.getEntity())) {
-                    die(d, killCause);
+                    d.die(killCause);
                 }
             }
         }

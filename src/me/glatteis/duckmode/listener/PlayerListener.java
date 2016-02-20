@@ -1,5 +1,10 @@
-package me.glatteis.duckmode;
+package me.glatteis.duckmode.listener;
 
+import me.glatteis.duckmode.Duck;
+import me.glatteis.duckmode.DuckMain;
+import me.glatteis.duckmode.StaticMethods;
+import me.glatteis.duckmode.game.GameState;
+import me.glatteis.duckmode.messages.Messages;
 import me.glatteis.duckmode.reflection.DuckReflectionMethods;
 import me.glatteis.duckmode.weapons.WeaponWatch;
 import org.bukkit.*;
@@ -33,7 +38,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e) {
-        if (ContinueGame.canNotMove) {
+        if (DuckMain.continueGame.canNotMove) {
             if (e.getFrom().distance(e.getTo()) < 0.1) return;
             if (e.getFrom().getY() > e.getTo().getY())
                 e.getPlayer().teleport(new Location(e.getFrom().getWorld(), e.getFrom().getX(),
@@ -59,7 +64,7 @@ public class PlayerListener implements Listener {
             Duck d = new Duck(e.getPlayer(), loc);
             DuckMain.ducks.add(d);
             e.getPlayer().teleport(loc);
-            StaticMethods.prepareInventory(d);
+            d.prepareInventory();
             StaticMethods.disableJumping(e.getPlayer());
             DuckReflectionMethods.title(e.getPlayer(), ChatColor.RED + Messages.getString("big_screen_title"), 5, 30, 5);
             DuckReflectionMethods.subtitle(e.getPlayer(), Messages.getString("version") + " " + DuckMain.getPlugin().getDescription().getVersion(), 5, 30, 5);

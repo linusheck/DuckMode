@@ -1,7 +1,7 @@
 package me.glatteis.duckmode.hats;
 
 import me.glatteis.duckmode.DuckMain;
-import me.glatteis.duckmode.Messages;
+import me.glatteis.duckmode.messages.Messages;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;

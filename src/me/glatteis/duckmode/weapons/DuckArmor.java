@@ -38,7 +38,6 @@ public class DuckArmor extends DuckWeapon {
                 p.getWorld().playSound(p.getLocation(), Sound.ANVIL_LAND, 10, 1);
                 return false;
             }
-
         }
         if (p.getInventory().getLeggings() != null) {
             double legRandom = Math.random();
@@ -47,11 +46,10 @@ public class DuckArmor extends DuckWeapon {
                 p.getWorld().playSound(p.getLocation(), Sound.ANVIL_LAND, 10, 1);
                 return false;
             }
-
         }
         return true;
     }
-
+    
     @Override
     public void spawnWeapon(Location l) {
         Random r = new Random();

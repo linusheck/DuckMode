@@ -1,4 +1,4 @@
-package me.glatteis.duckmode;
+package me.glatteis.duckmode.game;
 
 import org.bukkit.Location;
 

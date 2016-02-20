@@ -1,4 +1,6 @@
-package me.glatteis.duckmode;
+package me.glatteis.duckmode.setting;
+
+import me.glatteis.duckmode.messages.Messages;
 
 public enum SettingTypes {
 

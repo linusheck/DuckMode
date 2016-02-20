@@ -7,7 +7,6 @@ import java.lang.reflect.Method;
 
 public class DuckReflectionMethods {
 
-
     public static void actionbar(Player p, String label) {
         try {
             //Reflection formatting:

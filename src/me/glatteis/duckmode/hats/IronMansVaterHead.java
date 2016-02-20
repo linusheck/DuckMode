@@ -1,6 +1,6 @@
 package me.glatteis.duckmode.hats;
 
-import me.glatteis.duckmode.Messages;
+import me.glatteis.duckmode.messages.Messages;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;

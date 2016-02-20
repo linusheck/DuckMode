@@ -1,7 +1,7 @@
 package me.glatteis.duckmode.weapons;
 
 import me.glatteis.duckmode.DuckMain;
-import me.glatteis.duckmode.PlayerGameListener;
+import me.glatteis.duckmode.listener.PlayerGameListener;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;

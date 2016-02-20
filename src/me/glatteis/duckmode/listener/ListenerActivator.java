@@ -1,5 +1,8 @@
-package me.glatteis.duckmode;
+package me.glatteis.duckmode.listener;
 
+import me.glatteis.duckmode.game.DuckLobby;
+import me.glatteis.duckmode.DuckMain;
+import me.glatteis.duckmode.game.Intermission;
 import me.glatteis.duckmode.weapons.*;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
