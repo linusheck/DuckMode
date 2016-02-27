@@ -10,15 +10,15 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 public class DuckArmor extends DuckWeapon {
 
-    List<Material> helmets = Arrays.asList();
-    List<Material> chestplates = Arrays.asList(Material.IRON_CHESTPLATE);
-    List<Material> leggings = Arrays.asList(Material.IRON_LEGGINGS);
+    List<Material> helmets = Collections.emptyList();
+    List<Material> chestplates = Collections.singletonList(Material.IRON_CHESTPLATE);
+    List<Material> leggings = Collections.singletonList(Material.IRON_LEGGINGS);
     List<Material> everything;
 
     public DuckArmor() {
@@ -49,7 +49,7 @@ public class DuckArmor extends DuckWeapon {
         }
         return true;
     }
-    
+
     @Override
     public void spawnWeapon(Location l) {
         Random r = new Random();

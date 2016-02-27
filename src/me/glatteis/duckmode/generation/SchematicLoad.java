@@ -20,10 +20,12 @@ import java.util.Random;
 
 public class SchematicLoad {
 
-    private static WorldEditPlugin e =(WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");;
+    private static WorldEditPlugin e = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
+    ;
     private static ArrayList<SchematicToLoad> schematicsToLoad = new ArrayList<SchematicToLoad>();
 
     private static EditSession session = e.getWorldEdit().getEditSessionFactory().getEditSession(new BukkitWorld(DuckMain.getWorld()), Integer.MAX_VALUE);
+
     public static void addSchematic(SchematicToLoad s) {
         schematicsToLoad.add(s);
     }
@@ -38,10 +40,9 @@ public class SchematicLoad {
 
     @SuppressWarnings("deprecation")
     public static void loadAllSchematics(final ThenTask finished) {
-        Bukkit.getLogger().info("Loading all schematics...");
-        Bukkit.getLogger().info("Number of schematics to load: " + schematicsToLoad.size());
         new BukkitRunnable() {
             int position = -1;
+
             public void run() {
                 long millis = System.currentTimeMillis();
                 while (millis - System.currentTimeMillis() < 25) {
@@ -80,13 +81,14 @@ public class SchematicLoad {
         if (s.getDimensionContainer().getType() == null || s.getDimensionData() == null) return;
         if (s.getDimensionContainer().getType().equals("spawn")) {
             Location l = findBlock(Material.GOLD_BLOCK, there, s);
-            if (l == null) l = there.clone().add(
-                    s.getDimensionData().getSizeX() / 2,
-                    s.getDimensionData().getSizeY() / 2,
-                    s.getDimensionData().getSizeZ() / 2
-            );
-            PlayerSpawnPoints.spawnPoints.add(l);
-            Bukkit.getLogger().info("Spawn Location: " + l);
+            if (l == null) {
+                l = there.clone().add(
+                        s.getDimensionData().getSizeX() / 2,
+                        s.getDimensionData().getSizeY() / 2,
+                        s.getDimensionData().getSizeZ() / 2
+                );
+            }
+            PlayerSpawnPoints.spawnPoints.add(l.add(0, 0.2, 0));
         } else if (s.getDimensionContainer().getType().equals("weapon")) {
             Location spawn = findBlock(Material.IRON_BLOCK, there, s);
             if (spawn == null) return;

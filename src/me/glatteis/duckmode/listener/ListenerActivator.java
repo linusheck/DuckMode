@@ -1,7 +1,7 @@
 package me.glatteis.duckmode.listener;
 
-import me.glatteis.duckmode.game.DuckLobby;
 import me.glatteis.duckmode.DuckMain;
+import me.glatteis.duckmode.game.DuckLobby;
 import me.glatteis.duckmode.game.Intermission;
 import me.glatteis.duckmode.weapons.*;
 import org.bukkit.Bukkit;
@@ -16,7 +16,7 @@ public class ListenerActivator {
             new Intermission(), new PlayerListener(), new ExplosionHandler());
     public static DuckWeapon[] weapons = {new IronSword(), new RocketLauncher(), new DuckArmor(), new OneShotPistol(),
             new Pistol(), new Shotgun(), new TNTBarrel(), new Grenade(), new MachineGun(), new Flamethrower(),
-            new TreeCannon(), new SuicideBomb()};
+            new TreeCannon(), new SuicideBomb(), new IceRay()};
 
     public static void activateListeners() {
         for (Listener l : listeners) {

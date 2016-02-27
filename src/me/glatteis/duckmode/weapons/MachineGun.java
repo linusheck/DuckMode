@@ -15,6 +15,10 @@ import java.util.List;
  */
 public class MachineGun extends DuckWeapon {
 
+    /*
+    The shooting mechanism of this is unique so I decided to not extend DuckGun.
+     */
+
     private HashMap<List<String>, Integer> shotsLeft = new HashMap<List<String>, Integer>();
 
     public MachineGun() {

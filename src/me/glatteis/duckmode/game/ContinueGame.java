@@ -11,11 +11,10 @@ import me.glatteis.duckmode.reflection.DuckReflectionMethods;
 import me.glatteis.duckmode.setting.SettingDatabase;
 import me.glatteis.duckmode.setting.SettingTypes;
 import me.glatteis.duckmode.weapons.WeaponWatch;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Item;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
@@ -25,7 +24,8 @@ public class ContinueGame {
     public int roundCounter = 0;
     public boolean canNotMove = false;
     private boolean roundHasEnded = true;
-    private final String[] sentences = {Messages.getString("ready"), Messages.getString("set"), Messages.getString("go")};
+    private String[] sentences = null;
+    private boolean newGameRunnableAlreadyExecuted = false;
 
     public boolean hasRoundEnded() {
         return roundHasEnded;
@@ -36,6 +36,8 @@ public class ContinueGame {
     }
 
     public void startRound() {
+        if (sentences == null)
+            sentences = new String[]{Messages.getString("ready"), Messages.getString("set"), Messages.getString("go")};
         DuckMain.state = GameState.INGAME;
         SpawnWeapons.enable();
         for (int i = 0; i < DuckMain.ducks.size(); i++) {
@@ -44,6 +46,7 @@ public class ContinueGame {
         }
         new BukkitRunnable() {
             boolean where = true;
+
             @Override
             public void run() {
                 if (roundHasEnded) {
@@ -105,6 +108,7 @@ public class ContinueGame {
                         DuckReflectionMethods.title(d.getPlayer(), " ", 0, 10, 0);
                         DuckReflectionMethods.subtitle(d.getPlayer(), sentences[counter - 1], 0, 10, 0);
                     }
+                    newGameRunnableAlreadyExecuted = false;
                     DuckMain.state = GameState.INGAME;
                     canNotMove = false;
                     this.cancel();
@@ -119,10 +123,53 @@ public class ContinueGame {
         for (int i = 0; i < DuckMain.ducks.size(); i++) {
             DuckMain.ducks.get(i).prepareInventory();
             DuckMain.ducks.get(i).getPlayer().updateInventory();
-            DuckMain.ducks.get(i).getPlayer().teleport(spawnPoints.get(i).clone().add(0, 0.5, 0));
+            DuckMain.ducks.get(i).getPlayer().teleport(spawnPoints.get(i));
             DuckMain.ducks.get(i).getPlayer().setGameMode(GameMode.ADVENTURE);
         }
         spawnPoints.clear();
+    }
+
+
+    public void checkForWin() {
+        if (DuckMain.state.equals(GameState.PREGAME)) return;
+        int aliveDucks = 0;
+        for (Duck d : DuckMain.ducks) {
+            if (!d.isDead()) {
+                aliveDucks++;
+            }
+        }
+        if (aliveDucks <= 1) {
+            if (!newGameRunnableAlreadyExecuted) {
+                newGameRunnableAlreadyExecuted = true;
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        int aliveDucks = 0;
+                        for (Duck d : DuckMain.ducks) {
+                            if (!d.isDead()) {
+                                aliveDucks++;
+                            }
+                        }
+                        if (newGameRunnableAlreadyExecuted && aliveDucks == 1 && !DuckMain.state.equals(GameState.PREGAME)) {
+                            for (Duck d : DuckMain.ducks) {
+                                if (!d.isDead()) {
+                                    d.getPlayer().getInventory().setHelmet(new ItemStack(Material.SMOOTH_BRICK));
+                                    for (Duck d2 : DuckMain.ducks) {
+                                        DuckReflectionMethods.title(d2.getPlayer(), ChatColor.WHITE + d.getPlayer().getName(), 5, 20, 5);
+                                        DuckReflectionMethods.subtitle(d2.getPlayer(), ChatColor.WHITE + Messages.getString("survived"), 5, 20, 5);
+                                        d2.getPlayer().playSound(d.getPlayer().getLocation(), Sound.NOTE_PIANO, 20, 5);
+                                    }
+                                    WinTracker.addWin(d);
+                                    DuckMain.continueGame.setRoundHasEnded(true);
+                                }
+                            }
+                        } else {
+                            DuckMain.continueGame.setRoundHasEnded(true);
+                        }
+                    }
+                }.runTaskLater(DuckMain.getPlugin(), 30L);
+            }
+        }
     }
 
 

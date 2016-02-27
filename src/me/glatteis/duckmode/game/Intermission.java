@@ -1,7 +1,9 @@
 package me.glatteis.duckmode.game;
 
 import com.sk89q.worldedit.bukkit.BukkitWorld;
-import me.glatteis.duckmode.*;
+import me.glatteis.duckmode.Duck;
+import me.glatteis.duckmode.DuckMain;
+import me.glatteis.duckmode.StaticMethods;
 import me.glatteis.duckmode.generation.SchematicLoad;
 import me.glatteis.duckmode.generation.SchematicToLoad;
 import me.glatteis.duckmode.generation.config.DimensionContainer;
@@ -105,7 +107,7 @@ public class Intermission implements Listener {
                             DuckMain.state = GameState.INGAME;
                             DuckMain.continueGame.setRoundHasEnded(true);
                         }
-                    }.runTaskLater(DuckMain.getPlugin(), 100L);
+                    }.runTaskLater(DuckMain.getPlugin(), 10L);
                     this.cancel();
                     return;
                 }

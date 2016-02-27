@@ -22,12 +22,23 @@ public class Dimension {
     private Integer minY;
     private Integer minZ;
 
+    public Dimension(String name) {
+        this.name = name;
+    }
+
+    public Dimension() {
+    }
+
     public List<DimensionContainer> getDimensionContainers() {
         return dimensionContainers;
     }
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Integer getMinZ() {
@@ -71,12 +82,6 @@ public class Dimension {
             container.init(maxHeight);
         }
     }
-
-    public Dimension(String name) {
-        this.name = name;
-    }
-
-    public Dimension() { }
 
 
 }

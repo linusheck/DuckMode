@@ -10,6 +10,8 @@ import java.util.Random;
 
 public class WeaponWatch {
 
+    //Keeps track of all the cooldown and durability stuff at one place.
+
     public static ArrayList<List<String>> cooldown = new ArrayList<List<String>>();
     public static HashMap<List<String>, Integer> durability = new HashMap<List<String>, Integer>();
 

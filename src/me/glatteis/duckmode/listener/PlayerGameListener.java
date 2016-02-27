@@ -26,7 +26,6 @@ public class PlayerGameListener implements Listener {
     List<Material> meleeWeapons = Collections.singletonList(Material.IRON_SWORD);
 
 
-
     public static void explosion(Location location, List<Block> blockList) {
         double radius = 0;
         double helper;
@@ -65,11 +64,11 @@ public class PlayerGameListener implements Listener {
                     if (!meleeWeapons.contains(((Player) damager).getItemInHand().getType())) {
                         return;
                     }
-                    killCause = Messages.getString("you_were_slain_by") + damager.getName() + ".";
+                    killCause = Messages.getString("you_were_slain_by") + " " + damager.getName() + ".";
                 } else if (damager instanceof Arrow) {
                     Arrow a = (Arrow) damager;
                     if (a.getShooter() != null && a.getShooter() instanceof Player) {
-                        killCause = Messages.getString("you_were_shot_by") + ((Player) a.getShooter()).getName() + ".";
+                        killCause = Messages.getString("you_were_shot_by") + " " + ((Player) a.getShooter()).getName() + ".";
                     }
                 }
             }

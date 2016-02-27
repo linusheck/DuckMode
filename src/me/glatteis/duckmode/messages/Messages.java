@@ -7,9 +7,20 @@ import java.util.ResourceBundle;
 
 public class Messages {
 
-    private static final String BUNDLE_NAME = "me.glatteis.duckmode.messages.messages" + DuckMain.getPlugin().getConfig().getString("message-language");
+    private static ResourceBundle RESOURCE_BUNDLE;
 
-    private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
+    static {
+        try {
+            String bundleName = "me.glatteis.duckmode.messages.messages" + DuckMain.getPlugin().getConfig().getString("message-language");
+            RESOURCE_BUNDLE = ResourceBundle.getBundle(bundleName);
+        } catch (Exception e) {
+            DuckMain.getPlugin().getLogger().info("There seems to be an error in the config concerning the language.");
+            e.printStackTrace();
+        }
+    }
+
+    private Messages() {
+    }
 
     public static String getString(String key) {
         try {
@@ -18,6 +29,4 @@ public class Messages {
             return '!' + key + '!';
         }
     }
-
-    private Messages() {}
 }

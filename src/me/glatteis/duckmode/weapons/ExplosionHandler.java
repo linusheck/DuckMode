@@ -23,6 +23,8 @@ import java.util.List;
 
 public class ExplosionHandler implements Listener {
 
+    //Listens for explosions and throws blocks around!
+
     List<ItemStack> dropStacks = new ArrayList<ItemStack>();
 
     @SuppressWarnings("deprecation")

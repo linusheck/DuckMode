@@ -18,6 +18,13 @@ public class DimensionContainer implements Cloneable {
     private List<SpawnNextTo> spawnNextTo;
     private boolean[] rotate;
 
+    public DimensionContainer(String name) {
+        this.name = name;
+    }
+
+    public DimensionContainer() {
+    }
+
     public String getName() {
         return name;
     }
@@ -54,13 +61,7 @@ public class DimensionContainer implements Cloneable {
     public void init(int maxHeight) {
         if (startSpawnFrom != null && startSpawnFrom < 0) startSpawnFrom = maxHeight - startSpawnFrom;
         if (endSpawnAt != null && endSpawnAt < 0) endSpawnAt = maxHeight - endSpawnAt;
-        if (rotate == null || rotate.length != 3) rotate = new boolean[] {false, true, false};
+        if (rotate == null || rotate.length != 3) rotate = new boolean[]{false, true, false};
     }
-
-    public DimensionContainer(String name) {
-        this.name = name;
-    }
-
-    public DimensionContainer() { }
 
 }

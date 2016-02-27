@@ -11,4 +11,4 @@ commands:
        usage: /start
     addsecrethats:
        description: Very Secret Command! Unlocks no hats!
-       usage: /secret
+       usage: The usage of this mysterious command is very secret!

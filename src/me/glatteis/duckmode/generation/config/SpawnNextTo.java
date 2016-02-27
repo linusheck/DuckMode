@@ -36,7 +36,7 @@ public class SpawnNextTo {
 
         try {
             schematicToLoad = map[lookPosition.getBlockX()][lookPosition.getBlockY()][lookPosition.getBlockZ()];
-        } catch (IndexOutOfBoundsException e)  {
+        } catch (IndexOutOfBoundsException e) {
             return false;
         }
 

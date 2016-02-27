@@ -10,29 +10,18 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  * Created by Linus on 22.01.2016.
  */
-public class TreeCannon extends DuckWeapon {
+public class TreeCannon extends DuckGun {
 
     public TreeCannon() {
-        super(Material.SAPLING);
+        super(Material.SAPLING, 10, 100);
     }
 
     @Override
-    public void shoot(final PlayerInteractEvent event) {
-        if (WeaponWatch.cooldown.contains(event.getItem().getItemMeta().getLore())) return;
-
-        WeaponWatch.cooldown.add(event.getItem().getItemMeta().getLore());
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                WeaponWatch.cooldown.remove(event.getItem().getItemMeta().getLore());
-            }
-        }.runTaskLater(DuckMain.getPlugin(), 100);
-
+    public void safeShoot(final PlayerInteractEvent event) {
         DuckMain.getWorld().playSound(event.getPlayer().getLocation(), Sound.HORSE_IDLE, 10, 1);
         Arrow a = event.getPlayer().launchProjectile(Arrow.class);
         a.setShooter(event.getPlayer());

@@ -1,12 +1,16 @@
 package me.glatteis.duckmode.game;
 
-import me.glatteis.duckmode.*;
+import me.glatteis.duckmode.Duck;
+import me.glatteis.duckmode.DuckMain;
 import me.glatteis.duckmode.hats.Hats;
 import me.glatteis.duckmode.messages.Messages;
 import me.glatteis.duckmode.reflection.DuckReflectionMethods;
 import me.glatteis.duckmode.setting.SettingDatabase;
 import me.glatteis.duckmode.setting.SettingTypes;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
@@ -15,11 +19,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.material.Wool;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class DuckLobby implements Listener {
-
 
     boolean activated = false;
 
@@ -83,14 +85,10 @@ public class DuckLobby implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
-        if (activated) {
-            return;
-        }
+        if (activated) return;
         if (DuckMain.state.equals(GameState.LOBBY)) {
-            if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getClickedBlock().getType().equals(Material.WOOD_BUTTON) &&
-                    e.getClickedBlock().getRelative(BlockFace.WEST).getType().equals(Material.WOOL) &&
-                    ((Wool) e.getClickedBlock().getRelative(BlockFace.WEST).getState().getData()).getColor().equals(DyeColor.LIME)) {
-                //Someone pressed the start button
+            if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getClickedBlock().getType().equals(Material.WOOD_BUTTON)
+                    && (DuckMain.ducks.size() > 1 || DuckMain.indevResourcePack)) {
                 countdown();
             }
         }

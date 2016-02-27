@@ -23,5 +23,4 @@ public class JSONToDimensionParser {
         return gson.fromJson(jsonTxt, Dimension.class);
     }
 
-
 }

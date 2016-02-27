@@ -30,7 +30,7 @@ public class PlayerListener implements Listener {
         ChatColor stateColor = (DuckMain.state.equals(GameState.LOBBY) ? ChatColor.GREEN : ChatColor.RED);
         ChatColor fullColor = (DuckMain.ducks.size() < DuckMain.maxPlayerCount ? ChatColor.GREEN : ChatColor.RED);
         String pingString = ChatColor.YELLOW + "\\" + ChatColor.UNDERLINE + Messages.getString("duck_mode") + ChatColor.RESET + ChatColor.YELLOW +
-                "/ " + fullColor + Bukkit.getServer().getOnlinePlayers().size() + Messages.getString("players_online") + ChatColor.RESET + " || " +
+                "/ " + fullColor + Bukkit.getServer().getOnlinePlayers().size() + " " + Messages.getString("players_online") + ChatColor.RESET + " || " +
                 stateColor + ChatColor.BOLD + DuckMain.state + "\n" + ChatColor.GRAY + Messages.getString("motd_description");
         e.setMaxPlayers(DuckMain.maxPlayerCount);
         e.setMotd(pingString);
@@ -49,8 +49,8 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerLogin(AsyncPlayerPreLoginEvent e) {
-        if (!DuckMain.state.equals(GameState.LOBBY) || (Bukkit.getServer().getOnlinePlayers().size() > 3)) {
-            e.setLoginResult(org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result.KICK_FULL);
+        if (!DuckMain.state.equals(GameState.LOBBY) || (Bukkit.getServer().getOnlinePlayers().size() >= DuckMain.maxPlayerCount)) {
+            e.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_OTHER);
             e.setKickMessage(ChatColor.RED + Messages.getString("game_started_or_full"));
         }
     }
@@ -69,7 +69,7 @@ public class PlayerListener implements Listener {
             DuckReflectionMethods.title(e.getPlayer(), ChatColor.RED + Messages.getString("big_screen_title"), 5, 30, 5);
             DuckReflectionMethods.subtitle(e.getPlayer(), Messages.getString("version") + " " + DuckMain.getPlugin().getDescription().getVersion(), 5, 30, 5);
 
-            e.setJoinMessage("DUCK MODE ->" + ChatColor.YELLOW + Messages.getString("duck") + " " + e.getPlayer().getName() + " " + Messages.getString("join_message"));
+            e.setJoinMessage("DUCK MODE -> " + ChatColor.YELLOW + Messages.getString("duck") + " " + e.getPlayer().getName() + " " + Messages.getString("join_message"));
 
             if (DuckMain.autoStart > 0 && Bukkit.getOnlinePlayers().size() >= DuckMain.autoStart) {
                 ListenerActivator.lobbyCountdown();
@@ -150,7 +150,6 @@ public class PlayerListener implements Listener {
                                 drop.getWorld().playEffect(drop.getLocation(), Effect.EXTINGUISH, 5);
                                 drop.getWorld().playEffect(drop.getLocation(), Effect.SMOKE, 10);
                                 drop.remove();
-
                             }
                         }
                     }.runTaskLater(DuckMain.getPlugin(), 40L);

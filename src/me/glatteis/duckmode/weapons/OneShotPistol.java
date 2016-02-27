@@ -11,26 +11,19 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.BlockIterator;
 
-public class OneShotPistol extends DuckWeapon {
+public class OneShotPistol extends DuckGun {
 
     public OneShotPistol() {
-        super(Material.BLAZE_ROD);
+        super(Material.BLAZE_ROD, 1, 0);
     }
 
     @Override
-    public void shoot(final PlayerInteractEvent e) {
-        if (!WeaponWatch.durability.containsKey(e.getItem().getItemMeta().getLore())) {
-            WeaponWatch.durability.put(e.getItem().getItemMeta().getLore(), 1);
-        }
-        if (WeaponWatch.durability.get(e.getItem().getItemMeta().getLore()) > 0 &&
-                (!WeaponWatch.cooldown.contains(e.getItem().getItemMeta().getLore()))) {
-            WeaponWatch.durability.put(e.getItem().getItemMeta().getLore(), WeaponWatch.durability.get(e.getItem().getItemMeta().getLore()) - 1);
-            DuckMain.getWorld().playSound(e.getPlayer().getLocation(), Sound.BLAZE_HIT, 10, 1);
-            Arrow a = e.getPlayer().launchProjectile(Arrow.class);
-            a.setShooter(e.getPlayer());
-            a.setVelocity(a.getVelocity().multiply(4));
-            a.setCustomName("OneShotPistol");
-        }
+    public void safeShoot(final PlayerInteractEvent e) {
+        DuckMain.getWorld().playSound(e.getPlayer().getLocation(), Sound.BLAZE_HIT, 10, 1);
+        Arrow a = e.getPlayer().launchProjectile(Arrow.class);
+        a.setShooter(e.getPlayer());
+        a.setVelocity(a.getVelocity().multiply(4));
+        a.setCustomName("OneShotPistol");
     }
 
     @EventHandler

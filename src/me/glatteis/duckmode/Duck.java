@@ -94,10 +94,8 @@ public class Duck {
         DuckReflectionMethods.title(getPlayer(), ChatColor.MAGIC.toString(), 0, 10, 5);
         DuckReflectionMethods.subtitle(getPlayer(), ChatColor.RED + Messages.getString("you_are_dead"), 0, 10, 5);
         DuckReflectionMethods.actionbar(getPlayer(), cause);
-        StaticMethods.checkForWin();
+        DuckMain.continueGame.checkForWin();
     }
-
-
 
 
 }

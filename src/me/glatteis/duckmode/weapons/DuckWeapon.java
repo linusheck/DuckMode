@@ -20,6 +20,10 @@ import java.util.UUID;
 
 public abstract class DuckWeapon implements Listener {
 
+    /*
+    Represents a weapon. This could be any kind of weapon.
+     */
+
     private Material weaponMaterial;
 
     protected DuckWeapon(Material weaponMaterial) {

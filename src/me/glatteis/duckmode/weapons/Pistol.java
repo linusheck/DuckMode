@@ -9,36 +9,20 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockIterator;
 
-public class Pistol extends DuckWeapon {
+public class Pistol extends DuckGun {
 
     public Pistol() {
-        super(Material.BLAZE_POWDER);
+        super(Material.BLAZE_POWDER, 6, 15);
     }
 
     @Override
-    public void shoot(final PlayerInteractEvent e) {
-        if (!WeaponWatch.durability.containsKey(e.getItem().getItemMeta().getLore())) {
-            WeaponWatch.durability.put(e.getItem().getItemMeta().getLore(), 6);
-        }
-        if (WeaponWatch.durability.get(e.getItem().getItemMeta().getLore()) > 0 &&
-                (!WeaponWatch.cooldown.contains(e.getItem().getItemMeta().getLore()))) {
-            WeaponWatch.durability.put(e.getItem().getItemMeta().getLore(), WeaponWatch.durability.get(e.getItem().getItemMeta().getLore()) - 1);
-            DuckMain.getWorld().playSound(e.getPlayer().getLocation(), Sound.BLAZE_HIT, 10, 1);
-            Arrow a = e.getPlayer().launchProjectile(Arrow.class);
-            a.setShooter(e.getPlayer());
-            a.setVelocity(a.getVelocity().multiply(4));
-            a.setCustomName("Pistol");
-            WeaponWatch.cooldown.add(e.getItem().getItemMeta().getLore());
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    WeaponWatch.cooldown.remove(e.getItem().getItemMeta().getLore());
-                }
-            }.runTaskLater(DuckMain.getPlugin(), 10L);
-        }
+    public void safeShoot(final PlayerInteractEvent e) {
+        Arrow a = e.getPlayer().launchProjectile(Arrow.class);
+        a.setShooter(e.getPlayer());
+        a.setVelocity(a.getVelocity().multiply(4));
+        a.setCustomName("Pistol");
     }
 
     @EventHandler

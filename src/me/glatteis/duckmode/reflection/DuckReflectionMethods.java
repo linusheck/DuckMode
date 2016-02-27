@@ -55,13 +55,6 @@ public class DuckReflectionMethods {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-//		IChatBaseComponent title_text = ChatSerializer.a("{\"text\": \"" + label +  "\"}");
-//        PacketPlayOutTitle title = new PacketPlayOutTitle(EnumTitleAction.TITLE, title_text);
-//        ((CraftPlayer)p).getHandle().playerConnection.sendPacket(title);
-//        IChatBaseComponent times = ChatSerializer.a("");
-//        PacketPlayOutTitle length = new PacketPlayOutTitle(EnumTitleAction.TIMES, times, in, stay, out);
-//		((CraftPlayer)p).getHandle().playerConnection.sendPacket(length);
     }
 
     public static void subtitle(Player p, String label, int in, int stay, int out) {
@@ -87,13 +80,6 @@ public class DuckReflectionMethods {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-//		IChatBaseComponent title_text = ChatSerializer.a("{\"text\": \"" + label +  "\"}");
-//        PacketPlayOutTitle title = new PacketPlayOutTitle(EnumTitleAction.SUBTITLE, title_text);
-//        ((CraftPlayer)p).getHandle().playerConnection.sendPacket(title);
-//        IChatBaseComponent times = ChatSerializer.a("");
-//        PacketPlayOutTitle length = new PacketPlayOutTitle(EnumTitleAction.TIMES, times, in, stay, out);
-//		((CraftPlayer)p).getHandle().playerConnection.sendPacket(length);
     }
 
 }

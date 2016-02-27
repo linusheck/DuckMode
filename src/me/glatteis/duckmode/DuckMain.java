@@ -28,8 +28,9 @@ public class DuckMain extends JavaPlugin {
 
     //All this static usage is from old code. Maybe I will change it into instances, but I don't think I will.
 
-    public static int maxPlayerCount = 4;
     public static final Dimension STATIC_DIMENSION = new Dimension("Static");
+    public static final ContinueGame continueGame = new ContinueGame();
+    public static int maxPlayerCount = 4;
     public static boolean indevResourcePack = false;
     public static List<Duck> ducks = new ArrayList<Duck>();
     public static GameState state;
@@ -37,7 +38,6 @@ public class DuckMain extends JavaPlugin {
     public static HashMap<Integer, Duck> duckCount = new HashMap<Integer, Duck>();
     public static Location spawnLocation;
     public static int autoStart;
-    public static final ContinueGame continueGame = new ContinueGame();
     private static String resourcesVersion = "RESOURCES - test2";
     private static World duckWorld;
     private String duckModeConsoleWelcome = "\n\n" +

@@ -9,39 +9,24 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 
-public class Shotgun extends DuckWeapon {
+public class Shotgun extends DuckGun {
 
     public Shotgun() {
-        super(Material.SLIME_BALL);
+        super(Material.SLIME_BALL, 6, 60);
     }
 
     @Override
-    public void shoot(final PlayerInteractEvent e) {
-        if (!WeaponWatch.durability.containsKey(e.getItem().getItemMeta().getLore())) {
-            WeaponWatch.durability.put(e.getItem().getItemMeta().getLore(), 6);
-        }
-        if (WeaponWatch.durability.get(e.getItem().getItemMeta().getLore()) > 0 &&
-                (!WeaponWatch.cooldown.contains(e.getItem().getItemMeta().getLore()))) {
-            WeaponWatch.durability.put(e.getItem().getItemMeta().getLore(), WeaponWatch.durability.get(e.getItem().getItemMeta().getLore()) - 1);
-            DuckMain.getWorld().playSound(e.getPlayer().getLocation(), Sound.BLAZE_HIT, 10, 1);
-            for (int i = 0; i < 5; i++) {
-                Arrow a = e.getPlayer().launchProjectile(Arrow.class);
-                a.setShooter(e.getPlayer());
-                a.setVelocity(a.getVelocity().multiply(4));
-                a.setVelocity(a.getVelocity().add(new Vector(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5)));
-                a.setCustomName("Shotgun");
-            }
-            WeaponWatch.cooldown.add(e.getItem().getItemMeta().getLore());
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    WeaponWatch.cooldown.remove(e.getItem().getItemMeta().getLore());
-                }
-            }.runTaskLater(DuckMain.getPlugin(), 60L);
+    public void safeShoot(final PlayerInteractEvent e) {
+        DuckMain.getWorld().playSound(e.getPlayer().getLocation(), Sound.BLAZE_HIT, 10, 1);
+        for (int i = 0; i < 5; i++) {
+            Arrow a = e.getPlayer().launchProjectile(Arrow.class);
+            a.setShooter(e.getPlayer());
+            a.setVelocity(a.getVelocity().multiply(4));
+            a.setVelocity(a.getVelocity().add(new Vector(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5)));
+            a.setCustomName("Shotgun");
         }
     }
 

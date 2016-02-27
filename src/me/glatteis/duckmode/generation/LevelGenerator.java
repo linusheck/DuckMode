@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class LevelGenerator {
@@ -21,28 +22,25 @@ public class LevelGenerator {
     private static org.bukkit.util.Vector lastMax = null;
     private static Dimension lastDimensionData = null;
 
-
     private static File path = new File(new File(System.getProperty("java.class.path")).getAbsoluteFile().getParentFile().toString() + "/plugins/DuckMode/Generation/");
+
+    private static List<String> blackList = new ArrayList<String>();
 
     public static void buildPlace(final boolean where) {
         Location startLocation;
         int providedSpawns = DuckMain.ducks.size();
         if (where) {
             startLocation = new Location(DuckMain.getWorld(), -1000, 20, 0);
-
         } else {
             startLocation = new Location(DuckMain.getWorld(), 1000, 20, 0);
-
         }
-
-        System.out.println(startLocation.toString());
 
         int amount = path.list().length;
         int dimension = new Random().nextInt(amount - 1);
         FilenameFilter filenameFilter = new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {
-                return !name.equals("Static");
+                return !name.equals("Static") && !name.startsWith(".") && !blackList.contains(name);
             }
         };
         File dimensionFile = new File(path.toString() + "/" + path.list(filenameFilter)[dimension]);
@@ -53,11 +51,15 @@ public class LevelGenerator {
         try {
             dimensionData = JSONToDimensionParser.parse(config);
         } catch (IOException e) {
-            Bukkit.getLogger().info("FATAL ERROR: There is no config.json inside " + dimensionFile.getName());
+            Bukkit.getLogger().info("ERROR: There is no config.json inside " + dimensionFile.getName() + ". Blacklisting it.");
+            blackList.add(dimensionFile.getName());
             e.printStackTrace();
-            Bukkit.getServer().shutdown();
+            buildPlace(where);
             return;
         }
+
+        dimensionData.setName(path.list(filenameFilter)[dimension]);
+
 
         int maxHeight, maxX, maxZ;
 
@@ -83,7 +85,7 @@ public class LevelGenerator {
         int minAnH = maxHeight;
         int maxAnH = 0;
 
-        for (DimensionContainer container :  dimensionData.getDimensionContainers()) {
+        for (DimensionContainer container : dimensionData.getDimensionContainers()) {
             if (container.getEndSpawnAt() == null) {
                 maxAnH = maxHeight;
             }
@@ -91,18 +93,20 @@ public class LevelGenerator {
                 minAnH = 0;
             }
             if (container.getStartSpawnFrom() != null &&
-                    container.getStartSpawnFrom() < minAnH  && container.getEndSpawnAt() > 0) minAnH = container.getStartSpawnFrom();
+                    container.getStartSpawnFrom() < minAnH && container.getStartSpawnFrom() > 0)
+                minAnH = container.getStartSpawnFrom();
             if (container.getEndSpawnAt() != null &&
-                    container.getEndSpawnAt() > maxAnH && container.getEndSpawnAt() > 0) maxAnH = container.getEndSpawnAt();
+                    container.getEndSpawnAt() > maxAnH && container.getEndSpawnAt() > 0)
+                maxAnH = container.getEndSpawnAt();
         }
+
+        dimensionData.init(maxAnH);
 
         BukkitWorld duckMainBukkitWorld = new BukkitWorld(DuckMain.getWorld());
 
         SchematicToLoad[][][] map = new SchematicToLoad[maxX][maxAnH][maxZ];
 
         ArrayList<org.bukkit.util.Vector> spawns = new ArrayList<org.bukkit.util.Vector>();
-
-        dimensionData.init(maxAnH);
 
         for (int i = 0; i < providedSpawns; i++) {
             boolean found;
@@ -192,11 +196,11 @@ public class LevelGenerator {
                         }
                     }
 
-                    if (spawnThis == null){
+                    if (spawnThis == null) {
                         if (forceSpawn) {
                             Bukkit.shutdown();
                             throw new RuntimeException("MAP ERROR: There is no spawn to place here! " +
-                            "{" + x + " " + y + " "+ z + "} " + dimensionData.getName());
+                                    "{" + x + " " + y + " " + z + "} " + dimensionData.getName());
                         }
                         continue;
                     }
@@ -221,7 +225,6 @@ public class LevelGenerator {
         lastStartLocation = startLocation;
         lastMax = new org.bukkit.util.Vector(maxX, maxAnH, maxZ);
         lastDimensionData = dimensionData;
-
 
 
         Bukkit.getLogger().info("Start Location: " + startLocation);
