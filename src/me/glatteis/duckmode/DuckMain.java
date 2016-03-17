@@ -15,6 +15,7 @@ import org.apache.commons.io.FileUtils;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -26,21 +27,22 @@ import java.util.List;
 
 public class DuckMain extends JavaPlugin {
 
-    //All this static usage is from old code. Maybe I will change it into instances, but I don't think I will.
+    //So much static, I know. This approach is pretty old, but it works.
 
     public static final Dimension STATIC_DIMENSION = new Dimension("Static");
     public static final ContinueGame continueGame = new ContinueGame();
     public static int maxPlayerCount = 4;
     public static boolean indevResourcePack = false;
-    public static List<Duck> ducks = new ArrayList<Duck>();
+    public static final List<Duck> ducks = new ArrayList<Duck>();
+    public static final List<Player> spectators = new ArrayList<Player>();
     public static GameState state;
     public static Plugin plugin;
-    public static HashMap<Integer, Duck> duckCount = new HashMap<Integer, Duck>();
+    public static final HashMap<Integer, Duck> duckCount = new HashMap<Integer, Duck>();
     public static Location spawnLocation;
     public static int autoStart;
-    private static String resourcesVersion = "RESOURCES - test2";
+    private static final String resourcesVersion = "RESOURCES - test2";
     private static World duckWorld;
-    private String duckModeConsoleWelcome = "\n\n" +
+    private final String duckModeConsoleWelcome = "\n\n" +
             "######                       #     #                      \n" +
             "#     # #    #  ####  #    # ##   ##  ####  #####  ###### \n" +
             "#     # #    # #    # #   #  # # # # #    # #    # #      \n" +

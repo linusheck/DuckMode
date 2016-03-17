@@ -22,6 +22,23 @@ public class DuckReflection {
         }
     }
 
+    public static Class<?> getCraftBukkitClass(String className) {
+        String packageName = Bukkit.getServer().getClass().getPackage().getName();
+        String version = packageName.split("\\.")[3];
+        String path = "org.bukkit.craftbukkit." + version + "." + className;
+        try {
+            return Class.forName(path);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static String getVersion() {
+        String packageName = Bukkit.getServer().getClass().getPackage().getName();
+        return packageName.split("\\.")[3];
+    }
+
     public static Object getConnection(Player p) {
         try {
             Method getHandle = p.getClass().getMethod("getHandle");

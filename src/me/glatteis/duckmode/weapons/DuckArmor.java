@@ -35,7 +35,7 @@ public class DuckArmor extends DuckWeapon {
             double chestRandom = Math.random();
             if (chestRandom < 0.7) {
                 p.getInventory().setChestplate(null);
-                p.getWorld().playSound(p.getLocation(), Sound.ANVIL_LAND, 10, 1);
+                p.getWorld().playSound(p.getLocation(), Sound.BLOCK_ANVIL_LAND, 10, 1);
                 return false;
             }
         }
@@ -43,7 +43,7 @@ public class DuckArmor extends DuckWeapon {
             double legRandom = Math.random();
             if (legRandom < 0.7) {
                 p.getInventory().setLeggings(null);
-                p.getWorld().playSound(p.getLocation(), Sound.ANVIL_LAND, 10, 1);
+                p.getWorld().playSound(p.getLocation(), Sound.BLOCK_ANVIL_LAND, 10, 1);
                 return false;
             }
         }

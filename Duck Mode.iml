@@ -24,14 +24,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
-      <library name="spigot-18.jar">
-        <CLASSES>
-          <root url="jar://F:/Server1.8/spigot-18.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
+    <orderEntry type="library" name="spigot_server" level="project" />
   </component>
 </module>

@@ -56,7 +56,7 @@ public class Grenade extends DuckWeapon {
         fusedGrenades.add(i.getItemMeta().getLore());
         i.setType(Material.BAKED_POTATO);
         for (Player p2 : DuckMain.getWorld().getPlayers()) {
-            p2.playSound(p.getLocation(), Sound.SPIDER_IDLE, 10, 1);
+            p2.playSound(p.getLocation(), Sound.ENTITY_SPIDER_AMBIENT, 10, 1);
         }
 
         new BukkitRunnable() {
@@ -69,7 +69,10 @@ public class Grenade extends DuckWeapon {
                     item.remove();
                 } else {
                     for (Player thisPlayer : p.getWorld().getPlayers()) {
-                        if (thisPlayer.getInventory().getItem(4) != null && thisPlayer.getInventory().getItem(4).getItemMeta().getLore().equals(i.getItemMeta().getLore())) {
+                        if (thisPlayer.getInventory().getItem(4) != null &&
+                                thisPlayer.getInventory().getItem(4).getItemMeta().getLore().equals(i.getItemMeta().getLore()) ||
+                                thisPlayer.getInventory().getItemInOffHand() != null &&
+                                thisPlayer.getInventory().getItemInOffHand().getItemMeta().getLore().equals(i.getItemMeta().getLore())) {
                             thisPlayer.getWorld().createExplosion(thisPlayer.getLocation(), 6);
                             thisPlayer.getInventory().remove(i);
                             fusedGrenades.remove(i.getItemMeta().getLore());
@@ -86,6 +89,7 @@ public class Grenade extends DuckWeapon {
             item.setVelocity(p.getLocation().getDirection().multiply(0.8));
             thrownGrenades.put(i.getItemMeta().getLore(), item);
             p.getInventory().setItem(4, null);
+            p.getInventory().setItemInOffHand(null);
         } else { //The player has thrown the Item using Q.
             thrownGrenades.put(i.getItemMeta().getLore(), event.getItemDrop());
         }

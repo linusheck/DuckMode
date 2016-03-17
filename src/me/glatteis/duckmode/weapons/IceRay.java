@@ -29,7 +29,7 @@ public class IceRay extends DuckGun {
         Location location = event.getPlayer().getLocation();
         IceRayBullet bullet = new IceRayBullet(velocity, location, event.getPlayer());
         bullet.getCalcRunnable().runTaskTimer(DuckMain.getPlugin(), 0, 0);
-        DuckMain.getWorld().playSound(location, Sound.FIZZ, 1.2f, 1);
+        DuckMain.getWorld().playSound(location, Sound.BLOCK_FIRE_EXTINGUISH, 1.2f, 1);
     }
 
     private void freezePlayer(final Duck duck) {

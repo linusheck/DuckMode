@@ -19,7 +19,7 @@ public class Pistol extends DuckGun {
 
     @Override
     public void safeShoot(final PlayerInteractEvent e) {
-        Arrow a = e.getPlayer().launchProjectile(Arrow.class);
+        Arrow a = e.getPlayer().launchProjectile(Arrow.class, e.getPlayer().getLocation().getDirection());
         a.setShooter(e.getPlayer());
         a.setVelocity(a.getVelocity().multiply(4));
         a.setCustomName("Pistol");
@@ -41,7 +41,7 @@ public class Pistol extends DuckGun {
             if (hitBlock.getType().equals(Material.GLASS) || hitBlock.getType().equals(Material.STAINED_GLASS)) {
                 hitBlock.setType(Material.AIR);
                 for (Duck d : DuckMain.ducks) {
-                    d.getPlayer().playSound(hitBlock.getLocation(), Sound.GLASS, 10, 1);
+                    d.getPlayer().playSound(hitBlock.getLocation(), Sound.BLOCK_GLASS_BREAK, 10, 1);
                 }
             }
         }

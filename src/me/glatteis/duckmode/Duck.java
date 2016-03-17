@@ -89,7 +89,7 @@ public class Duck {
         getPlayer().teleport(new Location(DuckMain.getWorld(), getPlayer().getLocation().getX(), 25., getPlayer().getLocation().getZ()));
         getPlayer().updateInventory();
         for (Duck d2 : DuckMain.ducks) {
-            d2.getPlayer().playSound(getPlayer().getLocation(), Sound.ANVIL_LAND, 10, 1);
+            d2.getPlayer().playSound(getPlayer().getLocation(), Sound.BLOCK_ANVIL_LAND, 10, 1);
         }
         DuckReflectionMethods.title(getPlayer(), ChatColor.MAGIC.toString(), 0, 10, 5);
         DuckReflectionMethods.subtitle(getPlayer(), ChatColor.RED + Messages.getString("you_are_dead"), 0, 10, 5);

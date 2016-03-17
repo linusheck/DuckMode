@@ -16,6 +16,7 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.server.ServerListPingEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerListener implements Listener {
@@ -74,9 +75,18 @@ public class PlayerListener implements Listener {
             if (DuckMain.autoStart > 0 && Bukkit.getOnlinePlayers().size() >= DuckMain.autoStart) {
                 ListenerActivator.lobbyCountdown();
             }
+        } else {
+            // TODO: 17.03.2016 SPECTATOR MODE
         }
 
-        e.getPlayer().setResourcePack(DuckMain.indevResourcePack ? "https://www.dropbox.com/s/baxsqe7310dwyze/rp_dev.zip?dl=1" : "https://www.dropbox.com/s/z9wbr65n6csvzsq/rp.zip?dl=1");
+        String resourcePackLink = DuckMain.indevResourcePack ?
+                "http://glatteis.bplaced.net/DuckMode/resource_pack_indev.zip" :
+                "http://glatteis.bplaced.net/DuckMode/rp.php"; //This PHP script just counts the number of downloads and redirects to the actual download
+        e.getPlayer().setResourcePack(resourcePackLink);
+
+        //Old resource pack links:
+        //https://www.dropbox.com/s/baxsqe7310dwyze/rp_dev.zip?dl=1
+        //jttps://www.dropbox.com/s/z9wbr65n6csvzsq/rp.zip?dl=1
     }
 
     @EventHandler
@@ -94,6 +104,7 @@ public class PlayerListener implements Listener {
                 DuckMain.ducks.remove(d);
                 e.setQuitMessage("DUCK MODE -> " + ChatColor.YELLOW + Messages.getString("duck") + " " + d.getPlayer().getName() + " " + Messages.getString("leave_message"));
                 if (DuckMain.ducks.size() == 0 && DuckMain.state != GameState.LOBBY) {
+                    DuckMain.getPlugin().getLogger().info("Server is empty, shutting down...");
                     Bukkit.shutdown();
                 }
                 break;
@@ -109,11 +120,15 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerPickupItem(PlayerPickupItemEvent e) {
         e.setCancelled(true);
-        if (e.getPlayer().getInventory().getItem(4) != null) return;
+        if (!isEmpty(e.getPlayer().getInventory().getItem(4)) || !isEmpty(e.getPlayer().getInventory().getItemInOffHand())) return;
         e.getPlayer().getInventory().setItem(4, e.getItem().getItemStack());
         e.getItem().remove();
-        e.getPlayer().getWorld().playSound(e.getPlayer().getLocation(), Sound.ITEM_PICKUP, 1,
+        e.getPlayer().getWorld().playSound(e.getPlayer().getLocation(), Sound.ENTITY_ITEM_PICKUP, 1,
                 (float) Math.random() - 0.5f);
+    }
+
+    private boolean isEmpty(ItemStack itemStack) {
+        return itemStack == null || itemStack.getType().equals(Material.AIR);
     }
 
     @EventHandler
@@ -121,7 +136,7 @@ public class PlayerListener implements Listener {
         e.getPlayer().getInventory().setHeldItemSlot(4);
         if (e.getNewSlot() == 0) {
             for (Duck d : DuckMain.ducks) {
-                d.getPlayer().playSound(d.getPlayer().getLocation(), Sound.CHICKEN_HURT, 10, 1);
+                d.getPlayer().playSound(d.getPlayer().getLocation(), Sound.ENTITY_CHICKEN_HURT, 10, 1);
             }
         }
         e.setCancelled(true);
@@ -156,7 +171,5 @@ public class PlayerListener implements Listener {
                 }
             }
         }
-
     }
-
 }

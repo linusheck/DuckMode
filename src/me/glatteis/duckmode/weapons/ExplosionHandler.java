@@ -54,8 +54,9 @@ public class ExplosionHandler implements Listener {
                     }
                 }
                 PlayerGameListener.explosion(e.getBlock().getLocation(), e.blockList());
+
             }
-        }.runTaskLater(DuckMain.getPlugin(), 6L);
+        }.runTaskLater(DuckMain.getPlugin(), 1);
     }
 
     @SuppressWarnings("deprecation")

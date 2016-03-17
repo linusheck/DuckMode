@@ -16,7 +16,7 @@ public class RocketLauncher extends DuckGun {
 
     @Override
     public void safeShoot(PlayerInteractEvent e) {
-        Snowball s = e.getPlayer().launchProjectile(Snowball.class);
+        Snowball s = e.getPlayer().launchProjectile(Snowball.class, e.getPlayer().getLocation().getDirection());
         s.setCustomName("RocketLauncher");
         s.setVelocity(s.getVelocity().multiply(4));
         s.setShooter(e.getPlayer());

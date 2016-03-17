@@ -53,8 +53,8 @@ public class MachineGun extends DuckWeapon {
         else
             shotsLeft.put(itemLore, shotsLeft.get(itemLore) - 1);
 
-        DuckMain.getWorld().playSound(event.getPlayer().getLocation(), Sound.BLAZE_HIT, 10, 1);
-        Arrow a = event.getPlayer().launchProjectile(Arrow.class);
+        DuckMain.getWorld().playSound(event.getPlayer().getLocation(), Sound.ENTITY_BLAZE_HURT, 10, 1);
+        Arrow a = event.getPlayer().launchProjectile(Arrow.class, event.getPlayer().getLocation().getDirection());
         a.setShooter(event.getPlayer());
         a.setVelocity(a.getVelocity().multiply(6));
         a.setCustomName("MachineGun");

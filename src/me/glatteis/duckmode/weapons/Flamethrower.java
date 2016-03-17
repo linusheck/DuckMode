@@ -56,7 +56,7 @@ public class Flamethrower extends DuckWeapon {
         b.setVelocity(event.getPlayer().getLocation().getDirection().multiply(4));
         b.setShooter(event.getPlayer());
 
-        DuckMain.getWorld().playSound(event.getPlayer().getLocation(), Sound.WITHER_SHOOT, 1, 0);
+        DuckMain.getWorld().playSound(event.getPlayer().getLocation(), Sound.ENTITY_WITHER_SHOOT, 1, 0);
 
         WeaponWatch.cooldown.add(event.getItem().getItemMeta().getLore());
 

@@ -21,7 +21,7 @@ import java.util.Random;
 public class SchematicLoad {
 
     private static WorldEditPlugin e = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
-    ;
+
     private static ArrayList<SchematicToLoad> schematicsToLoad = new ArrayList<SchematicToLoad>();
 
     private static EditSession session = e.getWorldEdit().getEditSessionFactory().getEditSession(new BukkitWorld(DuckMain.getWorld()), Integer.MAX_VALUE);

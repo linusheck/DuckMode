@@ -17,13 +17,12 @@ public class SuicideBomb extends DuckWeapon {
 
     @Override
     public void shoot(final PlayerInteractEvent event) {
-        DuckMain.getWorld().playSound(event.getPlayer().getLocation(), Sound.VILLAGER_YES, 1, 0);
+        DuckMain.getWorld().playSound(event.getPlayer().getLocation(), Sound.ENTITY_VILLAGER_YES, 1, 0);
         event.getPlayer().getInventory().remove(Material.BOWL);
         new BukkitRunnable() {
             int i = 0;
-
             public void run() {
-                DuckMain.getWorld().playSound(event.getPlayer().getLocation(), Sound.NOTE_PIANO, 1, 1);
+                DuckMain.getWorld().playSound(event.getPlayer().getLocation(), Sound.BLOCK_NOTE_HARP, 1, 1);
                 if (i == 5) {
                     DuckMain.getWorld().createExplosion(event.getPlayer().getLocation(), 20);
                     cancel();

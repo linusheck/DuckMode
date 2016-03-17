@@ -19,8 +19,8 @@ public class OneShotPistol extends DuckGun {
 
     @Override
     public void safeShoot(final PlayerInteractEvent e) {
-        DuckMain.getWorld().playSound(e.getPlayer().getLocation(), Sound.BLAZE_HIT, 10, 1);
-        Arrow a = e.getPlayer().launchProjectile(Arrow.class);
+        DuckMain.getWorld().playSound(e.getPlayer().getLocation(), Sound.ENTITY_BLAZE_HURT, 10, 1);
+        Arrow a = e.getPlayer().launchProjectile(Arrow.class, e.getPlayer().getLocation().getDirection());
         a.setShooter(e.getPlayer());
         a.setVelocity(a.getVelocity().multiply(4));
         a.setCustomName("OneShotPistol");
@@ -42,7 +42,7 @@ public class OneShotPistol extends DuckGun {
             if (hitBlock.getType().equals(Material.GLASS) || hitBlock.getType().equals(Material.STAINED_GLASS)) {
                 hitBlock.setType(Material.AIR);
                 for (Duck d : DuckMain.ducks) {
-                    d.getPlayer().playSound(hitBlock.getLocation(), Sound.GLASS, 10, 1);
+                    d.getPlayer().playSound(hitBlock.getLocation(), Sound.BLOCK_GLASS_BREAK, 10, 1);
                 }
             }
         }

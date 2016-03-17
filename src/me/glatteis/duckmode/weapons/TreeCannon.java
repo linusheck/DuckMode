@@ -22,8 +22,8 @@ public class TreeCannon extends DuckGun {
 
     @Override
     public void safeShoot(final PlayerInteractEvent event) {
-        DuckMain.getWorld().playSound(event.getPlayer().getLocation(), Sound.HORSE_IDLE, 10, 1);
-        Arrow a = event.getPlayer().launchProjectile(Arrow.class);
+        DuckMain.getWorld().playSound(event.getPlayer().getLocation(), Sound.ENTITY_HORSE_AMBIENT, 10, 1);
+        Arrow a = event.getPlayer().launchProjectile(Arrow.class, event.getPlayer().getLocation().getDirection());
         a.setShooter(event.getPlayer());
         a.setVelocity(a.getVelocity().multiply(2));
         a.setCustomName("TreeCannon");

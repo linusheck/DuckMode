@@ -42,7 +42,8 @@ public class ContinueGame {
         SpawnWeapons.enable();
         for (int i = 0; i < DuckMain.ducks.size(); i++) {
             DuckMain.duckCount.put(i, DuckMain.ducks.get(i));
-            DuckMain.ducks.get(i).getPlayer().playSound(DuckMain.ducks.get(i).getPlayer().getLocation(), Sound.CHICKEN_EGG_POP, 10, 1);
+            DuckMain.ducks.get(i).getPlayer().playSound(DuckMain.ducks.get(i).getPlayer().getLocation(),
+                    Sound.ENTITY_CHICKEN_EGG, 10, 1);
         }
         new BukkitRunnable() {
             boolean where = true;
@@ -96,14 +97,14 @@ public class ContinueGame {
                     canNotMove = true;
                 } else if (counter < 3) {
                     for (Duck d : DuckMain.ducks) {
-                        d.getPlayer().playSound(d.getPlayer().getLocation(), Sound.PISTON_EXTEND, 10, 1);
+                        d.getPlayer().playSound(d.getPlayer().getLocation(), Sound.BLOCK_PISTON_EXTEND, 10, 1);
                         DuckReflectionMethods.title(d.getPlayer(), " ", 0, 10, 0);
                         DuckReflectionMethods.subtitle(d.getPlayer(), sentences[counter - 1], 0, 10, 0);
                     }
                 } else if (counter == 3) {
                     for (Duck d : DuckMain.ducks) {
                         d.setDead(false);
-                        d.getPlayer().playSound(d.getPlayer().getLocation(), Sound.PISTON_RETRACT, 10, 1);
+                        d.getPlayer().playSound(d.getPlayer().getLocation(), Sound.BLOCK_PISTON_CONTRACT, 10, 1);
                         StaticMethods.enableJumping(d.getPlayer());
                         DuckReflectionMethods.title(d.getPlayer(), " ", 0, 10, 0);
                         DuckReflectionMethods.subtitle(d.getPlayer(), sentences[counter - 1], 0, 10, 0);
@@ -157,7 +158,7 @@ public class ContinueGame {
                                     for (Duck d2 : DuckMain.ducks) {
                                         DuckReflectionMethods.title(d2.getPlayer(), ChatColor.WHITE + d.getPlayer().getName(), 5, 20, 5);
                                         DuckReflectionMethods.subtitle(d2.getPlayer(), ChatColor.WHITE + Messages.getString("survived"), 5, 20, 5);
-                                        d2.getPlayer().playSound(d.getPlayer().getLocation(), Sound.NOTE_PIANO, 20, 5);
+                                        d2.getPlayer().playSound(d.getPlayer().getLocation(), Sound.BLOCK_NOTE_HARP, 20, 5);
                                     }
                                     WinTracker.addWin(d);
                                     DuckMain.continueGame.setRoundHasEnded(true);
