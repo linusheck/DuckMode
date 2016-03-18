@@ -72,7 +72,7 @@ public class Grenade extends DuckWeapon {
                         if (thisPlayer.getInventory().getItem(4) != null &&
                                 thisPlayer.getInventory().getItem(4).getItemMeta().getLore().equals(i.getItemMeta().getLore()) ||
                                 thisPlayer.getInventory().getItemInOffHand() != null &&
-                                thisPlayer.getInventory().getItemInOffHand().getItemMeta().getLore().equals(i.getItemMeta().getLore())) {
+                                        thisPlayer.getInventory().getItemInOffHand().getItemMeta().getLore().equals(i.getItemMeta().getLore())) {
                             thisPlayer.getWorld().createExplosion(thisPlayer.getLocation(), 6);
                             thisPlayer.getInventory().remove(i);
                             fusedGrenades.remove(i.getItemMeta().getLore());

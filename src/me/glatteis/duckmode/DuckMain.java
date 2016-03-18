@@ -5,6 +5,7 @@ import com.sk89q.worldedit.bukkit.BukkitWorld;
 import me.glatteis.duckmode.game.ContinueGame;
 import me.glatteis.duckmode.game.DuckLobby;
 import me.glatteis.duckmode.game.GameState;
+import me.glatteis.duckmode.game.Intermission;
 import me.glatteis.duckmode.generation.SchematicLoad;
 import me.glatteis.duckmode.generation.SchematicToLoad;
 import me.glatteis.duckmode.generation.config.Dimension;
@@ -31,16 +32,17 @@ public class DuckMain extends JavaPlugin {
 
     public static final Dimension STATIC_DIMENSION = new Dimension("Static");
     public static final ContinueGame continueGame = new ContinueGame();
-    public static int maxPlayerCount = 4;
-    public static boolean indevResourcePack = false;
+    public static final Intermission intermission = new Intermission();
     public static final List<Duck> ducks = new ArrayList<Duck>();
     public static final List<Player> spectators = new ArrayList<Player>();
+    public static final HashMap<Integer, Duck> duckCount = new HashMap<Integer, Duck>();
+    private static final String resourcesVersion = "RESOURCES - test2";
+    public static int maxPlayerCount = 4;
+    public static boolean indevResourcePack = false;
     public static GameState state;
     public static Plugin plugin;
-    public static final HashMap<Integer, Duck> duckCount = new HashMap<Integer, Duck>();
     public static Location spawnLocation;
     public static int autoStart;
-    private static final String resourcesVersion = "RESOURCES - test2";
     private static World duckWorld;
     private final String duckModeConsoleWelcome = "\n\n" +
             "######                       #     #                      \n" +

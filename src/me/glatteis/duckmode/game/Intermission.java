@@ -28,9 +28,9 @@ import java.util.ArrayList;
 
 public class Intermission implements Listener {
 
-    private static ArrayList<Block> toRemove = new ArrayList<Block>();
+    private ArrayList<Block> toRemove = new ArrayList<Block>();
 
-    public static void create() {
+    public void create() {
         final int pointsToWin = SettingDatabase.settingSwitches.get(SettingTypes.POINTS_TO_WIN.toString()).get(SettingDatabase.intSetting.get(SettingTypes.POINTS_TO_WIN.toString()));
         new BukkitRunnable() {
             public void run() {
@@ -58,14 +58,14 @@ public class Intermission implements Listener {
         }.runTask(DuckMain.getPlugin());
     }
 
-    private static void removeRocks() {
+    private void removeRocks() {
         for (Block b : toRemove) {
             b.setType(Material.AIR);
         }
         toRemove.clear();
     }
 
-    public static void intermission() {
+    public void intermission() {
         DuckMain.state = GameState.INTERMISSION;
         DuckMain.continueGame.setRoundHasEnded(false);
         removeRocks();

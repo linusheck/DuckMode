@@ -14,12 +14,19 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
-public class PlayerListener implements Listener {
+class PlayerListener implements Listener {
+
+    /*
+    This class listens for a lot of stuff. These are all the game mechanics that didn't get their own class, like
+    MOTD, join handling etc.
+     */
 
     @EventHandler
     public void onEntityDamage(EntityDamageEvent e) {
@@ -40,6 +47,7 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e) {
         if (DuckMain.continueGame.canNotMove) {
+            if (e.getPlayer().getGameMode().equals(GameMode.SPECTATOR)) return;
             if (e.getFrom().distance(e.getTo()) < 0.1) return;
             if (e.getFrom().getY() > e.getTo().getY())
                 e.getPlayer().teleport(new Location(e.getFrom().getWorld(), e.getFrom().getX(),
@@ -49,34 +57,42 @@ public class PlayerListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerLogin(AsyncPlayerPreLoginEvent e) {
-        if (!DuckMain.state.equals(GameState.LOBBY) || (Bukkit.getServer().getOnlinePlayers().size() >= DuckMain.maxPlayerCount)) {
-            e.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_OTHER);
-            e.setKickMessage(ChatColor.RED + Messages.getString("game_started_or_full"));
-        }
-    }
-
-    @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
         if (DuckMain.state.equals(GameState.LOBBY) && (!(Bukkit.getServer().getOnlinePlayers().size() > DuckMain.maxPlayerCount))) {
             e.getPlayer().setGameMode(GameMode.ADVENTURE);
             e.getPlayer().getInventory().setHeldItemSlot(4);
-            Location loc = DuckMain.spawnLocation;
-            Duck d = new Duck(e.getPlayer(), loc);
+            Duck d = new Duck(e.getPlayer(), DuckMain.spawnLocation);
             DuckMain.ducks.add(d);
-            e.getPlayer().teleport(loc);
             d.prepareInventory();
             StaticMethods.disableJumping(e.getPlayer());
             DuckReflectionMethods.title(e.getPlayer(), ChatColor.RED + Messages.getString("big_screen_title"), 5, 30, 5);
             DuckReflectionMethods.subtitle(e.getPlayer(), Messages.getString("version") + " " + DuckMain.getPlugin().getDescription().getVersion(), 5, 30, 5);
 
+            e.getPlayer().teleport(DuckMain.spawnLocation);
             e.setJoinMessage("DUCK MODE -> " + ChatColor.YELLOW + Messages.getString("duck") + " " + e.getPlayer().getName() + " " + Messages.getString("join_message"));
 
             if (DuckMain.autoStart > 0 && Bukkit.getOnlinePlayers().size() >= DuckMain.autoStart) {
                 ListenerActivator.lobbyCountdown();
             }
         } else {
-            // TODO: 17.03.2016 SPECTATOR MODE
+            DuckMain.spectators.add(e.getPlayer());
+            e.getPlayer().setGameMode(GameMode.SPECTATOR);
+            e.setJoinMessage(null);
+            e.getPlayer().sendMessage(Messages.getString("spectator.join"));
+            if (DuckMain.state.equals(GameState.LOBBY)) {
+                e.getPlayer().teleport(DuckMain.spawnLocation);
+            } else {
+                Vector averageLocation = new Vector();
+                int aliveDucks = 0;
+                for (Duck d : DuckMain.ducks) {
+                    aliveDucks++;
+                    if (!d.isDead()) {
+                        averageLocation = averageLocation.add(d.getPlayer().getLocation().toVector());
+                    }
+                }
+                averageLocation = averageLocation.divide(new Vector(aliveDucks, aliveDucks, aliveDucks));
+                e.getPlayer().teleport(averageLocation.toLocation(DuckMain.getWorld()));
+            }
         }
 
         String resourcePackLink = DuckMain.indevResourcePack ?
@@ -86,7 +102,7 @@ public class PlayerListener implements Listener {
 
         //Old resource pack links:
         //https://www.dropbox.com/s/baxsqe7310dwyze/rp_dev.zip?dl=1
-        //jttps://www.dropbox.com/s/z9wbr65n6csvzsq/rp.zip?dl=1
+        //https://www.dropbox.com/s/z9wbr65n6csvzsq/rp.zip?dl=1
     }
 
     @EventHandler
@@ -110,6 +126,7 @@ public class PlayerListener implements Listener {
                 break;
             }
         }
+        if (DuckMain.spectators.contains(e.getPlayer())) DuckMain.spectators.remove(e.getPlayer());
     }
 
     @EventHandler
@@ -120,7 +137,8 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerPickupItem(PlayerPickupItemEvent e) {
         e.setCancelled(true);
-        if (!isEmpty(e.getPlayer().getInventory().getItem(4)) || !isEmpty(e.getPlayer().getInventory().getItemInOffHand())) return;
+        if (!isEmpty(e.getPlayer().getInventory().getItem(4)) || !isEmpty(e.getPlayer().getInventory().getItemInOffHand()))
+            return;
         e.getPlayer().getInventory().setItem(4, e.getItem().getItemStack());
         e.getItem().remove();
         e.getPlayer().getWorld().playSound(e.getPlayer().getLocation(), Sound.ENTITY_ITEM_PICKUP, 1,
@@ -133,6 +151,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerChangeSlot(PlayerItemHeldEvent e) {
+        if (e.getPlayer().getGameMode().equals(GameMode.SPECTATOR)) return;
         e.getPlayer().getInventory().setHeldItemSlot(4);
         if (e.getNewSlot() == 0) {
             for (Duck d : DuckMain.ducks) {
@@ -144,6 +163,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
+        if (DuckMain.spectators.contains(e.getWhoClicked())) return;
         e.setCancelled(true);
         e.getWhoClicked().closeInventory();
     }
@@ -172,4 +192,12 @@ public class PlayerListener implements Listener {
             }
         }
     }
+
+    @EventHandler
+    public void onInventoryDrag(InventoryDragEvent event) {
+        //Prevent from switching into offhand
+        event.setCancelled(true);
+    }
+
+
 }

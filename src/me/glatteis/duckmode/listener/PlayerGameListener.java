@@ -23,8 +23,11 @@ import java.util.List;
 
 public class PlayerGameListener implements Listener {
 
-    List<Material> meleeWeapons = Collections.singletonList(Material.IRON_SWORD);
+    /*
+    This class has a few central game mechanics built in.
+     */
 
+    private List<Material> meleeWeapons = Collections.singletonList(Material.IRON_SWORD);
 
     public static void explosion(Location location, List<Block> blockList) {
         double radius = 0;
@@ -45,16 +48,13 @@ public class PlayerGameListener implements Listener {
     public void onPlayerHurt(EntityDamageEvent e) {
         e.setCancelled(true);
         String killCause = "";
-        if (e.getCause().equals(DamageCause.FALL) || e.getCause().equals(DamageCause.SUFFOCATION)) {
+        if (e.getCause().equals(DamageCause.FALL) || e.getCause().equals(DamageCause.SUFFOCATION))
             return;
-        }
         if (!(e.getEntity() instanceof Player) && e.getCause().equals(DamageCause.VOID)) {
             e.getEntity().remove();
             return;
         }
-        if (!DuckMain.state.equals(GameState.INGAME)) {
-            return;
-        }
+        if (!DuckMain.state.equals(GameState.INGAME)) return;
         if (e.getEntity() instanceof Player) {
             Bukkit.getLogger().info(e.getCause().toString());
             if (e instanceof EntityDamageByEntityEvent) {

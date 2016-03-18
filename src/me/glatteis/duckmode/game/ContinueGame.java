@@ -14,8 +14,10 @@ import me.glatteis.duckmode.weapons.WeaponWatch;
 import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import java.util.List;
 
@@ -63,7 +65,7 @@ public class ContinueGame {
                     if (roundCounter == SettingDatabase.settingSwitches.get(SettingTypes.ROUNDS.toString()).get(SettingDatabase.intSetting.get(SettingTypes.ROUNDS.toString()))) {
                         DuckMain.state = GameState.INTERMISSION;
                         roundCounter = 0;
-                        Intermission.intermission();
+                        DuckMain.intermission.intermission();
                         return;
                     }
                     DuckMain.state = GameState.PREGAME;
@@ -120,12 +122,20 @@ public class ContinueGame {
         }.runTaskTimer(DuckMain.getPlugin(), 50L, 6L);
     }
 
-    public void round(final List<Location> spawnPoints) {
+    private void round(final List<Location> spawnPoints) {
+        Location spectatorSpawn = new Location(DuckMain.getWorld(), 0, 0, 0);
         for (int i = 0; i < DuckMain.ducks.size(); i++) {
             DuckMain.ducks.get(i).prepareInventory();
             DuckMain.ducks.get(i).getPlayer().updateInventory();
             DuckMain.ducks.get(i).getPlayer().teleport(spawnPoints.get(i));
             DuckMain.ducks.get(i).getPlayer().setGameMode(GameMode.ADVENTURE);
+            spectatorSpawn = spectatorSpawn.add(spawnPoints.get(i));
+        }
+        spectatorSpawn = spectatorSpawn.toVector().divide(
+                new Vector(spawnPoints.size(), spawnPoints.size(), spawnPoints.size())
+        ).toLocation(DuckMain.getWorld());
+        for (Player p : DuckMain.spectators) {
+            p.teleport(spectatorSpawn);
         }
         spawnPoints.clear();
     }

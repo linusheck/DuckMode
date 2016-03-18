@@ -21,6 +21,7 @@ public class SuicideBomb extends DuckWeapon {
         event.getPlayer().getInventory().remove(Material.BOWL);
         new BukkitRunnable() {
             int i = 0;
+
             public void run() {
                 DuckMain.getWorld().playSound(event.getPlayer().getLocation(), Sound.BLOCK_NOTE_HARP, 1, 1);
                 if (i == 5) {
