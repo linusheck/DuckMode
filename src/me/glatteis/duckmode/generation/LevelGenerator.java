@@ -64,19 +64,19 @@ public class LevelGenerator {
         int maxHeight, maxX, maxZ;
 
         if (dimensionData.getMaxX() == null || dimensionData.getMinX() == null) {
-            maxX = ((int) (Math.random() * 6) + 5);
+            maxX = ((int) (Math.random() * DuckMain.ducks.size() * 2) + 4);
         } else {
             maxX = ((int) (Math.random() * (dimensionData.getMaxX() - dimensionData.getMinX())) + dimensionData.getMinX());
         }
 
         if (dimensionData.getMaxY() == null || dimensionData.getMinY() == null) {
-            maxHeight = ((int) (Math.random() * 6) + 5);
+            maxHeight = ((int) (Math.random() * 5) + 2);
         } else {
             maxHeight = ((int) (Math.random() * (dimensionData.getMaxY() - dimensionData.getMinY())) + dimensionData.getMinY());
         }
 
         if (dimensionData.getMaxZ() == null || dimensionData.getMinZ() == null) {
-            maxZ = ((int) (Math.random() * 6) + 5);
+            maxZ = ((int) (Math.random() * DuckMain.ducks.size() * 2) + 4);
         } else {
             maxZ = ((int) (Math.random() * (dimensionData.getMaxZ() - dimensionData.getMinZ())) + dimensionData.getMinZ());
         }
@@ -132,10 +132,9 @@ public class LevelGenerator {
                     boolean forceSpawn = false;
 
 
-                    if (spawns.contains(new org.bukkit.util.Vector(x, y, z))) {
-                        Bukkit.getLogger().info("Forcing spawn...");
+                    if (spawns.contains(new org.bukkit.util.Vector(x, y, z)))
                         forceSpawn = true;
-                    }
+
 
                     int rotation = 0;
                     int axis = 0;
@@ -186,7 +185,6 @@ public class LevelGenerator {
                                 if (c) continue;
 
                                 //We found a container that could spawn here.
-                                if (forceSpawn) Bukkit.getLogger().info("Spawn forced.");
 
                                 rotation = fAngle;
                                 axis = fAxis;

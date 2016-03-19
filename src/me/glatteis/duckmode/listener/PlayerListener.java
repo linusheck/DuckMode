@@ -21,7 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-class PlayerListener implements Listener {
+public class PlayerListener implements Listener {
 
     /*
     This class listens for a lot of stuff. These are all the game mechanics that didn't get their own class, like
@@ -195,6 +195,7 @@ class PlayerListener implements Listener {
 
     @EventHandler
     public void onInventoryDrag(InventoryDragEvent event) {
+        Bukkit.getLogger().info("IvDrgEvt");
         //Prevent from switching into offhand
         event.setCancelled(true);
     }

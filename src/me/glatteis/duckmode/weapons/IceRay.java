@@ -48,7 +48,7 @@ public class IceRay extends DuckGun {
     private class IceRayBullet {
         private BukkitRunnable calcRunnable;
 
-        public IceRayBullet(final Vector velocity, final Location location, final Player shooter) {
+        private IceRayBullet(final Vector velocity, final Location location, final Player shooter) {
             calcRunnable =
                     new BukkitRunnable() {
                         private int totalDistance = 0;
@@ -75,7 +75,7 @@ public class IceRay extends DuckGun {
                     };
         }
 
-        public BukkitRunnable getCalcRunnable() {
+        private BukkitRunnable getCalcRunnable() {
             return calcRunnable;
         }
     }

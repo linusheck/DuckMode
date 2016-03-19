@@ -36,7 +36,7 @@ public class DuckMain extends JavaPlugin {
     public static final List<Duck> ducks = new ArrayList<Duck>();
     public static final List<Player> spectators = new ArrayList<Player>();
     public static final HashMap<Integer, Duck> duckCount = new HashMap<Integer, Duck>();
-    private static final String resourcesVersion = "RESOURCES - test2";
+    private static final String resourcesVersion = "RESOURCES - SNAPSHOT_19_03_2016";
     public static int maxPlayerCount = 4;
     public static boolean indevResourcePack = false;
     public static GameState state;

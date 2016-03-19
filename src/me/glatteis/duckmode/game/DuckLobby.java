@@ -23,7 +23,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class DuckLobby implements Listener {
 
-    boolean activated = false;
+    private boolean activated = false;
 
     public static void configureLobby() {
         Location sourceLocation = new Location(DuckMain.getWorld(), 1, 23, 5);
@@ -88,7 +88,7 @@ public class DuckLobby implements Listener {
         if (activated) return;
         if (DuckMain.state.equals(GameState.LOBBY)) {
             if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getClickedBlock().getType().equals(Material.WOOD_BUTTON)
-                    && (DuckMain.ducks.size() > 1 || DuckMain.indevResourcePack)) {
+                    && DuckMain.ducks.size() > 0) {
                 countdown();
             }
         }
@@ -98,7 +98,6 @@ public class DuckLobby implements Listener {
         activated = true;
         new BukkitRunnable() {
             int countdown = 3;
-
             public void run() {
                 for (Duck d : DuckMain.ducks) {
                     DuckReflectionMethods.title(d.getPlayer(), ChatColor.RED.toString() + countdown, 0, 20, 5);
