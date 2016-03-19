@@ -104,7 +104,7 @@ public class DuckLobby implements Listener {
                 }
                 countdown--;
                 if (countdown == 0) {
-                    DuckMain.intermission.create();
+                    Intermission.getIntermission().create();
                     DuckMain.continueGame.startRound();
                     this.cancel();
                 }

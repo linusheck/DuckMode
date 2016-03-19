@@ -65,14 +65,14 @@ public class ContinueGame {
                     if (roundCounter == SettingDatabase.settingSwitches.get(SettingTypes.ROUNDS.toString()).get(SettingDatabase.intSetting.get(SettingTypes.ROUNDS.toString()))) {
                         DuckMain.state = GameState.INTERMISSION;
                         roundCounter = 0;
-                        DuckMain.intermission.intermission();
+                        Intermission.getIntermission().intermission();
                         return;
                     }
                     DuckMain.state = GameState.PREGAME;
                     roundCounter++;
                     where = !where;
 
-                    LevelGenerator.buildPlace(where);
+                    LevelGenerator.getLevelGenerator().buildPlace(where);
                     final List<Location> spawnPoints = PlayerSpawnPoints.spawnPoints;
                     SchematicLoad.loadAllSchematics(new SchematicLoad.ThenTask() {
                         @Override
@@ -97,6 +97,7 @@ public class ContinueGame {
                     }
                     round(spawnPoints);
                     canNotMove = true;
+                    LevelGenerator.getLevelGenerator().initLightingForLastGeneration();
                 } else if (counter < 3) {
                     for (Duck d : DuckMain.ducks) {
                         d.getPlayer().playSound(d.getPlayer().getLocation(), Sound.BLOCK_PISTON_EXTEND, 10, 1);

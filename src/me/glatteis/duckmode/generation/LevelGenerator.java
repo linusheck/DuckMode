@@ -18,15 +18,23 @@ import java.util.Random;
 
 public class LevelGenerator {
 
-    private static Location lastStartLocation = null;
-    private static org.bukkit.util.Vector lastMax = null;
-    private static Dimension lastDimensionData = null;
+    private static LevelGenerator levelGenerator = new LevelGenerator();
+
+    private LevelGenerator() {}
+
+    public static LevelGenerator getLevelGenerator() {
+        return levelGenerator;
+    }
+
+    private Location lastStartLocation = null;
+    private org.bukkit.util.Vector lastMax = null;
+    private Dimension lastDimensionData = null;
 
     private static File path = new File(new File(System.getProperty("java.class.path")).getAbsoluteFile().getParentFile().toString() + "/plugins/DuckMode/Generation/");
 
-    private static List<String> blackList = new ArrayList<String>();
+    private List<String> blackList = new ArrayList<String>();
 
-    public static void buildPlace(final boolean where) {
+    public void buildPlace(final boolean where) {
         Location startLocation;
         int providedSpawns = DuckMain.ducks.size();
         if (where) {
@@ -225,10 +233,13 @@ public class LevelGenerator {
         lastDimensionData = dimensionData;
 
 
+
         Bukkit.getLogger().info("Start Location: " + startLocation);
     }
 
-    private static void info(int i) {
-        Bukkit.getLogger().info(i + "");
+    public void initLightingForLastGeneration() {
+        SchematicLoad.initLighting(lastStartLocation.toVector(), lastStartLocation.toVector().add(
+                new org.bukkit.util.Vector(lastDimensionData.getSizeX() * lastMax.getX(),
+                        lastDimensionData.getSizeY() * lastMax.getY(), lastDimensionData.getSizeZ() * lastMax.getZ())));
     }
 }

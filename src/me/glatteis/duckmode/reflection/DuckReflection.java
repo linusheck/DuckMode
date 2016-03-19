@@ -10,7 +10,7 @@ import java.lang.reflect.Method;
 public class DuckReflection {
 
 
-    private static Class<?> getNMSClass(String className) {
+    public static Class<?> getNMSClass(String className) {
         String packageName = Bukkit.getServer().getClass().getPackage().getName();
         String version = packageName.split("\\.")[3];
         String path = "net.minecraft.server." + version + "." + className;
@@ -39,7 +39,7 @@ public class DuckReflection {
         return packageName.split("\\.")[3];
     }
 
-    private static Object getConnection(Player p) {
+    public static Object getConnection(Player p) {
         try {
             Method getHandle = p.getClass().getMethod("getHandle");
             Object nmsPlayer = getHandle.invoke(p);
@@ -52,7 +52,7 @@ public class DuckReflection {
         }
     }
 
-    private static void sendPacket(Object connection, Object packet) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public static void sendPacket(Object connection, Object packet) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         Method sendPacket = connection.getClass().getMethod("sendPacket", getNMSClass("Packet"));
         sendPacket.invoke(connection, packet);
     }

@@ -13,7 +13,7 @@ import java.util.List;
 public class ListenerActivator {
 
     public static List<Listener> listeners = Arrays.asList(new DuckLobby(), new PlayerGameListener(),
-            new Intermission(), new PlayerListener(), new ExplosionHandler());
+            Intermission.getIntermission(), new PlayerListener(), new ExplosionHandler());
     public static DuckWeapon[] weapons = {new IronSword(), new RocketLauncher(), new DuckArmor(), new OneShotPistol(),
             new Pistol(), new Shotgun(), new TNTBarrel(), new Grenade(), new MachineGun(), new Flamethrower(),
             new TreeCannon(), new SuicideBomb(), new IceRay()};

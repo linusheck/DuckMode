@@ -28,6 +28,14 @@ import java.util.ArrayList;
 
 public class Intermission implements Listener {
 
+    private static Intermission intermission = new Intermission();
+
+    public static Intermission getIntermission() {
+        return intermission;
+    }
+
+    private Intermission() {}
+
     private ArrayList<Block> toRemove = new ArrayList<Block>();
 
     public void create() {

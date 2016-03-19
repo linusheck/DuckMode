@@ -8,6 +8,7 @@ import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.schematic.SchematicFormat;
 import me.glatteis.duckmode.DuckMain;
 import me.glatteis.duckmode.game.PlayerSpawnPoints;
+import me.glatteis.duckmode.reflection.DuckReflection;
 import me.glatteis.duckmode.weapons.WeaponWatch;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -15,6 +16,7 @@ import org.bukkit.Material;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -53,7 +55,6 @@ public class SchematicLoad {
                         if (finished != null) finished.finished();
                         return;
                     }
-
                     SchematicToLoad s = schematicsToLoad.get(position);
                     Vector v = s.getVector();
                     DuckMain.getWorld().getChunkAt(v.getBlockX(), v.getBlockY()).load();
@@ -136,7 +137,6 @@ public class SchematicLoad {
     }
 
     public static void clearArea(org.bukkit.util.Vector vector1, org.bukkit.util.Vector vector2) {
-
         final org.bukkit.util.Vector v1 = new org.bukkit.util.Vector(
                 Math.min(vector1.getX(), vector2.getX()),
                 Math.min(vector1.getY(), vector2.getY()),
@@ -151,6 +151,34 @@ public class SchematicLoad {
             for (int y = v1.getBlockY(); y < v2.getBlockY(); y++) {
                 for (int z = v1.getBlockZ(); z < v2.getBlockZ(); z++) {
                     DuckMain.getWorld().getBlockAt(x, y, z).setType(Material.AIR);
+                }
+            }
+        }
+    }
+
+    public static void initLighting(org.bukkit.util.Vector vector1, org.bukkit.util.Vector vector2) {
+        final org.bukkit.util.Vector v1 = new org.bukkit.util.Vector(
+                Math.min(vector1.getX(), vector2.getX()),
+                Math.min(vector1.getY(), vector2.getY()),
+                Math.min(vector1.getZ(), vector2.getZ()));
+
+        final org.bukkit.util.Vector v2 = new org.bukkit.util.Vector(
+                Math.max(vector1.getX(), vector2.getX()),
+                Math.max(vector1.getY(), vector2.getY()),
+                Math.max(vector1.getZ(), vector2.getZ()));
+
+        for (int x = v1.getBlockX(); x <= v2.getBlockX(); x+= 16) {
+            for (int y = v1.getBlockY(); y <= v2.getBlockY(); y += 16) {
+                Object craftChunk = DuckReflection.getCraftBukkitClass("CraftChunk").cast(new Location(DuckMain.getWorld(), x, 0, y).getChunk());
+                try {
+                    Object handle = craftChunk.getClass().getMethod("getHandle").invoke(craftChunk);
+                    handle.getClass().getMethod("initLighting").invoke(handle);
+                } catch (IllegalAccessException e1) {
+                    e1.printStackTrace();
+                } catch (InvocationTargetException e1) {
+                    e1.printStackTrace();
+                } catch (NoSuchMethodException e1) {
+                    e1.printStackTrace();
                 }
             }
         }
