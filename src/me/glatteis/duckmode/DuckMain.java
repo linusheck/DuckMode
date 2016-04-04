@@ -1,5 +1,6 @@
 package me.glatteis.duckmode;
 
+import com.google.gson.Gson;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sun.xml.internal.ws.api.server.SDDocument;
@@ -15,6 +16,7 @@ import me.glatteis.duckmode.hats.Hats;
 import me.glatteis.duckmode.listener.ListenerActivator;
 import me.glatteis.duckmode.messages.Messages;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.message.Message;
 import org.bukkit.*;
 import org.bukkit.command.Command;
@@ -24,15 +26,20 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 public class DuckMain extends JavaPlugin {
 
-    //So much static, I know. This approach is pretty old, but it works.
-
+    //So much static, I know. This approach is pretty old.
+    
     public static final Dimension STATIC_DIMENSION = new Dimension("Static");
     public static final ContinueGame continueGame = new ContinueGame();
     public static final List<Duck> ducks = new ArrayList<Duck>();
@@ -125,7 +132,7 @@ public class DuckMain extends JavaPlugin {
             FileUtils.copyURLToFile(resourceURL, dest);
             String folder = new File(System.getProperty("java.class.path")).getAbsoluteFile().getParentFile().toString() +
                     "/plugins/";
-            StaticMethods.unZipIt(duckModeFile, folder);
+            unzip(duckModeFile, folder);
             writeVersion(versionFile.toString());
             getLogger().info("Success!");
         } catch (IOException e) {
@@ -226,4 +233,28 @@ public class DuckMain extends JavaPlugin {
         joinTitle = getConfig().getString("join-title").equals("%default%") ? null : getConfig().getString("join-title");
         joinSubtitle = getConfig().getString("join-subtitle").equals("%default%") ? null : getConfig().getString("join-subtitle");
     }
+
+    private void unzip(String file, String outputDir) throws IOException {
+        ZipFile zipFile = new ZipFile(file);
+        try {
+            Enumeration<? extends ZipEntry> entries = zipFile.entries();
+            while (entries.hasMoreElements()) {
+                ZipEntry entry = entries.nextElement();
+                File entryDestination = new File(outputDir, entry.getName());
+                if (entry.isDirectory())
+                    entryDestination.mkdirs();
+                else {
+                    entryDestination.getParentFile().mkdirs();
+                    InputStream in = zipFile.getInputStream(entry);
+                    OutputStream out = new FileOutputStream(entryDestination);
+                    IOUtils.copy(in, out);
+                    IOUtils.closeQuietly(in);
+                    out.close();
+                }
+            }
+        } finally {
+            zipFile.close();
+        }
+    }
+
 }
