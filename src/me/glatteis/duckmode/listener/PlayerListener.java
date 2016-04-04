@@ -4,14 +4,19 @@ import me.glatteis.duckmode.Duck;
 import me.glatteis.duckmode.DuckMain;
 import me.glatteis.duckmode.StaticMethods;
 import me.glatteis.duckmode.game.GameState;
+import me.glatteis.duckmode.generation.SchematicLoad;
 import me.glatteis.duckmode.messages.Messages;
 import me.glatteis.duckmode.reflection.DuckReflectionMethods;
 import me.glatteis.duckmode.weapons.WeaponWatch;
 import org.bukkit.*;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockFadeEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
@@ -65,11 +70,36 @@ public class PlayerListener implements Listener {
             DuckMain.ducks.add(d);
             d.prepareInventory();
             StaticMethods.disableJumping(e.getPlayer());
-            DuckReflectionMethods.title(e.getPlayer(), ChatColor.RED + Messages.getString("big_screen_title"), 5, 30, 5);
-            DuckReflectionMethods.subtitle(e.getPlayer(), Messages.getString("version") + " " + DuckMain.getPlugin().getDescription().getVersion(), 5, 30, 5);
+            DuckReflectionMethods.title(e.getPlayer(), ChatColor.RED +
+                    (DuckMain.joinTitle != null ? DuckMain.joinTitle : Messages.getString("big_screen_title")), 5, 30, 5);
+            DuckReflectionMethods.subtitle(e.getPlayer(), DuckMain.joinSubtitle != null ? DuckMain.joinSubtitle :
+                    Messages.getString("version") + " " + DuckMain.getPlugin().getDescription().getVersion(), 5, 30, 5);
 
             e.getPlayer().teleport(DuckMain.spawnLocation);
             e.setJoinMessage("DUCK MODE -> " + ChatColor.YELLOW + Messages.getString("duck") + " " + e.getPlayer().getName() + " " + Messages.getString("join_message"));
+
+             //Init lighting in lobby because that is bugged by default in 1.9.2 >
+            //And yes, I tried Chunk#initLighting. Didn't work at all. :(
+
+            new BukkitRunnable() {
+                int i = 0;
+                Location l = new Location(DuckMain.getWorld(), 7, 21, 9);
+                @Override
+                public void run() {
+                    switch (i) {
+                        case 0:
+                            l.getBlock().setType(Material.SEA_LANTERN);
+                            i = 1;
+                            break;
+                        case 1:
+                            l.getBlock().setType(Material.AIR);
+                            cancel();
+                            break;
+                    }
+                }
+            }.runTaskTimer(DuckMain.getPlugin(), 5, 1);
+
+            //
 
             if (DuckMain.autoStart > 0 && Bukkit.getOnlinePlayers().size() >= DuckMain.autoStart) {
                 ListenerActivator.lobbyCountdown();
@@ -195,10 +225,17 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onInventoryDrag(InventoryDragEvent event) {
-        Bukkit.getLogger().info("IvDrgEvt");
         //Prevent from switching into offhand
         event.setCancelled(true);
     }
+
+    @EventHandler
+    public void onEntityInteract(EntityInteractEvent event) {
+        if (event.getBlock().getType() == Material.SOIL && event.getEntity() instanceof Creature)
+            event.setCancelled(true);
+    }
+
+
 
 
 }

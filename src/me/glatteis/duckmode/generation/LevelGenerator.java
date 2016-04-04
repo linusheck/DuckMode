@@ -8,6 +8,7 @@ import me.glatteis.duckmode.generation.config.DimensionContainer;
 import me.glatteis.duckmode.generation.config.SpawnNextTo;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -238,8 +239,13 @@ public class LevelGenerator {
     }
 
     public void initLightingForLastGeneration() {
-        SchematicLoad.initLighting(lastStartLocation.toVector(), lastStartLocation.toVector().add(
-                new org.bukkit.util.Vector(lastDimensionData.getSizeX() * lastMax.getX(),
-                        lastDimensionData.getSizeY() * lastMax.getY(), lastDimensionData.getSizeZ() * lastMax.getZ())));
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                SchematicLoad.initLighting(lastStartLocation.toVector(), lastStartLocation.toVector().add(
+                        new org.bukkit.util.Vector(lastDimensionData.getSizeX() * lastMax.getX(),
+                                lastDimensionData.getSizeY() * lastMax.getY(), lastDimensionData.getSizeZ() * lastMax.getZ())));
+            }
+        }.runTaskLater(DuckMain.getPlugin(), 100);
     }
 }

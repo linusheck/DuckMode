@@ -66,7 +66,7 @@ public class DuckLobby implements Listener {
                 s.update();
             }
             if (setting.equals(SettingTypes.HATS.toString())) {
-                Hats.openHatInventory(e.getPlayer());
+                DuckMain.hats.openHatInventory(e.getPlayer());
             }
         }
     }
@@ -74,10 +74,11 @@ public class DuckLobby implements Listener {
     @EventHandler
     public void hatChoice(InventoryClickEvent e) {
         if (e.getCurrentItem() == null) return;
+        Bukkit.getLogger().info("Soosenbinder. " + (e.getInventory().getTitle()) + ", " + SettingTypes.HATS.toString());
         if (ChatColor.stripColor(e.getInventory().getTitle()).equals(SettingTypes.HATS.toString())) {
             for (Duck d : DuckMain.ducks) {
                 if (d.getPlayer().equals(e.getWhoClicked())) {
-                    Hats.setHat(d, e.getCurrentItem());
+                    DuckMain.hats.setHat(d, e.getCurrentItem());
                 }
             }
         }

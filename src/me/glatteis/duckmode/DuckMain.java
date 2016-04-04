@@ -2,16 +2,20 @@ package me.glatteis.duckmode;
 
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
+import com.sun.xml.internal.ws.api.server.SDDocument;
 import me.glatteis.duckmode.game.ContinueGame;
 import me.glatteis.duckmode.game.DuckLobby;
 import me.glatteis.duckmode.game.GameState;
+import me.glatteis.duckmode.generation.LevelGenerator;
 import me.glatteis.duckmode.generation.SchematicLoad;
 import me.glatteis.duckmode.generation.SchematicToLoad;
 import me.glatteis.duckmode.generation.config.Dimension;
 import me.glatteis.duckmode.generation.config.DimensionContainer;
 import me.glatteis.duckmode.hats.Hats;
 import me.glatteis.duckmode.listener.ListenerActivator;
+import me.glatteis.duckmode.messages.Messages;
 import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.message.Message;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -34,7 +38,10 @@ public class DuckMain extends JavaPlugin {
     public static final List<Duck> ducks = new ArrayList<Duck>();
     public static final List<Player> spectators = new ArrayList<Player>();
     public static final HashMap<Integer, Duck> duckCount = new HashMap<Integer, Duck>();
+    public static Hats hats;
     private static final String resourcesVersion = "RESOURCES - SNAPSHOT_19_03_2016";
+    public static String joinTitle = null;
+    public static String joinSubtitle = null;
     public static int maxPlayerCount = 4;
     public static boolean indevResourcePack = false;
     public static GameState state;
@@ -132,6 +139,11 @@ public class DuckMain extends JavaPlugin {
 
         setPlugin(this);
         configSetup();
+        Messages.enable();
+
+        getLogger().info("Initializing all of the hats...");
+
+        hats = new Hats();
 
         getLogger().info("Getting world folder...");
 
@@ -160,7 +172,8 @@ public class DuckMain extends JavaPlugin {
 
         getLogger().info("Generating lobby...");
 
-        SchematicLoad.addSchematic(new SchematicToLoad(new BukkitWorld(duckWorld), new Vector(0, 20, 0), new DimensionContainer("lobby/lobby"), STATIC_DIMENSION, 0, 0));
+        SchematicLoad.addSchematic(new SchematicToLoad(new BukkitWorld(duckWorld), new Vector(0, 20, 0),
+                new DimensionContainer("lobby/lobby"), STATIC_DIMENSION, 0, 0));
         SchematicLoad.loadAllSchematics(new SchematicLoad.ThenTask() {
             @Override
             public void finished() {
@@ -191,7 +204,7 @@ public class DuckMain extends JavaPlugin {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("addsecrethats")) {
-            Hats.addSecretHats();
+            hats.addSecretHats();
         } else if (cmd.getName().equalsIgnoreCase("start")) {
             ListenerActivator.lobbyCountdown();
         }
@@ -203,10 +216,14 @@ public class DuckMain extends JavaPlugin {
         getConfig().addDefault("indev-resource-pack", false);
         getConfig().addDefault("message-language", "EN");
         getConfig().addDefault("auto-start-player-count", 0);
+        getConfig().addDefault("join-title", "%default%");
+        getConfig().addDefault("join-subtitle", "%default%");
         getConfig().options().copyDefaults(true);
         saveConfig();
         indevResourcePack = getConfig().getBoolean("indev-resource-pack");
         maxPlayerCount = getConfig().getInt("max-player-count");
         autoStart = getConfig().getInt("auto-start-player-count");
+        joinTitle = getConfig().getString("join-title").equals("%default%") ? null : getConfig().getString("join-title");
+        joinSubtitle = getConfig().getString("join-subtitle").equals("%default%") ? null : getConfig().getString("join-subtitle");
     }
 }

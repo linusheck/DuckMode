@@ -11,13 +11,15 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 public class Hats {
 
-    private static boolean secretHatsAlreadyAdded = false;
-    private static Hat[] sampleHats = {new Bill(), new Burger(), new Fedora(), new StrangeCake(), new NotchHead(), new RandomSkin(), new Pumpkin()};
+    private boolean secretHatsAlreadyAdded = false;
+    private Hat[] sampleHats = {new Bill(), new Burger(), new Fedora(), new Television(), new StrangeCake(),
+            new NotchHead(), new RandomSkin(), new Pumpkin()};
 
-    public static void setHat(Duck d, ItemStack i) {
+    public void setHat(Duck d, ItemStack i) {
         if (d.getHat() != null && d.getHat() instanceof EntityHat) {
             EntityHat eH = (EntityHat) d.getHat();
             for (Entity e : eH.getEntities()) {
@@ -27,8 +29,7 @@ public class Hats {
             }
         }
         for (Hat h : sampleHats) {
-            if (ChatColor.stripColor(h.getName())
-                    .equals(ChatColor.stripColor(i.getItemMeta().getDisplayName()))) {
+            if (h.getStack().getType().equals(i.getType())) {
                 Bukkit.getLogger().info(h.getName() + " added");
                 try {
                     d.setHat(h.getClass().newInstance());
@@ -42,7 +43,7 @@ public class Hats {
         }
     }
 
-    public static void setHat(Duck d, String i) {
+    public void setHat(Duck d, String i) {
         if (d.getHat() != null && d.getHat() instanceof EntityHat) {
             EntityHat eH = (EntityHat) d.getHat();
             for (Entity e : eH.getEntities()) {
@@ -67,20 +68,20 @@ public class Hats {
     }
 
 
-    public static void openHatInventory(Player p) {
+    public void openHatInventory(Player p) {
         Inventory hatInv = Bukkit.getServer().createInventory(null, sampleHats.length + (9 - sampleHats.length % 9), ChatColor.BLUE + Messages.getString("Hats.hats_inventory_title"));
         for (Hat h : sampleHats) {
             ItemStack i = h instanceof EntityHat ? new ItemStack(((EntityHat) h).getShowItemStack()) : new ItemStack(h.getStack());
             ItemMeta m = i.getItemMeta();
             m.setDisplayName(ChatColor.BLUE + ChatColor.BOLD.toString() + h.getName());
-            m.setLore(Arrays.asList(ChatColor.RESET + h.getLore()));
+            m.setLore(Collections.singletonList(ChatColor.RESET + h.getLore()));
             i.setItemMeta(m);
             hatInv.addItem(i);
         }
         p.openInventory(hatInv);
     }
 
-    public static void addSecretHats() {
+    public void addSecretHats() {
         if (secretHatsAlreadyAdded) {
             return;
         }

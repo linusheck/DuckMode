@@ -26,7 +26,9 @@ public class SchematicLoad {
 
     private static ArrayList<SchematicToLoad> schematicsToLoad = new ArrayList<SchematicToLoad>();
 
-    private static EditSession session = e.getWorldEdit().getEditSessionFactory().getEditSession(new BukkitWorld(DuckMain.getWorld()), Integer.MAX_VALUE);
+    @SuppressWarnings("deprecation")
+    private static EditSession session = e.getWorldEdit().getEditSessionFactory()
+            .getEditSession(new BukkitWorld(DuckMain.getWorld()), Integer.MAX_VALUE);
 
     public static void addSchematic(SchematicToLoad s) {
         schematicsToLoad.add(s);
@@ -168,11 +170,12 @@ public class SchematicLoad {
                 Math.max(vector1.getZ(), vector2.getZ()));
 
         for (int x = v1.getBlockX(); x <= v2.getBlockX(); x+= 16) {
-            for (int y = v1.getBlockY(); y <= v2.getBlockY(); y += 16) {
-                Object craftChunk = DuckReflection.getCraftBukkitClass("CraftChunk").cast(new Location(DuckMain.getWorld(), x, 0, y).getChunk());
+            for (int z = v1.getBlockZ(); z <= v2.getBlockZ(); z += 16) {
+                Object craftChunk = DuckReflection.getCraftBukkitClass("CraftChunk").cast(new Location(DuckMain.getWorld(), x, 0, z).getChunk());
                 try {
                     Object handle = craftChunk.getClass().getMethod("getHandle").invoke(craftChunk);
                     handle.getClass().getMethod("initLighting").invoke(handle);
+                    Bukkit.getLogger().info("Trying to init lighing for " + craftChunk.toString());
                 } catch (IllegalAccessException e1) {
                     e1.printStackTrace();
                 } catch (InvocationTargetException e1) {

@@ -61,7 +61,7 @@ public class PlayerGameListener implements Listener {
                 EntityDamageByEntityEvent edbeEvent = (EntityDamageByEntityEvent) e;
                 Entity damager = edbeEvent.getDamager();
                 if (damager instanceof Player) {
-                    if (!meleeWeapons.contains(((Player) damager).getItemInHand().getType())) {
+                    if (!meleeWeapons.contains(((Player) damager).getInventory().getItemInMainHand().getType())) {
                         return;
                     }
                     killCause = Messages.getString("you_were_slain_by") + " " + damager.getName() + ".";
