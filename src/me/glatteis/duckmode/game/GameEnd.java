@@ -15,7 +15,7 @@ import java.util.*;
 
 public class GameEnd {
 
-    public static void win() {
+    public void win() {
         Queue<Duck> ducks = new LinkedList<Duck>();
         Collection<Integer> duckScores = new ArrayList<Integer>(WinTracker.wins.values());
         for (int i = 0; i < DuckMain.ducks.size(); i++) {
@@ -34,6 +34,7 @@ public class GameEnd {
                 break;
             }
             ducks.add(thisDuck);
+            duckScores.remove(maxValue);
         }
 
         List<Duck> winnerDucks = new ArrayList<Duck>();
@@ -63,7 +64,7 @@ public class GameEnd {
         }.runTaskLater(DuckMain.getPlugin(), 400);
     }
 
-    private static void runCommands(Duck winner, Duck second, Duck third) throws IOException {
+    private void runCommands(Duck winner, Duck second, Duck third) throws IOException {
         String path = new File(System.getProperty("java.class.path")).getAbsoluteFile().getParentFile().toString() + "/plugins/DuckMode/end_commands.txt";
         FileInputStream stream = new FileInputStream(path);
         Scanner s = new Scanner(stream);

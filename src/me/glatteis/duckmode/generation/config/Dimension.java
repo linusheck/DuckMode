@@ -22,6 +22,8 @@ public class Dimension {
     private Integer minY;
     private Integer minZ;
 
+    private Integer timeOfDay;
+
     public Dimension(String name) {
         this.name = name;
     }
@@ -81,6 +83,7 @@ public class Dimension {
         for (DimensionContainer container : dimensionContainers) {
             container.init(maxHeight);
         }
+        if (timeOfDay == null) timeOfDay = 0;
     }
 
 

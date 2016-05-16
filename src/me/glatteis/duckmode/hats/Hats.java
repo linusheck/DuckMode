@@ -10,14 +10,13 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 public class Hats {
 
     private boolean secretHatsAlreadyAdded = false;
-    private Hat[] sampleHats = {new Bill(), new Burger(), new Fedora(), new Television(), new StrangeCake(),
-            new NotchHead(), new RandomSkin(), new Pumpkin()};
+    private Hat[] sampleHats = {new Bill(), new Burger(), new Fedora(), new StrangeCake(),
+            new NotchHead(), new RandomSkin(), new Pumpkin()}; //Television broken, excluded
 
     public void setHat(Duck d, ItemStack i) {
         if (d.getHat() != null && d.getHat() instanceof EntityHat) {

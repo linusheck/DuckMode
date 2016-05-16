@@ -1,13 +1,10 @@
 package me.glatteis.duckmode;
 
-import com.google.gson.Gson;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
-import com.sun.xml.internal.ws.api.server.SDDocument;
 import me.glatteis.duckmode.game.ContinueGame;
 import me.glatteis.duckmode.game.DuckLobby;
 import me.glatteis.duckmode.game.GameState;
-import me.glatteis.duckmode.generation.LevelGenerator;
 import me.glatteis.duckmode.generation.SchematicLoad;
 import me.glatteis.duckmode.generation.SchematicToLoad;
 import me.glatteis.duckmode.generation.config.Dimension;
@@ -17,7 +14,6 @@ import me.glatteis.duckmode.listener.ListenerActivator;
 import me.glatteis.duckmode.messages.Messages;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.logging.log4j.message.Message;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -26,9 +22,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -39,7 +33,7 @@ import java.util.zip.ZipFile;
 public class DuckMain extends JavaPlugin {
 
     //So much static, I know. This approach is pretty old.
-    
+
     public static final Dimension STATIC_DIMENSION = new Dimension("Static");
     public static final ContinueGame continueGame = new ContinueGame();
     public static final List<Duck> ducks = new ArrayList<Duck>();

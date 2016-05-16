@@ -11,6 +11,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.Arrays;
 
@@ -42,10 +44,6 @@ public class Duck {
         dead = is;
     }
 
-    public Location getSpawnLocation() {
-        return spawnLocation;
-    }
-
     public Player getPlayer() {
         return p;
     }
@@ -70,7 +68,7 @@ public class Duck {
         ItemStack tag2 = tag.clone();
         ItemMeta tagM = tag.getItemMeta();
         ItemMeta tagM2 = tagM.clone();
-        tagM.setDisplayName(ChatColor.RESET + Messages.getString("code"));
+        tagM.setDisplayName(ChatColor.RESET + Messages.getString("code") + ", " + Messages.getString("textures"));
         tagM.setLore(Arrays.asList("", ChatColor.WHITE + "glatteis"));
         tagM2.setDisplayName(ChatColor.RESET + Messages.getString("textures"));
         tagM2.setLore(Arrays.asList("", ChatColor.WHITE + "IronMansVater"));
@@ -95,6 +93,16 @@ public class Duck {
         DuckReflectionMethods.subtitle(getPlayer(), ChatColor.RED + Messages.getString("you_are_dead"), 0, 10, 5);
         DuckReflectionMethods.actionbar(getPlayer(), cause);
         DuckMain.continueGame.checkForWin();
+    }
+
+    public void disableJumping() {
+        p.removePotionEffect(PotionEffectType.JUMP);
+        p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 200));
+    }
+
+    public void enableJumping() {
+        p.removePotionEffect(PotionEffectType.JUMP);
+        p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 5));
     }
 
 

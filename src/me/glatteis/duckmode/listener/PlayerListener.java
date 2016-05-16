@@ -2,9 +2,7 @@ package me.glatteis.duckmode.listener;
 
 import me.glatteis.duckmode.Duck;
 import me.glatteis.duckmode.DuckMain;
-import me.glatteis.duckmode.StaticMethods;
 import me.glatteis.duckmode.game.GameState;
-import me.glatteis.duckmode.generation.SchematicLoad;
 import me.glatteis.duckmode.messages.Messages;
 import me.glatteis.duckmode.reflection.DuckReflectionMethods;
 import me.glatteis.duckmode.weapons.WeaponWatch;
@@ -13,8 +11,6 @@ import org.bukkit.entity.Creature;
 import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockFadeEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
@@ -25,6 +21,8 @@ import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+
+import java.util.Random;
 
 public class PlayerListener implements Listener {
 
@@ -69,7 +67,7 @@ public class PlayerListener implements Listener {
             Duck d = new Duck(e.getPlayer(), DuckMain.spawnLocation);
             DuckMain.ducks.add(d);
             d.prepareInventory();
-            StaticMethods.disableJumping(e.getPlayer());
+            d.disableJumping();
             DuckReflectionMethods.title(e.getPlayer(), ChatColor.RED +
                     (DuckMain.joinTitle != null ? DuckMain.joinTitle : Messages.getString("big_screen_title")), 5, 30, 5);
             DuckReflectionMethods.subtitle(e.getPlayer(), DuckMain.joinSubtitle != null ? DuckMain.joinSubtitle :
@@ -78,12 +76,13 @@ public class PlayerListener implements Listener {
             e.getPlayer().teleport(DuckMain.spawnLocation);
             e.setJoinMessage("DUCK MODE -> " + ChatColor.YELLOW + Messages.getString("duck") + " " + e.getPlayer().getName() + " " + Messages.getString("join_message"));
 
-             //Init lighting in lobby because that is bugged by default in 1.9.2 >
+            //Init lighting in lobby because that is bugged by default in 1.9.2 >
             //And yes, I tried Chunk#initLighting. Didn't work at all. :(
 
             new BukkitRunnable() {
                 int i = 0;
                 Location l = new Location(DuckMain.getWorld(), 7, 21, 9);
+
                 @Override
                 public void run() {
                     switch (i) {
@@ -97,9 +96,7 @@ public class PlayerListener implements Listener {
                             break;
                     }
                 }
-            }.runTaskTimer(DuckMain.getPlugin(), 5, 1);
-
-            //
+            }.runTaskTimer(DuckMain.getPlugin(), 5, 1);;
 
             if (DuckMain.autoStart > 0 && Bukkit.getOnlinePlayers().size() >= DuckMain.autoStart) {
                 ListenerActivator.lobbyCountdown();
@@ -127,8 +124,8 @@ public class PlayerListener implements Listener {
 
         String resourcePackLink = DuckMain.indevResourcePack ?
                 "http://glatteis.bplaced.net/DuckMode/resource_pack_indev.zip" :
-                "http://glatteis.bplaced.net/DuckMode/rp.php"; //This PHP script just counts the number of downloads and redirects to the actual download
-        e.getPlayer().setResourcePack(resourcePackLink);
+                "http://glatteis.bplaced.net/DuckMode/resource_pack.zip";
+        e.getPlayer().setResourcePack("http://glatteis.bplaced.net/DuckMode/rp.php?" + new Random().nextInt()); //Random number overrides weird resource pack caching
 
         //Old resource pack links:
         //https://www.dropbox.com/s/baxsqe7310dwyze/rp_dev.zip?dl=1
@@ -234,8 +231,6 @@ public class PlayerListener implements Listener {
         if (event.getBlock().getType() == Material.SOIL && event.getEntity() instanceof Creature)
             event.setCancelled(true);
     }
-
-
 
 
 }

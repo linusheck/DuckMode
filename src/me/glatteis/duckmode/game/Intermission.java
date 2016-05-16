@@ -3,7 +3,6 @@ package me.glatteis.duckmode.game;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
 import me.glatteis.duckmode.Duck;
 import me.glatteis.duckmode.DuckMain;
-import me.glatteis.duckmode.StaticMethods;
 import me.glatteis.duckmode.generation.SchematicLoad;
 import me.glatteis.duckmode.generation.SchematicToLoad;
 import me.glatteis.duckmode.generation.config.DimensionContainer;
@@ -87,7 +86,7 @@ public class Intermission implements Listener {
             DuckReflectionMethods.title(d.getPlayer(), ChatColor.RED + Messages.getString("intermission_big_title"), 3, 30, 3);
             d.getPlayer().setGameMode(GameMode.ADVENTURE);
             d.getPlayer().teleport(new Location(DuckMain.getWorld(), 3, 22, 1002.5 + i * 4));
-            StaticMethods.disableJumping(d.getPlayer());
+            d.disableJumping();
         }
 
         new BukkitRunnable() {
@@ -102,7 +101,7 @@ public class Intermission implements Listener {
                         if (WinTracker.wins.get(d) >= pointsToWin) {
                             new BukkitRunnable() {
                                 public void run() {
-                                    GameEnd.win();
+                                    new GameEnd().win();
                                 }
                             }.runTaskLater(DuckMain.getPlugin(), 70L);
                             this.cancel();

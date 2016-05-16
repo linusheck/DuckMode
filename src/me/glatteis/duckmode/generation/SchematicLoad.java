@@ -169,13 +169,23 @@ public class SchematicLoad {
                 Math.max(vector1.getY(), vector2.getY()),
                 Math.max(vector1.getZ(), vector2.getZ()));
 
-        for (int x = v1.getBlockX(); x <= v2.getBlockX(); x+= 16) {
-            for (int z = v1.getBlockZ(); z <= v2.getBlockZ(); z += 16) {
-                Object craftChunk = DuckReflection.getCraftBukkitClass("CraftChunk").cast(new Location(DuckMain.getWorld(), x, 0, z).getChunk());
+        for (int cx = v1.getBlockX(); cx <= v2.getBlockX(); cx+= 16) {
+            for (int cz = v1.getBlockZ(); cz <= v2.getBlockZ(); cz += 16) {
+                final org.bukkit.Chunk chunk;
+                Object craftChunk = DuckReflection.getCraftBukkitClass("CraftChunk").cast(chunk = new Location(DuckMain.getWorld(), cx, 0, cz).getChunk());
                 try {
                     Object handle = craftChunk.getClass().getMethod("getHandle").invoke(craftChunk);
                     handle.getClass().getMethod("initLighting").invoke(handle);
-                    Bukkit.getLogger().info("Trying to init lighing for " + craftChunk.toString());
+                    /*for (int x = 0; x < 16; x += 6) for (int y = 0; y < v2.getBlockY(); y += 6) for (int z = 0; z < 16; z += 6) {
+                        final Material material = chunk.getBlock(x, y, z).getType();
+                        chunk.getBlock(x, y, z).setType(Material.SEA_LANTERN);
+                        final int finalX = x, finalY = y, finalZ = z;
+                        new BukkitRunnable() {
+                            public void run() {
+                                chunk.getBlock(finalX, finalY, finalZ).setType(material);
+                            }
+                        }.runTaskLater(DuckMain.getPlugin(), 10);
+                    }*/
                 } catch (IllegalAccessException e1) {
                     e1.printStackTrace();
                 } catch (InvocationTargetException e1) {

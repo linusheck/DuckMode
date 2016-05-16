@@ -2,7 +2,6 @@ package me.glatteis.duckmode.game;
 
 import me.glatteis.duckmode.Duck;
 import me.glatteis.duckmode.DuckMain;
-import me.glatteis.duckmode.hats.Hats;
 import me.glatteis.duckmode.messages.Messages;
 import me.glatteis.duckmode.reflection.DuckReflectionMethods;
 import me.glatteis.duckmode.setting.SettingDatabase;
@@ -65,7 +64,7 @@ public class DuckLobby implements Listener {
                 s.setLine(2, ChatColor.GOLD + switchSetting);
                 s.update();
             }
-            if (setting.equals(SettingTypes.HATS.toString())) {
+            else if (setting.equals(SettingTypes.HATS.toString())) {
                 DuckMain.hats.openHatInventory(e.getPlayer());
             }
         }

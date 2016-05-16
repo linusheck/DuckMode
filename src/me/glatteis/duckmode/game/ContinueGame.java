@@ -2,7 +2,6 @@ package me.glatteis.duckmode.game;
 
 import me.glatteis.duckmode.Duck;
 import me.glatteis.duckmode.DuckMain;
-import me.glatteis.duckmode.StaticMethods;
 import me.glatteis.duckmode.generation.LevelGenerator;
 import me.glatteis.duckmode.generation.SchematicLoad;
 import me.glatteis.duckmode.generation.SpawnWeapons;
@@ -108,7 +107,7 @@ public class ContinueGame {
                     for (Duck d : DuckMain.ducks) {
                         d.setDead(false);
                         d.getPlayer().playSound(d.getPlayer().getLocation(), Sound.BLOCK_PISTON_CONTRACT, 10, 1);
-                        StaticMethods.enableJumping(d.getPlayer());
+                        d.enableJumping();
                         DuckReflectionMethods.title(d.getPlayer(), " ", 0, 10, 0);
                         DuckReflectionMethods.subtitle(d.getPlayer(), sentences[counter - 1], 0, 10, 0);
                     }
