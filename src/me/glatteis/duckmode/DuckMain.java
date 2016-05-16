@@ -5,7 +5,7 @@ import com.sk89q.worldedit.bukkit.BukkitWorld;
 import me.glatteis.duckmode.game.ContinueGame;
 import me.glatteis.duckmode.game.DuckLobby;
 import me.glatteis.duckmode.game.GameState;
-import me.glatteis.duckmode.generation.SchematicLoad;
+import me.glatteis.duckmode.generation.SchematicLoader;
 import me.glatteis.duckmode.generation.SchematicToLoad;
 import me.glatteis.duckmode.generation.config.Dimension;
 import me.glatteis.duckmode.generation.config.DimensionContainer;
@@ -173,9 +173,9 @@ public class DuckMain extends JavaPlugin {
 
         getLogger().info("Generating lobby...");
 
-        SchematicLoad.addSchematic(new SchematicToLoad(new BukkitWorld(duckWorld), new Vector(0, 20, 0),
+        SchematicLoader.addSchematic(new SchematicToLoad(new BukkitWorld(duckWorld), new Vector(0, 20, 0),
                 new DimensionContainer("lobby/lobby"), STATIC_DIMENSION, 0, 0));
-        SchematicLoad.loadAllSchematics(new SchematicLoad.ThenTask() {
+        SchematicLoader.loadAllSchematics(new SchematicLoader.ThenTask() {
             @Override
             public void finished() {
                 DuckLobby.configureLobby();

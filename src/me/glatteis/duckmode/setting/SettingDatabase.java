@@ -10,7 +10,7 @@ import java.util.List;
 public class SettingDatabase {
 
     public static HashMap<Sign, String> settingsSigns = new HashMap<Sign, String>(); //Contains Sign objects for every setting
-    public static List<String> settings = Arrays.asList(SettingTypes.ROUNDS.toString(), SettingTypes.POINTS_TO_WIN.toString(), ChatColor.YELLOW + SettingTypes.START_GAME.toString(), SettingTypes.HATS.toString(), SettingTypes.START_GAME.toString());
+    public static List<String> settings = Arrays.asList(SettingType.ROUNDS.toString(), SettingType.POINTS_TO_WIN.toString(), ChatColor.YELLOW + SettingType.START_GAME.toString(), SettingType.HATS.toString(), SettingType.START_GAME.toString());
     public static HashMap<String, Integer> intSetting = new HashMap<String, Integer>(); //Contains index of current setting for each setting
     public static HashMap<String, List<Integer>> settingSwitches = null; //Contains list of what is possible
 
@@ -33,8 +33,8 @@ public class SettingDatabase {
 
     private static void configureList() {
         settingSwitches = new HashMap<String, List<Integer>>();
-        settingSwitches.put(SettingTypes.POINTS_TO_WIN.toString(), Arrays.asList(5, 10, 15, 20, 25, 30, 40, 50));
-        settingSwitches.put(SettingTypes.ROUNDS.toString(), Arrays.asList(2, 5, 10, 15, 20));
+        settingSwitches.put(SettingType.POINTS_TO_WIN.toString(), Arrays.asList(5, 10, 15, 20, 25, 30, 40, 50));
+        settingSwitches.put(SettingType.ROUNDS.toString(), Arrays.asList(2, 5, 10, 15, 20));
     }
 
 }

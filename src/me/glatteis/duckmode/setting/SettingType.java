@@ -2,7 +2,7 @@ package me.glatteis.duckmode.setting;
 
 import me.glatteis.duckmode.messages.Messages;
 
-public enum SettingTypes {
+public enum SettingType {
 
     POINTS_TO_WIN(Messages.getString("points_to_win")),
     ROUNDS(Messages.getString("rounds")),
@@ -11,7 +11,7 @@ public enum SettingTypes {
 
     String s;
 
-    SettingTypes(String s) {
+    SettingType(String s) {
         this.s = s;
     }
 

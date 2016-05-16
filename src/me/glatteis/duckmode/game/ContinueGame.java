@@ -3,12 +3,12 @@ package me.glatteis.duckmode.game;
 import me.glatteis.duckmode.Duck;
 import me.glatteis.duckmode.DuckMain;
 import me.glatteis.duckmode.generation.LevelGenerator;
-import me.glatteis.duckmode.generation.SchematicLoad;
+import me.glatteis.duckmode.generation.SchematicLoader;
 import me.glatteis.duckmode.generation.SpawnWeapons;
 import me.glatteis.duckmode.messages.Messages;
 import me.glatteis.duckmode.reflection.DuckReflectionMethods;
 import me.glatteis.duckmode.setting.SettingDatabase;
-import me.glatteis.duckmode.setting.SettingTypes;
+import me.glatteis.duckmode.setting.SettingType;
 import me.glatteis.duckmode.weapons.WeaponWatch;
 import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
@@ -59,9 +59,9 @@ public class ContinueGame {
                     }
                     WeaponWatch.durability.clear();
                     SpawnWeapons.locations.clear();
-                    SchematicLoad.clear();
+                    SchematicLoader.clear();
                     roundHasEnded = false;
-                    if (roundCounter == SettingDatabase.settingSwitches.get(SettingTypes.ROUNDS.toString()).get(SettingDatabase.intSetting.get(SettingTypes.ROUNDS.toString()))) {
+                    if (roundCounter == SettingDatabase.settingSwitches.get(SettingType.ROUNDS.toString()).get(SettingDatabase.intSetting.get(SettingType.ROUNDS.toString()))) {
                         DuckMain.state = GameState.INTERMISSION;
                         roundCounter = 0;
                         Intermission.getIntermission().intermission();
@@ -73,7 +73,7 @@ public class ContinueGame {
 
                     LevelGenerator.getLevelGenerator().buildPlace(where);
                     final List<Location> spawnPoints = PlayerSpawnPoints.spawnPoints;
-                    SchematicLoad.loadAllSchematics(new SchematicLoad.ThenTask() {
+                    SchematicLoader.loadAllSchematics(new SchematicLoader.ThenTask() {
                         @Override
                         public void finished() {
                             countdownToRound(spawnPoints);

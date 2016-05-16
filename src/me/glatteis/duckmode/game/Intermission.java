@@ -3,13 +3,13 @@ package me.glatteis.duckmode.game;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
 import me.glatteis.duckmode.Duck;
 import me.glatteis.duckmode.DuckMain;
-import me.glatteis.duckmode.generation.SchematicLoad;
+import me.glatteis.duckmode.generation.SchematicLoader;
 import me.glatteis.duckmode.generation.SchematicToLoad;
 import me.glatteis.duckmode.generation.config.DimensionContainer;
 import me.glatteis.duckmode.messages.Messages;
 import me.glatteis.duckmode.reflection.DuckReflectionMethods;
 import me.glatteis.duckmode.setting.SettingDatabase;
-import me.glatteis.duckmode.setting.SettingTypes;
+import me.glatteis.duckmode.setting.SettingType;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -38,7 +38,7 @@ public class Intermission implements Listener {
     private ArrayList<Block> toRemove = new ArrayList<Block>();
 
     public void create() {
-        final int pointsToWin = SettingDatabase.settingSwitches.get(SettingTypes.POINTS_TO_WIN.toString()).get(SettingDatabase.intSetting.get(SettingTypes.POINTS_TO_WIN.toString()));
+        final int pointsToWin = SettingDatabase.settingSwitches.get(SettingType.POINTS_TO_WIN.toString()).get(SettingDatabase.intSetting.get(SettingType.POINTS_TO_WIN.toString()));
         new BukkitRunnable() {
             public void run() {
                 int ducks = DuckMain.ducks.size();
@@ -46,21 +46,21 @@ public class Intermission implements Listener {
                 com.sk89q.worldedit.Vector v = new com.sk89q.worldedit.Vector(0, 20, 1000);
 
                 for (int i = 0; i < ducks; i++) {
-                    SchematicLoad.addSchematic(new SchematicToLoad(bw, v.add(0, 0, i * 4), new DimensionContainer("intermission/start"),
+                    SchematicLoader.addSchematic(new SchematicToLoad(bw, v.add(0, 0, i * 4), new DimensionContainer("intermission/start"),
                             DuckMain.STATIC_DIMENSION, 0, 0));
                 }
                 v = v.add(5, 0, 0);
                 for (int i1 = 0; i1 < ducks; i1++) {
                     for (int i = 1; i < pointsToWin + 1; i++) {
-                        SchematicLoad.addSchematic(new SchematicToLoad(bw, v.add(i, 0, i1 * 4), new DimensionContainer("intermission/middle"),
+                        SchematicLoader.addSchematic(new SchematicToLoad(bw, v.add(i, 0, i1 * 4), new DimensionContainer("intermission/middle"),
                                 DuckMain.STATIC_DIMENSION, 0, 0));
                     }
                 }
                 for (int i = 0; i < ducks; i++) {
-                    SchematicLoad.addSchematic(new SchematicToLoad(bw, v.add(pointsToWin + 1, 0, i * 4), new DimensionContainer("intermission/end"),
+                    SchematicLoader.addSchematic(new SchematicToLoad(bw, v.add(pointsToWin + 1, 0, i * 4), new DimensionContainer("intermission/end"),
                             DuckMain.STATIC_DIMENSION, 0, 0));
                 }
-                SchematicLoad.loadAllSchematics();
+                SchematicLoader.loadAllSchematics();
             }
         }.runTask(DuckMain.getPlugin());
     }
@@ -91,7 +91,7 @@ public class Intermission implements Listener {
 
         new BukkitRunnable() {
             int i = -1;
-            int pointsToWin = SettingDatabase.settingSwitches.get(SettingTypes.POINTS_TO_WIN.toString()).get(SettingDatabase.intSetting.get(SettingTypes.POINTS_TO_WIN.toString()));
+            int pointsToWin = SettingDatabase.settingSwitches.get(SettingType.POINTS_TO_WIN.toString()).get(SettingDatabase.intSetting.get(SettingType.POINTS_TO_WIN.toString()));
 
             @Override
             public void run() {

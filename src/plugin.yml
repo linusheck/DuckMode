@@ -3,7 +3,7 @@ depends: [WorldEdit]
 author: glatteis
 authors: [IronMansVater]
 main: me.glatteis.duckmode.DuckMain
-version: 0.5 beta snapshot 19/03/16
+version: 0.5 beta snapshot 05/16/2016
 
 commands:
     start:

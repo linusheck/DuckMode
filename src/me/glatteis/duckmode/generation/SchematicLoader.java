@@ -8,7 +8,7 @@ import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.schematic.SchematicFormat;
 import me.glatteis.duckmode.DuckMain;
 import me.glatteis.duckmode.game.PlayerSpawnPoints;
-import me.glatteis.duckmode.reflection.DuckReflection;
+import me.glatteis.duckmode.reflection.DuckReflectionHelper;
 import me.glatteis.duckmode.weapons.WeaponWatch;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -20,7 +20,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class SchematicLoad {
+public class SchematicLoader {
 
     private static WorldEditPlugin e = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
 
@@ -138,7 +138,7 @@ public class SchematicLoad {
         return false;
     }
 
-    public static void clearArea(org.bukkit.util.Vector vector1, org.bukkit.util.Vector vector2) {
+    static void clearArea(org.bukkit.util.Vector vector1, org.bukkit.util.Vector vector2) {
         final org.bukkit.util.Vector v1 = new org.bukkit.util.Vector(
                 Math.min(vector1.getX(), vector2.getX()),
                 Math.min(vector1.getY(), vector2.getY()),
@@ -172,10 +172,11 @@ public class SchematicLoad {
         for (int cx = v1.getBlockX(); cx <= v2.getBlockX(); cx+= 16) {
             for (int cz = v1.getBlockZ(); cz <= v2.getBlockZ(); cz += 16) {
                 final org.bukkit.Chunk chunk;
-                Object craftChunk = DuckReflection.getCraftBukkitClass("CraftChunk").cast(chunk = new Location(DuckMain.getWorld(), cx, 0, cz).getChunk());
+                Object craftChunk = DuckReflectionHelper.getCraftBukkitClass("CraftChunk").cast(chunk = new Location(DuckMain.getWorld(), cx, 0, cz).getChunk());
                 try {
                     Object handle = craftChunk.getClass().getMethod("getHandle").invoke(craftChunk);
                     handle.getClass().getMethod("initLighting").invoke(handle);
+                    //This code is useful, but using it would be laggy on slow internet connections, servers and computers...
                     /*for (int x = 0; x < 16; x += 6) for (int y = 0; y < v2.getBlockY(); y += 6) for (int z = 0; z < 16; z += 6) {
                         final Material material = chunk.getBlock(x, y, z).getType();
                         chunk.getBlock(x, y, z).setType(Material.SEA_LANTERN);

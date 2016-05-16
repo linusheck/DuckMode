@@ -58,7 +58,7 @@ public class LevelGenerator {
         final Dimension dimensionData;
 
         try {
-            dimensionData = JSONToDimensionParser.parse(config);
+            dimensionData = DimensionParser.parse(config);
         } catch (IOException e) {
             Bukkit.getLogger().info("ERROR: There is no config.json inside " + dimensionFile.getName() + ". Blacklisting it.");
             blackList.add(dimensionFile.getName());
@@ -215,7 +215,7 @@ public class LevelGenerator {
                     SchematicToLoad schematicToLoad = new SchematicToLoad(duckMainBukkitWorld,
                             new Vector(there.getX(), there.getY(), there.getZ()), spawnThis, dimensionData, rotation, axis);
 
-                    SchematicLoad.addSchematic(schematicToLoad);
+                    SchematicLoader.addSchematic(schematicToLoad);
 
                     map[x][y][z] = schematicToLoad;
 
@@ -224,7 +224,7 @@ public class LevelGenerator {
         }
 
         if (lastStartLocation != null) {
-            SchematicLoad.clearArea(lastStartLocation.toVector(), lastStartLocation.toVector().add(
+            SchematicLoader.clearArea(lastStartLocation.toVector(), lastStartLocation.toVector().add(
                     new org.bukkit.util.Vector(lastDimensionData.getSizeX() * lastMax.getX(),
                             lastDimensionData.getSizeY() * lastMax.getY(), lastDimensionData.getSizeZ() * lastMax.getZ())));
         }
@@ -238,7 +238,7 @@ public class LevelGenerator {
     }
 
     public void initLightingForLastGeneration() {
-        SchematicLoad.initLighting(lastStartLocation.toVector(), lastStartLocation.toVector().add(
+        SchematicLoader.initLighting(lastStartLocation.toVector(), lastStartLocation.toVector().add(
                 new org.bukkit.util.Vector(lastDimensionData.getSizeX() * lastMax.getX(),
                         lastDimensionData.getSizeY() * lastMax.getY(), lastDimensionData.getSizeZ() * lastMax.getZ())));
     }

@@ -12,7 +12,7 @@ import java.io.InputStream;
 /**
  * Created by Linus on 01.02.2016.
  */
-public class JSONToDimensionParser {
+public class DimensionParser {
 
     public static Dimension parse(File file) throws IOException {
         Gson gson = new Gson();

@@ -7,8 +7,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public class DuckReflection {
-
+public class DuckReflectionHelper {
 
     public static Class<?> getNMSClass(String className) {
         String packageName = Bukkit.getServer().getClass().getPackage().getName();

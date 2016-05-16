@@ -5,7 +5,7 @@ import me.glatteis.duckmode.DuckMain;
 import me.glatteis.duckmode.messages.Messages;
 import me.glatteis.duckmode.reflection.DuckReflectionMethods;
 import me.glatteis.duckmode.setting.SettingDatabase;
-import me.glatteis.duckmode.setting.SettingTypes;
+import me.glatteis.duckmode.setting.SettingType;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -37,13 +37,13 @@ public class DuckLobby implements Listener {
             s.setData(matSign);
             String thisSetting = SettingDatabase.settings.get(i - 3);
             SettingDatabase.settingsSigns.put(s, thisSetting);
-            if (thisSetting.equals(SettingTypes.POINTS_TO_WIN.toString()) || thisSetting.equals(SettingTypes.ROUNDS.toString())) {
+            if (thisSetting.equals(SettingType.POINTS_TO_WIN.toString()) || thisSetting.equals(SettingType.ROUNDS.toString())) {
                 s.setLine(0, ChatColor.GREEN + thisSetting);
                 SettingDatabase.intSetting.put(thisSetting, 0);
                 s.setLine(1, ChatColor.GRAY + "==========");
                 s.setLine(2, ChatColor.GOLD + String.valueOf(SettingDatabase.switchSettingsFor(thisSetting)));
                 s.setLine(3, ChatColor.GRAY + "==========");
-            } else if (thisSetting.equals(SettingTypes.HATS.toString())) {
+            } else if (thisSetting.equals(SettingType.HATS.toString())) {
                 s.setLine(0, ChatColor.GREEN + thisSetting);
                 s.setLine(2, ChatColor.LIGHT_PURPLE + Messages.getString("hats_description"));
             }
@@ -59,12 +59,12 @@ public class DuckLobby implements Listener {
             if (setting == null) return;
             Bukkit.getLogger().info("Setting:" + setting);
             //Because this is Java 1.6, I can't make a setting switch. D:
-            if (setting.equals(SettingTypes.POINTS_TO_WIN.toString()) || setting.equals(SettingTypes.ROUNDS.toString())) {
+            if (setting.equals(SettingType.POINTS_TO_WIN.toString()) || setting.equals(SettingType.ROUNDS.toString())) {
                 String switchSetting = String.valueOf(SettingDatabase.switchSettingsFor(setting));
                 s.setLine(2, ChatColor.GOLD + switchSetting);
                 s.update();
             }
-            else if (setting.equals(SettingTypes.HATS.toString())) {
+            else if (setting.equals(SettingType.HATS.toString())) {
                 DuckMain.hats.openHatInventory(e.getPlayer());
             }
         }
@@ -73,8 +73,8 @@ public class DuckLobby implements Listener {
     @EventHandler
     public void hatChoice(InventoryClickEvent e) {
         if (e.getCurrentItem() == null) return;
-        Bukkit.getLogger().info("Soosenbinder. " + (e.getInventory().getTitle()) + ", " + SettingTypes.HATS.toString());
-        if (ChatColor.stripColor(e.getInventory().getTitle()).equals(SettingTypes.HATS.toString())) {
+        Bukkit.getLogger().info("Soosenbinder. " + (e.getInventory().getTitle()) + ", " + SettingType.HATS.toString());
+        if (ChatColor.stripColor(e.getInventory().getTitle()).equals(SettingType.HATS.toString())) {
             for (Duck d : DuckMain.ducks) {
                 if (d.getPlayer().equals(e.getWhoClicked())) {
                     DuckMain.hats.setHat(d, e.getCurrentItem());
