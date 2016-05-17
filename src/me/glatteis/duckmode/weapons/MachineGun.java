@@ -43,7 +43,7 @@ public class MachineGun extends DuckWeapon {
                     WeaponWatch.durability.put(itemLore, WeaponWatch.durability.get(itemLore) - 1);
                     WeaponWatch.cooldown.remove(itemLore);
                 }
-            }.runTaskLater(DuckMain.plugin, 80);
+            }.runTaskLater(DuckMain.getPlugin(), 80);
         }
 
         int shotsPerRound = 6; //@Balancing: Specify shots per round here

@@ -37,7 +37,7 @@ public class PlayerGameListener implements Listener {
                 radius = helper;
             }
         }
-        for (Duck duck : DuckMain.ducks) {
+        for (Duck duck : DuckMain.getPlugin().getDucks()) {
             if (duck.getPlayer().getLocation().distance(location) < radius) {
                 duck.die(Messages.getString("you_blew_up"));
             }
@@ -54,7 +54,7 @@ public class PlayerGameListener implements Listener {
             e.getEntity().remove();
             return;
         }
-        if (!DuckMain.state.equals(GameState.INGAME)) return;
+        if (!DuckMain.getState().equals(GameState.INGAME)) return;
         if (e.getEntity() instanceof Player) {
             Bukkit.getLogger().info(e.getCause().toString());
             if (e instanceof EntityDamageByEntityEvent) {
@@ -79,7 +79,7 @@ public class PlayerGameListener implements Listener {
                 killCause = Messages.getString("you_fell_out_of_world");
             }
             if (e.getCause().equals(DamageCause.FIRE) || e.getCause().equals(DamageCause.FIRE_TICK) || e.getCause().equals(DamageCause.LAVA)) {
-                for (final Duck d : DuckMain.ducks) {
+                for (final Duck d : DuckMain.getPlugin().getDucks()) {
                     if (d.getPlayer().equals(e.getEntity())) {
                         new BukkitRunnable() {
                             public void run() {
@@ -91,7 +91,7 @@ public class PlayerGameListener implements Listener {
                     }
                 }
             }
-            for (Duck d : DuckMain.ducks) {
+            for (Duck d : DuckMain.getPlugin().getDucks()) {
                 if (d.getPlayer().equals(e.getEntity())) {
                     d.die(killCause);
                 }

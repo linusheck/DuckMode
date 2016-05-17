@@ -37,7 +37,7 @@ public class LevelGenerator {
 
     public void buildPlace(final boolean where) {
         Location startLocation;
-        int providedSpawns = DuckMain.ducks.size();
+        int providedSpawns = DuckMain.getPlugin().getDucks().size();
         if (where) {
             startLocation = new Location(DuckMain.getWorld(), -1000, 20, 0);
         } else {
@@ -73,7 +73,7 @@ public class LevelGenerator {
         int maxHeight, maxX, maxZ;
 
         if (dimensionData.getMaxX() == null || dimensionData.getMinX() == null) {
-            maxX = ((int) (Math.random() * DuckMain.ducks.size() * 2) + 4);
+            maxX = ((int) (Math.random() * DuckMain.getPlugin().getDucks().size() * 2) + 4);
         } else {
             maxX = ((int) (Math.random() * (dimensionData.getMaxX() - dimensionData.getMinX())) + dimensionData.getMinX());
         }
@@ -85,7 +85,7 @@ public class LevelGenerator {
         }
 
         if (dimensionData.getMaxZ() == null || dimensionData.getMinZ() == null) {
-            maxZ = ((int) (Math.random() * DuckMain.ducks.size() * 2) + 4);
+            maxZ = ((int) (Math.random() * DuckMain.getPlugin().getDucks().size() * 2) + 4);
         } else {
             maxZ = ((int) (Math.random() * (dimensionData.getMaxZ() - dimensionData.getMinZ())) + dimensionData.getMinZ());
         }

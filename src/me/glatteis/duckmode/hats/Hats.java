@@ -15,8 +15,8 @@ import java.util.Collections;
 public class Hats {
 
     private boolean secretHatsAlreadyAdded = false;
-    private Hat[] sampleHats = {new Bill(), new Burger(), new Fedora(), new StrangeCake(),
-            new NotchHead(), new RandomSkin(), new Pumpkin()}; //Television broken, excluded
+    private Hat[] sampleHats = {new Bill(), new Burger(), new Fedora(), new StrangeCake(), new Crocodile(),
+            new NotchHead(), new RandomSkin(), new Pumpkin(),}; //Television broken, excluded
 
     public void setHat(Duck d, ItemStack i) {
         if (d.getHat() != null && d.getHat() instanceof EntityHat) {

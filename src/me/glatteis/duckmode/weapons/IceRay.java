@@ -60,7 +60,7 @@ public class IceRay extends DuckGun {
                                 cancel();
                                 return;
                             }
-                            for (Duck duck : DuckMain.ducks) {
+                            for (Duck duck : DuckMain.getPlugin().getDucks()) {
                                 if (duck.getPlayer().getLocation().distanceSquared(location) < 0.5 &&
                                         !duck.getPlayer().equals(shooter)) {
                                     freezePlayer(duck);

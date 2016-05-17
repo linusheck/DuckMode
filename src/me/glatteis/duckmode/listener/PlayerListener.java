@@ -9,6 +9,7 @@ import me.glatteis.duckmode.weapons.WeaponWatch;
 import org.bukkit.*;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -38,18 +39,18 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPing(ServerListPingEvent e) {
-        ChatColor stateColor = (DuckMain.state.equals(GameState.LOBBY) ? ChatColor.GREEN : ChatColor.RED);
-        ChatColor fullColor = (DuckMain.ducks.size() < DuckMain.maxPlayerCount ? ChatColor.GREEN : ChatColor.RED);
+        ChatColor stateColor = (DuckMain.getState().equals(GameState.LOBBY) ? ChatColor.GREEN : ChatColor.RED);
+        ChatColor fullColor = (DuckMain.getPlugin().getDucks().size() < DuckMain.getPlugin().getMaxPlayerCount() ? ChatColor.GREEN : ChatColor.RED);
         String pingString = ChatColor.YELLOW + "\\" + ChatColor.UNDERLINE + Messages.getString("duck_mode") + ChatColor.RESET + ChatColor.YELLOW +
                 "/ " + fullColor + Bukkit.getServer().getOnlinePlayers().size() + " " + Messages.getString("players_online") + ChatColor.RESET + " || " +
-                stateColor + ChatColor.BOLD + DuckMain.state + "\n" + ChatColor.GRAY + Messages.getString("motd_description");
-        e.setMaxPlayers(DuckMain.maxPlayerCount);
+                stateColor + ChatColor.BOLD + DuckMain.getState() + "\n" + ChatColor.GRAY + Messages.getString("motd_description");
+        e.setMaxPlayers(DuckMain.getPlugin().getMaxPlayerCount());
         e.setMotd(pingString);
     }
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e) {
-        if (DuckMain.continueGame.canNotMove) {
+        if (DuckMain.getPlugin().getContinueGame().canNotMove) {
             if (e.getPlayer().getGameMode().equals(GameMode.SPECTATOR)) return;
             if (e.getFrom().distance(e.getTo()) < 0.1) return;
             if (e.getFrom().getY() > e.getTo().getY())
@@ -61,19 +62,19 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
-        if (DuckMain.state.equals(GameState.LOBBY) && (!(Bukkit.getServer().getOnlinePlayers().size() > DuckMain.maxPlayerCount))) {
+        if (DuckMain.getState().equals(GameState.LOBBY) && (!(Bukkit.getServer().getOnlinePlayers().size() > DuckMain.getPlugin().getMaxPlayerCount()))) {
             e.getPlayer().setGameMode(GameMode.ADVENTURE);
             e.getPlayer().getInventory().setHeldItemSlot(4);
-            Duck d = new Duck(e.getPlayer(), DuckMain.spawnLocation);
-            DuckMain.ducks.add(d);
+            Duck d = new Duck(e.getPlayer(), DuckMain.getPlugin().getSpawnLocation());
+            DuckMain.getPlugin().getDucks().add(d);
             d.prepareInventory();
             d.disableJumping();
             DuckReflectionMethods.title(e.getPlayer(), ChatColor.RED +
-                    (DuckMain.joinTitle != null ? DuckMain.joinTitle : Messages.getString("big_screen_title")), 5, 30, 5);
-            DuckReflectionMethods.subtitle(e.getPlayer(), DuckMain.joinSubtitle != null ? DuckMain.joinSubtitle :
+                    (DuckMain.getPlugin().getJoinTitle() != null ? DuckMain.getPlugin().getJoinTitle() : Messages.getString("big_screen_title")), 5, 30, 5);
+            DuckReflectionMethods.subtitle(e.getPlayer(), DuckMain.getPlugin().getJoinSubtitle() != null ? DuckMain.getPlugin().getJoinSubtitle() :
                     Messages.getString("version") + " " + DuckMain.getPlugin().getDescription().getVersion(), 5, 30, 5);
 
-            e.getPlayer().teleport(DuckMain.spawnLocation);
+            e.getPlayer().teleport(DuckMain.getPlugin().getSpawnLocation());
             e.setJoinMessage("DUCK MODE -> " + ChatColor.YELLOW + Messages.getString("duck") + " " + e.getPlayer().getName() + " " + Messages.getString("join_message"));
 
             //Init lighting in lobby because that is bugged by default in 1.9.2 >
@@ -96,22 +97,23 @@ public class PlayerListener implements Listener {
                             break;
                     }
                 }
-            }.runTaskTimer(DuckMain.getPlugin(), 5, 1);;
+            }.runTaskTimer(DuckMain.getPlugin(), 5, 1);
+            ;
 
-            if (DuckMain.autoStart > 0 && Bukkit.getOnlinePlayers().size() >= DuckMain.autoStart) {
+            if (DuckMain.getPlugin().getAutoStart() > 0 && Bukkit.getOnlinePlayers().size() >= DuckMain.getPlugin().getAutoStart()) {
                 ListenerActivator.lobbyCountdown();
             }
         } else {
-            DuckMain.spectators.add(e.getPlayer());
+            DuckMain.getPlugin().getSpectators().add(e.getPlayer());
             e.getPlayer().setGameMode(GameMode.SPECTATOR);
             e.setJoinMessage(null);
             e.getPlayer().sendMessage(Messages.getString("spectator.join"));
-            if (DuckMain.state.equals(GameState.LOBBY)) {
-                e.getPlayer().teleport(DuckMain.spawnLocation);
+            if (DuckMain.getState().equals(GameState.LOBBY)) {
+                e.getPlayer().teleport(DuckMain.getPlugin().getSpawnLocation());
             } else {
                 Vector averageLocation = new Vector();
                 int aliveDucks = 0;
-                for (Duck d : DuckMain.ducks) {
+                for (Duck d : DuckMain.getPlugin().getDucks()) {
                     aliveDucks++;
                     if (!d.isDead()) {
                         averageLocation = averageLocation.add(d.getPlayer().getLocation().toVector());
@@ -122,9 +124,9 @@ public class PlayerListener implements Listener {
             }
         }
 
-        String resourcePackLink = DuckMain.indevResourcePack ?
+        String resourcePackLink = DuckMain.getPlugin().isIndevResourcePack() ?
                 "http://glatteis.bplaced.net/DuckMode/resource_pack_indev.zip" :
-                "http://glatteis.bplaced.net/DuckMode/resource_pack.zip";
+                "http://glatteis.bplaced.net/DuckMode/rp.php"; //rp.php counts downloads
         e.getPlayer().setResourcePack("http://glatteis.bplaced.net/DuckMode/rp.php?" + new Random().nextInt()); //Random number overrides weird resource pack caching
 
         //Old resource pack links:
@@ -134,26 +136,26 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e) {
-        for (Duck d : DuckMain.ducks) {
+        for (Duck d : DuckMain.getPlugin().getDucks()) {
             if (d.getPlayer().equals(e.getPlayer())) {
-                if (!DuckMain.duckCount.isEmpty()) {
-                    for (int i = 0; i < DuckMain.duckCount.keySet().size(); i++) {
-                        Duck thisDuck = DuckMain.duckCount.get(i);
+                if (!DuckMain.getPlugin().getDuckCount().isEmpty()) {
+                    for (int i = 0; i < DuckMain.getPlugin().getDuckCount().keySet().size(); i++) {
+                        Duck thisDuck = DuckMain.getPlugin().getDuckCount().get(i);
                         if (thisDuck != null && thisDuck.equals(d)) {
-                            DuckMain.duckCount.remove(i);
+                            DuckMain.getPlugin().getDuckCount().remove(i);
                         }
                     }
                 }
-                DuckMain.ducks.remove(d);
+                DuckMain.getPlugin().getDucks().remove(d);
                 e.setQuitMessage("DUCK MODE -> " + ChatColor.YELLOW + Messages.getString("duck") + " " + d.getPlayer().getName() + " " + Messages.getString("leave_message"));
-                if (DuckMain.ducks.size() == 0 && DuckMain.state != GameState.LOBBY) {
+                if (DuckMain.getPlugin().getDucks().size() == 0 && DuckMain.getState() != GameState.LOBBY) {
                     DuckMain.getPlugin().getLogger().info("Server is empty, shutting down...");
                     Bukkit.shutdown();
                 }
                 break;
             }
         }
-        if (DuckMain.spectators.contains(e.getPlayer())) DuckMain.spectators.remove(e.getPlayer());
+        if (DuckMain.getPlugin().getSpectators().contains(e.getPlayer())) DuckMain.getPlugin().getSpectators().remove(e.getPlayer());
     }
 
     @EventHandler
@@ -181,7 +183,7 @@ public class PlayerListener implements Listener {
         if (e.getPlayer().getGameMode().equals(GameMode.SPECTATOR)) return;
         e.getPlayer().getInventory().setHeldItemSlot(4);
         if (e.getNewSlot() == 0) {
-            for (Duck d : DuckMain.ducks) {
+            for (Duck d : DuckMain.getPlugin().getDucks()) {
                 d.getPlayer().playSound(d.getPlayer().getLocation(), Sound.ENTITY_CHICKEN_HURT, 10, 1);
             }
         }
@@ -190,7 +192,8 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
-        if (DuckMain.spectators.contains(e.getWhoClicked())) return;
+        if (! (e.getWhoClicked() instanceof Player)) return;
+        if (DuckMain.getPlugin().getSpectators().contains(e.getWhoClicked())) return;
         e.setCancelled(true);
         e.getWhoClicked().closeInventory();
     }

@@ -18,7 +18,6 @@ import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
@@ -32,24 +31,90 @@ import java.util.zip.ZipFile;
 
 public class DuckMain extends JavaPlugin {
 
-    //So much static, I know. This approach is pretty old.
 
+    private static DuckMain plugin;
+    private static GameState state;
     public static final Dimension STATIC_DIMENSION = new Dimension("Static");
-    public static final ContinueGame continueGame = new ContinueGame();
-    public static final List<Duck> ducks = new ArrayList<Duck>();
-    public static final List<Player> spectators = new ArrayList<Player>();
-    public static final HashMap<Integer, Duck> duckCount = new HashMap<Integer, Duck>();
-    public static Hats hats;
-    private static final String resourcesVersion = "RESOURCES - SNAPSHOT_19_03_2016";
-    public static String joinTitle = null;
-    public static String joinSubtitle = null;
-    public static int maxPlayerCount = 4;
-    public static boolean indevResourcePack = false;
-    public static GameState state;
-    public static Plugin plugin;
-    public static Location spawnLocation;
-    public static int autoStart;
     private static World duckWorld;
+
+    private final ContinueGame continueGame = new ContinueGame();
+    private final List<Duck> ducks = new ArrayList<Duck>();
+    private final List<Player> spectators = new ArrayList<Player>();
+    private final HashMap<Integer, Duck> duckCount = new HashMap<Integer, Duck>();
+    private Hats hats;
+    private final String resourcesVersion = "RESOURCES - SNAPSHOT_19_03_2016";
+    private String joinTitle = null;
+    private String joinSubtitle = null;
+    private int maxPlayerCount = 4;
+
+    public static GameState getState() {
+        return state;
+    }
+
+    public static Dimension getStaticDimension() {
+        return STATIC_DIMENSION;
+    }
+
+    public static World getDuckWorld() {
+        return duckWorld;
+    }
+
+    public ContinueGame getContinueGame() {
+        return continueGame;
+    }
+
+    public List<Duck> getDucks() {
+        return ducks;
+    }
+
+    public List<Player> getSpectators() {
+        return spectators;
+    }
+
+    public HashMap<Integer, Duck> getDuckCount() {
+        return duckCount;
+    }
+
+    public Hats getHats() {
+        return hats;
+    }
+
+    public String getResourcesVersion() {
+        return resourcesVersion;
+    }
+
+    public String getJoinTitle() {
+        return joinTitle;
+    }
+
+    public String getJoinSubtitle() {
+        return joinSubtitle;
+    }
+
+    public int getMaxPlayerCount() {
+        return maxPlayerCount;
+    }
+
+    public boolean isIndevResourcePack() {
+        return indevResourcePack;
+    }
+
+    public Location getSpawnLocation() {
+        return spawnLocation;
+    }
+
+    public int getAutoStart() {
+        return autoStart;
+    }
+
+    public String getDuckModeConsoleWelcome() {
+        return duckModeConsoleWelcome;
+    }
+
+    private boolean indevResourcePack = false;
+    private Location spawnLocation;
+    private int autoStart;
+
     private final String duckModeConsoleWelcome = "\n\n" +
             "######                       #     #                      \n" +
             "#     # #    #  ####  #    # ##   ##  ####  #####  ###### \n" +
@@ -61,11 +126,11 @@ public class DuckMain extends JavaPlugin {
             "Version " + this.getDescription().getVersion() + "\n\n" +
             "Look out for updates: www.spigotmc.org/resources/9108/\n\n";
 
-    public static Plugin getPlugin() {
+    public static DuckMain getPlugin() {
         return plugin;
     }
 
-    public static void setPlugin(Plugin p) {
+    public static void setPlugin(DuckMain p) {
         plugin = p;
     }
 
@@ -75,6 +140,10 @@ public class DuckMain extends JavaPlugin {
 
     public static void setWorld(World w) {
         duckWorld = w;
+    }
+
+    public static void setState(GameState state) {
+        DuckMain.state = state;
     }
 
     private String readFileAsString(String filePath) throws IOException {

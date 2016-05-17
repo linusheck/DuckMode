@@ -41,7 +41,7 @@ public class Intermission implements Listener {
         final int pointsToWin = SettingDatabase.settingSwitches.get(SettingType.POINTS_TO_WIN.toString()).get(SettingDatabase.intSetting.get(SettingType.POINTS_TO_WIN.toString()));
         new BukkitRunnable() {
             public void run() {
-                int ducks = DuckMain.ducks.size();
+                int ducks = DuckMain.getPlugin().getDucks().size();
                 BukkitWorld bw = new BukkitWorld(DuckMain.getWorld());
                 com.sk89q.worldedit.Vector v = new com.sk89q.worldedit.Vector(0, 20, 1000);
 
@@ -73,11 +73,11 @@ public class Intermission implements Listener {
     }
 
     public void intermission() {
-        DuckMain.state = GameState.INTERMISSION;
-        DuckMain.continueGame.setRoundHasEnded(false);
+        DuckMain.setState(GameState.INTERMISSION);
+        DuckMain.getPlugin().getContinueGame().setRoundHasEnded(false);
         removeRocks();
-        for (int i = 0; i < DuckMain.ducks.size(); i++) {
-            Duck d = DuckMain.duckCount.get(i);
+        for (int i = 0; i < DuckMain.getPlugin().getDucks().size(); i++) {
+            Duck d = DuckMain.getPlugin().getDuckCount().get(i);
             if (d == null) {
                 continue;
             }
@@ -96,7 +96,7 @@ public class Intermission implements Listener {
             @Override
             public void run() {
                 i++;
-                if (i == DuckMain.ducks.size()) {
+                if (i == DuckMain.getPlugin().getDucks().size()) {
                     for (Duck d : WinTracker.wins.keySet()) {
                         if (WinTracker.wins.get(d) >= pointsToWin) {
                             new BukkitRunnable() {
@@ -111,14 +111,14 @@ public class Intermission implements Listener {
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            DuckMain.state = GameState.INGAME;
-                            DuckMain.continueGame.setRoundHasEnded(true);
+                            DuckMain.setState(GameState.INGAME);
+                            DuckMain.getPlugin().getContinueGame().setRoundHasEnded(true);
                         }
                     }.runTaskLater(DuckMain.getPlugin(), 10L);
                     this.cancel();
                     return;
                 }
-                Duck d = DuckMain.duckCount.get(i);
+                Duck d = DuckMain.getPlugin().getDuckCount().get(i);
                 if (WinTracker.wins.get(d) == null) {
                     WinTracker.wins.put(d, 0);
                 }

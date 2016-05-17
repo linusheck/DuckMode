@@ -53,7 +53,7 @@ public class DuckLobby implements Listener {
 
     @EventHandler
     public void signClick(PlayerInteractEvent e) {
-        if (DuckMain.state.equals(GameState.LOBBY) && e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getClickedBlock().getType().equals(Material.WALL_SIGN)) {
+        if (DuckMain.getState().equals(GameState.LOBBY) && e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getClickedBlock().getType().equals(Material.WALL_SIGN)) {
             Sign s = (Sign) e.getClickedBlock().getState();
             String setting = SettingDatabase.settingsSigns.get(s);
             if (setting == null) return;
@@ -65,7 +65,7 @@ public class DuckLobby implements Listener {
                 s.update();
             }
             else if (setting.equals(SettingType.HATS.toString())) {
-                DuckMain.hats.openHatInventory(e.getPlayer());
+                DuckMain.getPlugin().getHats().openHatInventory(e.getPlayer());
             }
         }
     }
@@ -75,9 +75,9 @@ public class DuckLobby implements Listener {
         if (e.getCurrentItem() == null) return;
         Bukkit.getLogger().info("Soosenbinder. " + (e.getInventory().getTitle()) + ", " + SettingType.HATS.toString());
         if (ChatColor.stripColor(e.getInventory().getTitle()).equals(SettingType.HATS.toString())) {
-            for (Duck d : DuckMain.ducks) {
+            for (Duck d : DuckMain.getPlugin().getDucks()) {
                 if (d.getPlayer().equals(e.getWhoClicked())) {
-                    DuckMain.hats.setHat(d, e.getCurrentItem());
+                    DuckMain.getPlugin().getHats().setHat(d, e.getCurrentItem());
                 }
             }
         }
@@ -86,9 +86,9 @@ public class DuckLobby implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
         if (activated) return;
-        if (DuckMain.state.equals(GameState.LOBBY)) {
+        if (DuckMain.getState().equals(GameState.LOBBY)) {
             if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) && e.getClickedBlock().getType().equals(Material.WOOD_BUTTON)
-                    && DuckMain.ducks.size() > 0) {
+                    && DuckMain.getPlugin().getDucks().size() > 0) {
                 countdown();
             }
         }
@@ -99,13 +99,13 @@ public class DuckLobby implements Listener {
         new BukkitRunnable() {
             int countdown = 3;
             public void run() {
-                for (Duck d : DuckMain.ducks) {
+                for (Duck d : DuckMain.getPlugin().getDucks()) {
                     DuckReflectionMethods.title(d.getPlayer(), ChatColor.RED.toString() + countdown, 0, 20, 5);
                 }
                 countdown--;
                 if (countdown == 0) {
                     Intermission.getIntermission().create();
-                    DuckMain.continueGame.startRound();
+                    DuckMain.getPlugin().getContinueGame().startRound();
                     this.cancel();
                 }
 

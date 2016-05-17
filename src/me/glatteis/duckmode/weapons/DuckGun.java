@@ -44,4 +44,5 @@ public abstract class DuckGun extends DuckWeapon {
 
     //New method to override
     public abstract void safeShoot(PlayerInteractEvent event);
+
 }

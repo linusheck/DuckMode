@@ -18,7 +18,7 @@ public class GameEnd {
     public void win() {
         Queue<Duck> ducks = new LinkedList<Duck>();
         Collection<Integer> duckScores = new ArrayList<Integer>(WinTracker.wins.values());
-        for (int i = 0; i < DuckMain.ducks.size(); i++) {
+        for (int i = 0; i < DuckMain.getPlugin().getDucks().size(); i++) {
             Integer maxValue = Collections.max(duckScores);
             if (maxValue == null) {
                 break;

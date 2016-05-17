@@ -1,6 +1,5 @@
 package me.glatteis.duckmode.messages;
 
-import me.glatteis.duckmode.Duck;
 import me.glatteis.duckmode.DuckMain;
 import org.bukkit.Bukkit;
 

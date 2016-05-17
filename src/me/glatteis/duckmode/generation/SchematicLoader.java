@@ -7,7 +7,6 @@ import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.schematic.SchematicFormat;
 import me.glatteis.duckmode.DuckMain;
-import me.glatteis.duckmode.game.PlayerSpawnPoints;
 import me.glatteis.duckmode.reflection.DuckReflectionHelper;
 import me.glatteis.duckmode.weapons.WeaponWatch;
 import org.bukkit.Bukkit;
@@ -18,16 +17,23 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class SchematicLoader {
 
-    private static WorldEditPlugin e = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
+    private static final List<Location> playerSpawnPoints = new ArrayList<Location>();
 
-    private static ArrayList<SchematicToLoad> schematicsToLoad = new ArrayList<SchematicToLoad>();
+    public static List<Location> getPlayerSpawnPoints() {
+        return playerSpawnPoints;
+    }
+
+    private static final WorldEditPlugin e = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
+
+    private static final ArrayList<SchematicToLoad> schematicsToLoad = new ArrayList<SchematicToLoad>();
 
     @SuppressWarnings("deprecation")
-    private static EditSession session = e.getWorldEdit().getEditSessionFactory()
+    private static final EditSession session = e.getWorldEdit().getEditSessionFactory()
             .getEditSession(new BukkitWorld(DuckMain.getWorld()), Integer.MAX_VALUE);
 
     public static void addSchematic(SchematicToLoad s) {
@@ -46,7 +52,6 @@ public class SchematicLoader {
     public static void loadAllSchematics(final ThenTask finished) {
         new BukkitRunnable() {
             int position = -1;
-
             public void run() {
                 long millis = System.currentTimeMillis();
                 while (millis - System.currentTimeMillis() < 25) {
@@ -91,7 +96,7 @@ public class SchematicLoader {
                         s.getDimensionData().getSizeZ() / 2
                 );
             }
-            PlayerSpawnPoints.spawnPoints.add(l.add(0, 0.2, 0));
+            playerSpawnPoints.add(l.add(0, 0.2, 0));
         } else if (s.getDimensionContainer().getType().equals("weapon")) {
             Location spawn = findBlock(Material.IRON_BLOCK, there, s);
             if (spawn == null) return;
@@ -169,7 +174,7 @@ public class SchematicLoader {
                 Math.max(vector1.getY(), vector2.getY()),
                 Math.max(vector1.getZ(), vector2.getZ()));
 
-        for (int cx = v1.getBlockX(); cx <= v2.getBlockX(); cx+= 16) {
+        for (int cx = v1.getBlockX(); cx <= v2.getBlockX(); cx += 16) {
             for (int cz = v1.getBlockZ(); cz <= v2.getBlockZ(); cz += 16) {
                 final org.bukkit.Chunk chunk;
                 Object craftChunk = DuckReflectionHelper.getCraftBukkitClass("CraftChunk").cast(chunk = new Location(DuckMain.getWorld(), cx, 0, cz).getChunk());
